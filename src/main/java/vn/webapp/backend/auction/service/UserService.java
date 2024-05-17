@@ -17,6 +17,12 @@ public class UserService implements IUserService {
     private final UserRepository userRepository;
 
     @Override
+    public User getUserByUsername(String username) {
+        return userRepository.findByUsername(username)
+                .orElseThrow(() -> new ResourceNotFoundException("Người dùng tương ứng không tồn tại"));
+    }
+
+    @Override
     public User getUserById(Integer id) {
         return userRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Người dùng tương ứng không tồn tại"));

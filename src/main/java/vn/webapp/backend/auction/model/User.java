@@ -25,6 +25,7 @@ public class User {
 
     @JsonIgnore
     @NotBlank
+    @Column(name = "password", columnDefinition = "nvarchar(100)")
     private String password;
 
     @Column(name = "first_name", nullable = false, columnDefinition = "nvarchar(50)")
