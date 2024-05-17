@@ -8,6 +8,8 @@ import lombok.NoArgsConstructor;
 import vn.webapp.backend.auction.enums.AuctionState;
 
 import java.sql.Date;
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity
@@ -44,10 +46,10 @@ public class Auction {
     private double priceStep;
 
     @Column(name = "start_date", nullable = false)
-    private Date startDate;
+    private Timestamp startDate;
 
     @Column(name = "countdown_time", nullable = false)
-    private Date countdownTime;
+    private Timestamp  countdownTime;
 
     @ManyToOne(cascade = {
             CascadeType.PERSIST, CascadeType.DETACH,

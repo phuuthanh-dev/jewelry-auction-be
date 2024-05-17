@@ -1,10 +1,7 @@
 package vn.webapp.backend.auction.model;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -22,6 +19,8 @@ public class RequestApproval {
             CascadeType.MERGE, CascadeType.REFRESH
     })
     @JoinColumn(name = "staff_id")
+    @EqualsAndHashCode.Exclude
+    @ToString.Exclude
     private User user;
 
     @ManyToOne(cascade = {

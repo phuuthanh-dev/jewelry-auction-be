@@ -1,9 +1,7 @@
 package vn.webapp.backend.auction.model;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.util.List;
 
@@ -47,6 +45,8 @@ public class Jewelry {
             CascadeType.MERGE, CascadeType.REFRESH
     })
     @JoinColumn(name = "user_id")
+    @EqualsAndHashCode.Exclude
+    @ToString.Exclude
     private User user;
 
     @ManyToOne(cascade = {
@@ -54,6 +54,8 @@ public class Jewelry {
             CascadeType.MERGE, CascadeType.REFRESH
     })
     @JoinColumn(name = "category_id")
+    @EqualsAndHashCode.Exclude
+    @ToString.Exclude
     private JewerlyCategory category;
 
     @OneToMany(mappedBy = "jewelry")

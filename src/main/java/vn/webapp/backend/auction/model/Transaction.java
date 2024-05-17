@@ -7,14 +7,14 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import vn.webapp.backend.auction.enums.TransactionState;
 
-import java.sql.Date;
+import java.sql.Timestamp;
 
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
 @Builder
 @Data
-@Table(name = "`transaction`")
+@Table(name = "[transaction]")
 public class Transaction {
 
     @Id
@@ -22,7 +22,7 @@ public class Transaction {
     private int id;
 
     @Column(name = "create_date", nullable = false)
-    private Date createDate;
+    private Timestamp createDate;
 
     @Column(name = "total_price", nullable = false)
     private double totalPrice;

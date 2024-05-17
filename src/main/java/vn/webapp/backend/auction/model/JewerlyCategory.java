@@ -23,5 +23,8 @@ public class JewerlyCategory {
     private String name;
 
     @OneToMany(mappedBy = "category")
+    @EqualsAndHashCode.Exclude
+    @ToString.Exclude
+    @JsonIgnore
     private List<Jewelry> jewelries;
 }
