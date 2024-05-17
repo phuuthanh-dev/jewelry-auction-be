@@ -1,0 +1,19 @@
+package vn.webapp.backend.auction.enums;
+
+public enum AuctionState {
+
+    ONGOING("Đang đấu giá"),
+    WAITING("Đang chờ"),
+    FINISHED("Đã kết thúc"),
+    PAUSED("Tạm dừng");
+
+    private String vietnameseName;
+
+    AuctionState(String vietnameseName) {
+        this.vietnameseName = vietnameseName;
+    }
+
+    public String getVietnameseName() {
+        return vietnameseName;
+    }
+}
