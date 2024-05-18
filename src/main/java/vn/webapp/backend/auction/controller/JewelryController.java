@@ -4,7 +4,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import vn.webapp.backend.auction.model.Jewelry;
-import vn.webapp.backend.auction.model.User;
 import vn.webapp.backend.auction.service.JewelryService;
 
 import java.util.List;

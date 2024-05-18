@@ -1,6 +1,8 @@
 package vn.webapp.backend.auction.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotBlank;
 import lombok.*;
 
 import java.util.List;
@@ -17,10 +19,11 @@ public class Jewelry {
     private int id;
 
     @Column(name = "name", nullable = false, columnDefinition = "nvarchar(50)")
+    @NotBlank(message = "The price required")
     private String name;
 
-    @Column(name = "price", nullable = false)
-    private double price;
+    @Min(value = 1, message = "The price must be at least 1")
+    private Double price;
 
     @Column(name = "description", nullable = false, columnDefinition = "nvarchar(MAX)")
     private String description;
@@ -32,12 +35,12 @@ public class Jewelry {
     private String brand;
 
     @Column(name = "weight", nullable = false)
-    private double weight;
+    private Double weight;
 
     @Column(name = "status", nullable = false, columnDefinition = "nvarchar(20)")
     private String status;
 
-    @OneToMany(mappedBy = "jewelry")
+    @OneToMany(mappedBy = "jewelry", cascade = CascadeType.ALL)
     private List<Image> images;
 
     @ManyToOne(cascade = {
@@ -58,6 +61,6 @@ public class Jewelry {
     @ToString.Exclude
     private JewerlyCategory category;
 
-    @OneToMany(mappedBy = "jewelry")
+    @OneToMany(mappedBy = "jewelry", cascade = CascadeType.ALL)
     private List<RequestApproval> requestApprovals;
 }
