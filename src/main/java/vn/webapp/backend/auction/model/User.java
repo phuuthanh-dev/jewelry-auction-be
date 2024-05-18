@@ -96,15 +96,15 @@ public class User implements UserDetails {
     @JsonIgnore
     private List<RequestApproval> requestApprovals;
 
+    public String getFullName() {
+        return firstName + " " + lastName;
+    }
+
     @JsonIgnore
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return List.of(new SimpleGrantedAuthority(role.getName()));
-    }
-
-    @Override
-    public String getUsername() {
-        return email;
+//        return Collections.singletonList(new SimpleGrantedAuthority(role.getName()));
     }
 
     @Override
