@@ -1,6 +1,7 @@
 package vn.webapp.backend.auction.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Min;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -25,10 +26,12 @@ public class Transaction {
     private Timestamp createDate;
 
     @Column(name = "total_price", nullable = false)
-    private double totalPrice;
+    @Min(value = 1, message = "The total price must be at least 1")
+    private Double totalPrice;
 
     @Column(name = "fees_incurred", nullable = false)
-    private double feesIncurred;
+    @Min(value = 0, message = "The fees incurred must be at least 0")
+    private Double feesIncurred;
 
     @Enumerated(EnumType.STRING)
     private TransactionState status;
