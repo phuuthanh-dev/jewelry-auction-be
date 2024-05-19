@@ -8,4 +8,5 @@ public interface IJewelryService {
     List<Jewelry> getAll();
     Jewelry getJewelryById(Integer id);
     List<Jewelry> getJewelryByUsername(String username);
+    void deleteJewelry(Integer id);
 }

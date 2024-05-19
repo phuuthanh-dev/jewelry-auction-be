@@ -6,10 +6,11 @@ import org.springframework.stereotype.Service;
 @Service
 @RequiredArgsConstructor
 public class EmailContent {
+
     public String setHtmlContent(String fullName, String buttonName, String url, String firstMessage,
                                 String secondMessage) {
         String subject = "Activate your account at DGS";
-        String imageUrl = "https://raw.githubusercontent.com/phuuthanh2003/AuctionWebApp_BE/main/1.png";
+        String imageUrl = "https://raw.githubusercontent.com/phuuthanh2003/AuctionWebApp_BE/main/logo.png";
         String content = "<!DOCTYPE html>\n" +
                 "<html lang=\"en\">\n" +
                 "<head>\n" +
