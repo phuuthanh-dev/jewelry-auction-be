@@ -59,7 +59,7 @@ public class Jewelry {
     @JoinColumn(name = "category_id")
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
-    private JewerlyCategory category;
+    private JewelryCategory category;
 
     @OneToMany(mappedBy = "jewelry", cascade = CascadeType.ALL)
     private List<RequestApproval> requestApprovals;

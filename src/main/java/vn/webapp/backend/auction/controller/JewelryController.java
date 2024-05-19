@@ -30,4 +30,10 @@ public class JewelryController {
     public ResponseEntity<List<Jewelry>> getJewelryByUsername(@PathVariable String username) {
         return ResponseEntity.ok(jewelryService.getJewelryByUsername(username));
     }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteBook(@PathVariable Integer id) {
+        jewelryService.deleteJewelry(id);
+        return ResponseEntity.noContent().build();
+    }
 }
