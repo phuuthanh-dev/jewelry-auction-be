@@ -60,8 +60,8 @@ public class User implements UserDetails {
     @NotBlank(message = "The province is required")
     private String province;
 
-    @Column(name = "year_of_birth", nullable = false, length = 30)
-    private int yob;
+    @Column(name = "year_of_birth", nullable = false, length = 4)
+    private String yob;
 
     @Column(name = "avatar", columnDefinition = "varchar(MAX)")
     @Lob

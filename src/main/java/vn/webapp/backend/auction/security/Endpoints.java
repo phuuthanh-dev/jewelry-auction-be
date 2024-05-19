@@ -22,4 +22,8 @@ public class Endpoints {
     public static final String[] ADMIN_POST_ENDPOINTS = {
             "/api/v1/user/**"
     };
+
+    public static final String[] ADMIN_PUT_ENDPOINTS = {
+            "/api/v1/user/**"
+    };
 }
