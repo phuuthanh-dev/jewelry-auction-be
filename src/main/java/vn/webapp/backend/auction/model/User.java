@@ -75,8 +75,8 @@ public class User implements UserDetails {
     @Column(name ="state" , nullable = false, length = 10)
     private AccountState state;
 
-    @Column(name = "activation_code", nullable = false, length = 50)
-    private String activationCode;
+//    @Column(name = "activation_code", nullable = false, length = 50)
+//    private String activationCode;
 
     @ManyToOne
     @JoinColumn(name = "role_id")
@@ -96,15 +96,15 @@ public class User implements UserDetails {
     @JsonIgnore
     private List<RequestApproval> requestApprovals;
 
+    public String getFullName() {
+        return firstName + " " + lastName;
+    }
+
     @JsonIgnore
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return List.of(new SimpleGrantedAuthority(role.getName()));
-    }
-
-    @Override
-    public String getUsername() {
-        return email;
+//        return Collections.singletonList(new SimpleGrantedAuthority(role.getName()));
     }
 
     @Override
