@@ -75,8 +75,8 @@ public class User implements UserDetails {
     @Column(name ="state" , nullable = false, length = 10)
     private AccountState state;
 
-    @Column(name = "activation_code", nullable = false, length = 50)
-    private String activationCode;
+//    @Column(name = "activation_code", nullable = false, length = 50)
+//    private String activationCode;
 
     @ManyToOne
     @JoinColumn(name = "role_id")
