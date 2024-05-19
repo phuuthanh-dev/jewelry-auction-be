@@ -36,4 +36,10 @@ public class JewelryService implements IJewelryService {
         }
         return jewelryList;
     }
+
+    @Override
+    public void deleteJewelry(Integer id) {
+        Jewelry jewelry = getJewelryById(id);
+        jewelryRepository.delete(jewelry);
+    }
 }
