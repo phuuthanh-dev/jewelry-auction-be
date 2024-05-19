@@ -3,6 +3,7 @@ package vn.webapp.backend.auction.service;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import vn.webapp.backend.auction.enums.AccountState;
 import vn.webapp.backend.auction.exception.ResourceNotFoundException;
 import vn.webapp.backend.auction.model.User;
 import vn.webapp.backend.auction.repository.UserRepository;
@@ -31,7 +32,7 @@ public class UserService implements IUserService {
     @Override
     public User getUserByEmail(String email) {
         return userRepository.findByEmail(email)
-                .orElseThrow(() -> new ResourceNotFoundException("Không tìm thấy tai khoan."));
+                .orElseThrow(() -> new ResourceNotFoundException("Không tìm thấy tài khoản."));
     }
 
     @Override
@@ -39,10 +40,15 @@ public class UserService implements IUserService {
             return userRepository.findAllByRole("STAFF");
     }
 
-
-
     @Override
     public List<User> getAll() {
         return userRepository.findAll();
+    }
+
+    @Override
+    public void setAccountState(Integer id, String state) {
+        var existingUser = userRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Không tìm thấy tài khoản."));
+        existingUser.setState(AccountState.valueOf(state));
     }
 }
