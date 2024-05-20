@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import lombok.*;
+import vn.webapp.backend.auction.enums.JewelryState;
 
 import java.util.List;
 
@@ -37,8 +38,9 @@ public class Jewelry {
     @Column(name = "weight", nullable = false)
     private Double weight;
 
-    @Column(name = "status", nullable = false, columnDefinition = "nvarchar(20)")
-    private String status;
+    @Column(name = "state", nullable = false, columnDefinition = "nvarchar(20)")
+    @Enumerated(EnumType.STRING)
+    private JewelryState state;
 
     @OneToMany(mappedBy = "jewelry", cascade = CascadeType.ALL)
     private List<Image> images;
