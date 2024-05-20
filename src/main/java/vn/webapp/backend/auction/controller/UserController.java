@@ -38,7 +38,6 @@ public class UserController {
 
     @PutMapping("/set-state/{id}")
     public ResponseEntity<User> setState(@PathVariable Integer id, @RequestParam String state) {
-        System.out.println(state);
         userService.setAccountState(id, state);
         return ResponseEntity.ok().build();
     }
