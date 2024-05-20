@@ -7,6 +7,7 @@ import vn.webapp.backend.auction.model.Auction;
 import vn.webapp.backend.auction.model.AuctionHistory;
 import vn.webapp.backend.auction.service.AuctionHistoryService;
 
+import java.sql.Date;
 import java.util.List;
 
 @RestController
@@ -25,5 +26,10 @@ public class AuctionHistoryController {
     @GetMapping("/get-by-username/{username}")
     public ResponseEntity<List<AuctionHistory>> getAuctionHistoryByUsername(@PathVariable String username) {
         return ResponseEntity.ok(auctionHistoryService.getAuctionHistoryByUsername(username));
+    }
+
+    @GetMapping("/get-by-date/{date}")
+    public ResponseEntity<List<AuctionHistory>> getAuctionHistoryByDate(@PathVariable String date) {  //2024-12-10
+        return ResponseEntity.ok(auctionHistoryService.getAuctionHistoryByDate(date));
     }
 }

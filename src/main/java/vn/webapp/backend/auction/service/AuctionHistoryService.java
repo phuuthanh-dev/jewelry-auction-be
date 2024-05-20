@@ -9,6 +9,7 @@ import vn.webapp.backend.auction.repository.AuctionHistoryRepository;
 import vn.webapp.backend.auction.repository.AuctionRepository;
 import vn.webapp.backend.auction.repository.UserRepository;
 
+import java.sql.Date;
 import java.util.List;
 
 @Service
@@ -33,4 +34,11 @@ public class AuctionHistoryService implements IAuctionHistoryService {
                 .orElseThrow(() -> new ResourceNotFoundException("Không tìm thấy người dùng."));
         return auctionHistoryRepository.findByUsername(existingUser.getUsername());
     }
+
+    @Override
+    public List<AuctionHistory> getAuctionHistoryByDate(String date) {
+        return auctionHistoryRepository.findByDate(date);
+    }
+
+
 }

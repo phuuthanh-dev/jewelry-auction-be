@@ -11,7 +11,8 @@ import lombok.RequiredArgsConstructor;
 import vn.webapp.backend.auction.dto.ActivateAccountRequest;
 import vn.webapp.backend.auction.dto.AuthenticationRequest;
 import vn.webapp.backend.auction.dto.AuthenticationResponse;
-import vn.webapp.backend.auction.dto.RegisterRequest;
+import vn.webapp.backend.auction.dto.RegisterAccountRequest;
+import vn.webapp.backend.auction.dto.RegisterAccountRequest;
 import vn.webapp.backend.auction.enums.AccountState;
 import vn.webapp.backend.auction.exception.*;
 import vn.webapp.backend.auction.model.User;
@@ -65,7 +66,7 @@ public class AuthenticationService {
         }
     }
 
-    public void register(RegisterRequest request) throws MessagingException {
+    public void register(RegisterAccountRequest request) throws MessagingException {
         userRepository.findByUsername(request.username())
                 .ifPresent(user -> {
                     throw new UserAlreadyExistsException("Người dùng với username: " + request.username() + " đã tồn tại.");
@@ -91,6 +92,5 @@ public class AuthenticationService {
                 .build();
         userRepository.save(user);
         emailService.sendActivationEmail(request.email(), user.getFullName(), jwtService.generateToken(user));
-        return;
     }
 }

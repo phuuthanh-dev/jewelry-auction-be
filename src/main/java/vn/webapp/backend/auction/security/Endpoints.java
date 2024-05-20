@@ -5,7 +5,8 @@ public class Endpoints {
 
     public static final String[] PUBLIC_GET_ENDPOINTS = {
             "/api/v1/jewelry/**", "/api/v1/jewelry-category/**", "/api/v1/auction/**",
-            "/api/v1/aution-history/get-by-auction/**", "/api/v1/aution-history/get-by-username/**"
+            "/api/v1/aution-history/get-by-auction/**", "/api/v1/aution-history/get-by-username/**",
+            "/api/v1/aution-history/get-by-date/**"
     };
 
     public static final String[] PUBLIC_POST_ENDPOINTS = {
@@ -16,6 +17,10 @@ public class Endpoints {
     };
 
     public static final String[] MANAGER_PUT_ENDPOINTS = {
+            "/api/v1/jewelry/**", "/api/v1/jewelry-category/**", "/api/v1/auction/**"
+    };
+
+    public static final String[] MANAGER_POST_ENDPOINTS = {
             "/api/v1/jewelry/**", "/api/v1/jewelry-category/**", "/api/v1/auction/**"
     };
 
