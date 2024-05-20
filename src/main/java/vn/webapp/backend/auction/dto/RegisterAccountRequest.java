@@ -2,7 +2,7 @@ package vn.webapp.backend.auction.dto;
 
 import vn.webapp.backend.auction.model.Role;
 
-public record RegisterRequest(
+public record RegisterAccountRequest(
         String firstName,
         String lastName,
         String username,

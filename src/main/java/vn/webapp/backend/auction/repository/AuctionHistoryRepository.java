@@ -5,6 +5,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import vn.webapp.backend.auction.model.AuctionHistory;
 
+import java.sql.Date;
 import java.util.List;
 
 public interface AuctionHistoryRepository extends JpaRepository<AuctionHistory, Integer> {
@@ -14,4 +15,6 @@ public interface AuctionHistoryRepository extends JpaRepository<AuctionHistory, 
     @Query("SELECT ah FROM AuctionHistory ah WHERE ah.user.username = :username")
     List<AuctionHistory> findByUsername(@Param("username") String username);
 
+    @Query(value = "SELECT * FROM auction_history ah WHERE CAST(ah.time AS DATE) = :date", nativeQuery = true)
+    List<AuctionHistory> findByDate(@Param("date") String date);
 }

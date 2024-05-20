@@ -24,4 +24,19 @@ public class JewelryCategoryService implements IJewelryCategoryService {
         return jewelryCategoryRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Danh mục sản phẩm hiện không tồn tại"));
     }
+
+    @Override
+    public JewelryCategory saveJewelryCategory(JewelryCategory jewelryCategory) {
+        jewelryCategory.setId(0);
+        return jewelryCategoryRepository.save(jewelryCategory);
+    }
+
+    @Override
+    public void deleteJewelryCategory(Integer id) {
+            var existingBookCategory = jewelryCategoryRepository.findById(id)
+                    .orElseThrow(() -> new ResourceNotFoundException("Không tìm thấy danh mục trang sức để xóa"));
+            existingBookCategory.getJewelries()
+                    .forEach((book) -> book.setCategory(null));
+        jewelryCategoryRepository.deleteById(id);
+    }
 }

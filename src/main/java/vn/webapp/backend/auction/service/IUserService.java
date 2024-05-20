@@ -2,6 +2,7 @@ package vn.webapp.backend.auction.service;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import vn.webapp.backend.auction.dto.RegisterAccountRequest;
 import vn.webapp.backend.auction.enums.AccountState;
 import vn.webapp.backend.auction.model.Role;
 import vn.webapp.backend.auction.model.User;
@@ -14,5 +15,8 @@ public interface IUserService {
     User getUserByEmail(String email);
     List<User> getAll();
     List<User> getAllStaff();
+    User registerStaff(RegisterAccountRequest request);
     void setAccountState(Integer id, String state);
-}
+    Page<User> getMemberByFullNameContainingAndState(String fullName ,AccountState state, Pageable pageable);
+    Page<User> getStaffByFullNameContainingAndRoleAndState(String fullName, Integer roleId,AccountState state ,Pageable page);
+ }
