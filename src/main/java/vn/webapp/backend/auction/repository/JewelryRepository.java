@@ -12,4 +12,8 @@ import java.util.Optional;
 public interface JewelryRepository extends JpaRepository<Jewelry, Integer> {
     @Query("SELECT j FROM Jewelry j WHERE j.user.username = :username")
     List<Jewelry> findJewelryByUsername(@Param("username") String username);
+
+    List<Jewelry> findJewelryByCategoryId(Integer categoryId);
+
+    List<Jewelry> getJewelriesByNameContaining(String name);;
 }

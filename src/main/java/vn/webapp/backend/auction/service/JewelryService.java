@@ -42,4 +42,14 @@ public class JewelryService implements IJewelryService {
         Jewelry jewelry = getJewelryById(id);
         jewelryRepository.delete(jewelry);
     }
+
+    @Override
+    public List<Jewelry> getJeweriesByCategoryId(Integer id) {
+        return jewelryRepository.findJewelryByCategoryId(id);
+    }
+
+    @Override
+    public List<Jewelry> getJeweriesByNameContain(String key) {
+        return jewelryRepository.getJewelriesByNameContaining(key);
+    }
 }

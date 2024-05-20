@@ -9,4 +9,6 @@ public interface IJewelryService {
     Jewelry getJewelryById(Integer id);
     List<Jewelry> getJewelryByUsername(String username);
     void deleteJewelry(Integer id);
+    List<Jewelry> getJeweriesByCategoryId(Integer id);
+    List<Jewelry> getJeweriesByNameContain(String key);
 }

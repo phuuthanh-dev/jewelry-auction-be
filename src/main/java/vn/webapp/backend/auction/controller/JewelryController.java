@@ -21,6 +21,16 @@ public class JewelryController {
         return ResponseEntity.ok(jewelryService.getAll());
     }
 
+    @GetMapping("/get-by-category/{id}")
+    public ResponseEntity<List<Jewelry>> getByCategory(@PathVariable  Integer id)  {
+        return ResponseEntity.ok(jewelryService.getJeweriesByCategoryId(id));
+    }
+
+    @GetMapping("/get-by-name/{key}")
+    public ResponseEntity<List<Jewelry>> getByCategory(@PathVariable  String key)  {
+        return ResponseEntity.ok(jewelryService.getJeweriesByNameContain(key));
+    }
+
     @GetMapping("/id/{id}")
     public ResponseEntity<Jewelry> getJewelryById(@PathVariable Integer id) {
         return ResponseEntity.ok(jewelryService.getJewelryById(id));
@@ -32,7 +42,7 @@ public class JewelryController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteBook(@PathVariable Integer id) {
+    public ResponseEntity<Void> deleteJewelry(@PathVariable Integer id) {
         jewelryService.deleteJewelry(id);
         return ResponseEntity.noContent().build();
     }
