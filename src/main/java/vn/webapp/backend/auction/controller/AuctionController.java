@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.*;
 import vn.webapp.backend.auction.model.Auction;
 import vn.webapp.backend.auction.service.AuctionService;
 
+import java.sql.Timestamp;
 import java.util.List;
 
 @RestController
@@ -23,6 +24,11 @@ public class AuctionController {
     @GetMapping("/id/{id}")
     public ResponseEntity<Auction> getAuctionById(@PathVariable Integer id) {
         return ResponseEntity.ok(auctionService.getAuctionById(id));
+    }
+
+    @GetMapping("/by-day/{start}/{end}")
+    public ResponseEntity<List<Auction>> getAuctionById(@PathVariable Timestamp start, @PathVariable Timestamp end ) {
+        return ResponseEntity.ok(auctionService.findAuctionSortByBetweenStartdayAndEndday(start,end));
     }
 
     @DeleteMapping("/{id}")

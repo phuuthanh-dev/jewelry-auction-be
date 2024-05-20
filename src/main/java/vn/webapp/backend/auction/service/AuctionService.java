@@ -7,6 +7,7 @@ import vn.webapp.backend.auction.exception.ResourceNotFoundException;
 import vn.webapp.backend.auction.model.Auction;
 import vn.webapp.backend.auction.repository.AuctionRepository;
 
+import java.sql.Timestamp;
 import java.util.List;
 
 @Transactional
@@ -31,5 +32,10 @@ public class AuctionService implements IAuctionService{
     public void deleteAuction(Integer id) {
         Auction auction = getAuctionById(id);
         auctionRepository.delete(auction);
+    }
+
+    @Override
+    public List<Auction> findAuctionSortByBetweenStartdayAndEndday(Timestamp startDay, Timestamp endDay) {
+        return auctionRepository.findAuctionSortByBetweenStartdayAndEndday(startDay,endDay);
     }
 }
