@@ -14,4 +14,5 @@ public interface IUserService {
     User getUserByEmail(String email);
     List<User> getAll();
     List<User> getAllStaff();
+    void setAccountState(Integer id, String state);
 }

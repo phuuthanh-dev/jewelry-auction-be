@@ -11,24 +11,22 @@ import lombok.RequiredArgsConstructor;
 import vn.webapp.backend.auction.dto.ActivateAccountRequest;
 import vn.webapp.backend.auction.dto.AuthenticationRequest;
 import vn.webapp.backend.auction.dto.AuthenticationResponse;
+import vn.webapp.backend.auction.dto.RegisterRequest;
 import vn.webapp.backend.auction.enums.AccountState;
-import vn.webapp.backend.auction.exception.AccountDisabledException;
-import vn.webapp.backend.auction.exception.AccountInactiveException;
-import vn.webapp.backend.auction.exception.ExpiredTokenException;
-import vn.webapp.backend.auction.exception.ResourceNotFoundException;
+import vn.webapp.backend.auction.exception.*;
+import vn.webapp.backend.auction.model.User;
 import vn.webapp.backend.auction.repository.UserRepository;
 import vn.webapp.backend.auction.service.email.EmailService;
 
 
 @Service
-
 @RequiredArgsConstructor
 public class AuthenticationService {
     private final EmailService emailService;
     private final UserRepository userRepository;
     private final JwtService jwtService;
     private final AuthenticationManager authenticationManager;
-
+    private final PasswordEncoder passwordEncoder;
 
     public AuthenticationResponse authenticate(AuthenticationRequest request) throws MessagingException {
         var user = userRepository.findByUsername(request.username())
@@ -65,5 +63,34 @@ public class AuthenticationService {
             userRepository.save(user);
             return new AuthenticationResponse(request.token());
         }
+    }
+
+    public void register(RegisterRequest request) throws MessagingException {
+        userRepository.findByUsername(request.username())
+                .ifPresent(user -> {
+                    throw new UserAlreadyExistsException("Người dùng với username: " + request.username() + " đã tồn tại.");
+                });
+        userRepository.findByEmail(request.email())
+                .ifPresent(user -> {
+                    throw new UserAlreadyExistsException("Người dùng với email: " + request.email() + " đã tồn tại.");
+                });
+        var user = User.builder()
+                .firstName(request.firstName())
+                .lastName(request.lastName())
+                .email(request.email())
+                .username(request.username())
+                .password(passwordEncoder.encode(request.password()))
+                .address(request.address())
+                .province(request.province())
+                .city(request.city())
+                .phone(request.phone())
+                .yob(request.yob())
+                .role(request.role())
+                .CCCD(request.CCCD())
+                .state(AccountState.INACTIVE)
+                .build();
+        userRepository.save(user);
+        emailService.sendActivationEmail(request.email(), user.getFullName(), jwtService.generateToken(user));
+        return;
     }
 }
