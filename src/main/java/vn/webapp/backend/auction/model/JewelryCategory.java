@@ -12,8 +12,8 @@ import java.util.List;
 @Entity
 @Builder
 @Data
-@Table(name = "jewerly_category")
-public class JewerlyCategory {
+@Table(name = "jewelry_category")
+public class JewelryCategory {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;

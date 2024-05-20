@@ -2,7 +2,10 @@ package vn.webapp.backend.auction.service;
 
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import vn.webapp.backend.auction.enums.JewelryState;
 import vn.webapp.backend.auction.exception.ResourceNotFoundException;
 import vn.webapp.backend.auction.model.Jewelry;
 import vn.webapp.backend.auction.repository.JewelryRepository;
@@ -35,5 +38,27 @@ public class JewelryService implements IJewelryService {
             throw new ResourceNotFoundException("User '" + username + "' does not have any jewelry items.");
         }
         return jewelryList;
+    }
+
+    @Override
+    public void deleteJewelry(Integer id) {
+        var existingJewelry = jewelryRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Không tìm thấy trang sức để xóa"));
+        existingJewelry.setState(JewelryState.HIDDEN);
+    }
+
+    @Override
+    public List<Jewelry> getJeweriesByCategoryId(Integer id) {
+        return jewelryRepository.findJewelryByCategoryId(id);
+    }
+
+    @Override
+    public List<Jewelry> getJeweriesByNameContain(String key) {
+        return jewelryRepository.getJewelriesByNameContaining(key);
+    }
+
+    @Override
+    public Page<Jewelry> getAllJeweries(Pageable pageable) {
+        return jewelryRepository.findByState(JewelryState.ACTIVE, pageable);
     }
 }

@@ -9,7 +9,10 @@ import vn.webapp.backend.auction.enums.AuctionState;
 
 import java.sql.Date;
 import java.sql.Timestamp;
+import java.time.Duration;
+import java.time.Instant;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeParseException;
 import java.util.List;
 
 @Entity
@@ -33,8 +36,8 @@ public class Auction {
     @Column(name = "first_price", nullable = false)
     private double firstPrice;
 
-    @Column(name = "last_price", nullable = false)
-    private double lastPrice;
+    @Column(name = "last_price", nullable = true)
+    private Double lastPrice;
 
     @Column(name = "participation_fee", nullable = false)
     private double participationFee;
@@ -48,8 +51,14 @@ public class Auction {
     @Column(name = "start_date", nullable = false)
     private Timestamp startDate;
 
-    @Column(name = "countdown_time", nullable = false)
-    private Timestamp  countdownTime;
+    @Column(name = "end_date", nullable = false)
+    private Timestamp endDate;
+
+//    @Column(name = "countdown_time", nullable = false)
+//    private Timestamp countdownTime;
+
+    @Transient
+    private long countdownDuration;
 
     @ManyToOne(cascade = {
             CascadeType.PERSIST, CascadeType.DETACH,
@@ -67,4 +76,12 @@ public class Auction {
 
     @Enumerated(EnumType.STRING)
     private AuctionState state;
+
+    public long getCountdownDuration() {
+        if (startDate != null && endDate != null) {
+            Duration duration = Duration.between(startDate.toInstant(), endDate.toInstant());
+            return duration.toMillis();
+        }
+        return 0;
+    }
 }

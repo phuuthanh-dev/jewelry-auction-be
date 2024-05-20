@@ -60,8 +60,8 @@ public class User implements UserDetails {
     @NotBlank(message = "The province is required")
     private String province;
 
-    @Column(name = "year_of_birth", nullable = false, length = 30)
-    private int yob;
+    @Column(name = "year_of_birth", nullable = false, length = 4)
+    private String yob;
 
     @Column(name = "avatar", columnDefinition = "varchar(MAX)")
     @Lob
@@ -75,8 +75,8 @@ public class User implements UserDetails {
     @Column(name ="state" , nullable = false, length = 10)
     private AccountState state;
 
-    @Column(name = "activation_code", nullable = false, length = 50)
-    private String activationCode;
+//    @Column(name = "activation_code", nullable = false, length = 50)
+//    private String activationCode;
 
     @ManyToOne
     @JoinColumn(name = "role_id")

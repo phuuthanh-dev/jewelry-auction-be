@@ -34,8 +34,7 @@ public class Transaction {
     private Double feesIncurred;
 
     @Enumerated(EnumType.STRING)
-    private TransactionState status;
-
+    private TransactionState state;
 
     @ManyToOne(cascade = {
             CascadeType.PERSIST, CascadeType.DETACH,

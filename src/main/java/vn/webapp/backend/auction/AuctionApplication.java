@@ -12,4 +12,5 @@ public class AuctionApplication {
 		SpringApplication.run(AuctionApplication.class, args);
 	}
 
+	
 }

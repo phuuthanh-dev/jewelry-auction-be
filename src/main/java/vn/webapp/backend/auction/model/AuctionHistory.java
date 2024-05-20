@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 import vn.webapp.backend.auction.enums.AuctionState;
 
 import java.sql.Date;
+import java.sql.Timestamp;
 
 @Entity
 @Data
@@ -24,7 +25,7 @@ public class AuctionHistory {
     private double priceGiven;
 
     @Column(name = "time", nullable = false)
-    private Date time;
+    private Timestamp time;
 
     @ManyToOne(cascade = {
             CascadeType.PERSIST, CascadeType.DETACH,

@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.*;
 import vn.webapp.backend.auction.dto.ActivateAccountRequest;
 import vn.webapp.backend.auction.dto.AuthenticationRequest;
 import vn.webapp.backend.auction.dto.AuthenticationResponse;
+import vn.webapp.backend.auction.dto.RegisterRequest;
 import vn.webapp.backend.auction.service.AuthenticationService;
 
 @RestController
@@ -14,18 +15,26 @@ import vn.webapp.backend.auction.service.AuthenticationService;
 @RequiredArgsConstructor
 @CrossOrigin(origins = "http://localhost:3000")
 public class AuthenticationController {
+
     private final AuthenticationService authenticationService;
 
     @PostMapping("/authenticate")
-    public ResponseEntity<AuthenticationResponse> authenticate(
+    public ResponseEntity<AuthenticationResponse> authenticate (
             @RequestBody AuthenticationRequest request) throws MessagingException {
         return ResponseEntity.ok(authenticationService.authenticate(request));
     }
 
     @PostMapping("/activation")
-    public ResponseEntity<AuthenticationResponse> activateAccount(
+    public ResponseEntity<AuthenticationResponse> activateAccount (
             @RequestBody ActivateAccountRequest request) throws MessagingException {
         authenticationService.activateAccount(request);
         return ResponseEntity.ok(authenticationService.activateAccount(request));
+    }
+
+    @PostMapping("/register")
+    public ResponseEntity<String> register (
+            @RequestBody RegisterRequest request) throws MessagingException {
+        authenticationService.register(request);
+        return ResponseEntity.ok().build();
     }
 }

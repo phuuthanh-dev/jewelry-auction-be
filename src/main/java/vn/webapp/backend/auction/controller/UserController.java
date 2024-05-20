@@ -35,4 +35,10 @@ public class UserController {
     public ResponseEntity<List<User>> getAllStaff() {
         return ResponseEntity.ok(userService.getAllStaff());
     }
+
+    @PutMapping("/set-state/{id}")
+    public ResponseEntity<User> setState(@PathVariable Integer id, @RequestParam String state) {
+        userService.setAccountState(id, state);
+        return ResponseEntity.ok().build();
+    }
 }
