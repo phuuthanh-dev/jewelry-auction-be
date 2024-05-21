@@ -7,7 +7,8 @@ import org.springframework.web.bind.annotation.*;
 import vn.webapp.backend.auction.dto.ActivateAccountRequest;
 import vn.webapp.backend.auction.dto.AuthenticationRequest;
 import vn.webapp.backend.auction.dto.AuthenticationResponse;
-import vn.webapp.backend.auction.dto.RegisterRequest;
+import vn.webapp.backend.auction.dto.RegisterAccountRequest;
+import vn.webapp.backend.auction.dto.RegisterAccountRequest;
 import vn.webapp.backend.auction.service.AuthenticationService;
 
 @RestController
@@ -33,7 +34,7 @@ public class AuthenticationController {
 
     @PostMapping("/register")
     public ResponseEntity<String> register (
-            @RequestBody RegisterRequest request) throws MessagingException {
+            @RequestBody RegisterAccountRequest request) throws MessagingException {
         authenticationService.register(request);
         return ResponseEntity.ok().build();
     }

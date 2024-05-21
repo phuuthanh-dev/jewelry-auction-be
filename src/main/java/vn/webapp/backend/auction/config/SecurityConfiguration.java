@@ -29,6 +29,9 @@ public class SecurityConfiguration {
                 configurer->configurer
                         .requestMatchers(HttpMethod.GET, Endpoints.PUBLIC_GET_ENDPOINTS).permitAll()
                         .requestMatchers(HttpMethod.POST, Endpoints.PUBLIC_POST_ENDPOINTS).permitAll()
+                        .requestMatchers(HttpMethod.GET, Endpoints.MANAGER_GET_ENDPOINTS).hasAuthority("MANAGER")
+                        .requestMatchers(HttpMethod.POST, Endpoints.MANAGER_POST_ENDPOINTS).hasAuthority("MANAGER")
+                        .requestMatchers(HttpMethod.PUT, Endpoints.MANAGER_PUT_ENDPOINTS).hasAuthority("MANAGER")
                         .requestMatchers(HttpMethod.DELETE, Endpoints.MANAGER_DELETE_ENDPOINTS).hasAuthority("MANAGER")
                         .requestMatchers(HttpMethod.GET, Endpoints.ADMIN_GET_ENDPOINTS).hasAuthority("ADMIN")
                         .requestMatchers(HttpMethod.POST, Endpoints.ADMIN_POST_ENDPOINTS).hasAuthority("ADMIN")
@@ -39,7 +42,6 @@ public class SecurityConfiguration {
             .sessionManagement((session) -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
             .httpBasic(Customizer.withDefaults())
             .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
-
 
         http.authorizeHttpRequests(configurer -> configurer
                 .requestMatchers(
