@@ -6,7 +6,7 @@ public class Endpoints {
     public static final String[] PUBLIC_GET_ENDPOINTS = {
             "/api/v1/jewelry/**", "/api/v1/jewelry-category/**", "/api/v1/auction/**",
             "/api/v1/aution-history/get-by-auction/**", "/api/v1/aution-history/get-by-username/**",
-            "/api/v1/aution-history/get-by-date/**"
+            "/api/v1/aution-history/get-by-date/**", "/api/v1/image/**"
     };
 
     public static final String[] PUBLIC_POST_ENDPOINTS = {

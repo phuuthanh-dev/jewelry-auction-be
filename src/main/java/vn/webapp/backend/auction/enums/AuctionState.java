@@ -6,7 +6,7 @@ public enum AuctionState {
     WAITING("Đang chờ"),
     FINISHED("Đã kết thúc"),
     PAUSED("Tạm dừng"),
-    DELETED("ĐÃ XOÁ");
+    DELETED("Đã xóa");
 
     private String vietnameseName;
 

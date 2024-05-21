@@ -30,7 +30,7 @@ public class Auction {
     @Column(name = "name", nullable = false, columnDefinition = "nvarchar(50)")
     private String name;
 
-    @Column(name = "description", nullable = false, columnDefinition = "nvarchar(200)")
+    @Column(name = "description", nullable = false, columnDefinition = "nvarchar(MAX)")
     private String description;
 
     @Column(name = "first_price", nullable = false)

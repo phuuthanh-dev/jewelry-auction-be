@@ -15,4 +15,5 @@ public interface IAuctionService {
     List<Auction> findAuctionByName(String name);
     Page<Auction> getAllAuctions(Pageable pageable);
     void setAuctionState(Integer id, String state);
+    List<Auction> findTodayAuctions();
 }
