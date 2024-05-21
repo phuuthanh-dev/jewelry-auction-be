@@ -8,8 +8,6 @@ import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import vn.webapp.backend.auction.model.Auction;
-import vn.webapp.backend.auction.model.Jewelry;
-import vn.webapp.backend.auction.model.User;
 import vn.webapp.backend.auction.service.AuctionService;
 
 import java.sql.Timestamp;
@@ -44,12 +42,12 @@ public class AuctionController {
     }
 
     @GetMapping("/get-by-day/{start}/{end}")
-    public ResponseEntity<List<Auction>> getAuctionById(@PathVariable Timestamp start, @PathVariable Timestamp end ) {
+    public ResponseEntity<List<Auction>> getAuctionByDay(@PathVariable Timestamp start, @PathVariable Timestamp end ) {
         return ResponseEntity.ok(auctionService.findAuctionSortByBetweenStartdayAndEndday(start,end));
     }
 
     @GetMapping("/get-by-name/{key}")
-    public ResponseEntity<List<Auction>> getAuctionById(@PathVariable String key) {
+    public ResponseEntity<List<Auction>> getAuctionByName(@PathVariable String key) {
         return ResponseEntity.ok(auctionService.findAuctionByName(key));
     }
 
