@@ -1,5 +1,6 @@
 package vn.webapp.backend.auction.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
@@ -43,6 +44,9 @@ public class Jewelry {
     private JewelryState state;
 
     @OneToMany(mappedBy = "jewelry", cascade = CascadeType.ALL)
+    @EqualsAndHashCode.Exclude
+    @ToString.Exclude
+    @JsonIgnore
     private List<Image> images;
 
     @ManyToOne(cascade = {

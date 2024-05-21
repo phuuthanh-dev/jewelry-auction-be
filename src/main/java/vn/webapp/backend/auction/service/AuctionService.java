@@ -14,6 +14,9 @@ import vn.webapp.backend.auction.model.Jewelry;
 import vn.webapp.backend.auction.repository.AuctionRepository;
 
 import java.sql.Timestamp;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.List;
 
 @Transactional
@@ -60,5 +63,22 @@ public class AuctionService implements IAuctionService{
         var existingAuction = auctionRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Không tìm thấy phiên đấu giá."));
         existingAuction.setState(AuctionState.valueOf(state));
+    }
+
+    @Override
+    public List<Auction> findTodayAuctions() {
+        // Lấy ngày hiện tại
+        LocalDate today = LocalDate.now();
+
+        // Tính toán đầu và cuối ngày hiện tại
+        LocalDateTime startOfDay = today.atStartOfDay();
+        LocalDateTime endOfDay = today.atTime(LocalTime.MAX);
+
+        // Chuyển đổi LocalDateTime sang Timestamp
+        Timestamp startTimestamp = Timestamp.valueOf(startOfDay);
+        Timestamp endTimestamp = Timestamp.valueOf(endOfDay);
+
+        // Gọi phương thức repository
+        return auctionRepository.findAuctionSortByBetweenStartdayAndEndday(startTimestamp, endTimestamp);
     }
 }

@@ -51,6 +51,11 @@ public class AuctionController {
         return ResponseEntity.ok(auctionService.findAuctionByName(key));
     }
 
+    @GetMapping("/get-by-today")
+    public ResponseEntity<List<Auction>> getAuctionByName( ) {
+        return ResponseEntity.ok(auctionService.findTodayAuctions());
+    }
+
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteAuction(@PathVariable Integer id) {
         auctionService.deleteAuction(id);
