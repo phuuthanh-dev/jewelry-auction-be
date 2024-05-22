@@ -1,5 +1,6 @@
 package vn.webapp.backend.auction.model;
 
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -84,4 +85,5 @@ public class Auction {
         }
         return 0;
     }
+
 }
