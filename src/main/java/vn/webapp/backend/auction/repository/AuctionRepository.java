@@ -37,5 +37,5 @@ public interface AuctionRepository extends JpaRepository<Auction, Integer> {
     );
 
 
-
+    Page<Auction> findByStateIn(List<AuctionState> states, Pageable pageable);
 }

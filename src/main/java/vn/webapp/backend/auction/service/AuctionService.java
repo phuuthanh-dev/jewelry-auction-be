@@ -44,9 +44,19 @@ public class AuctionService implements IAuctionService{
     }
 
     @Override
-    public List<Auction> findAuctionSortByBetweenStartdayAndEndday(Timestamp startDay, Timestamp endDay) {
-        return auctionRepository.findAuctionSortByBetweenStartdayAndEndday(startDay,endDay);
+    public List<Auction> findAuctionSortByBetweenStartdayAndEndday(String startDay, String endDay) {
+        LocalDate localDate1 = LocalDate.parse(startDay);
+        LocalDate localDate2 = LocalDate.parse(endDay);
+
+        Timestamp timestampStartDate1 = Timestamp.valueOf(localDate1.atStartOfDay());
+
+        LocalDateTime endOfDay = LocalDateTime.of(localDate2, LocalTime.MAX);
+        Timestamp timestampEndDate2 = Timestamp.valueOf(endOfDay);
+
+
+        return auctionRepository.findAuctionSortByBetweenStartdayAndEndday(timestampStartDate1, timestampEndDate2);
     }
+
 
     @Override
     public List<Auction> findAuctionByName(String name) {
@@ -80,5 +90,10 @@ public class AuctionService implements IAuctionService{
 
         // Gọi phương thức repository
         return auctionRepository.findAuctionSortByBetweenStartdayAndEndday(startTimestamp, endTimestamp);
+    }
+
+    @Override
+    public Page<Auction> getAuctionsByStates(List<AuctionState> states, Pageable pageable) {
+        return auctionRepository.findByStateIn(states, pageable);
     }
 }

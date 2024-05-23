@@ -45,7 +45,7 @@ public class AuctionController {
     }
 
     @GetMapping("/get-by-day/{start}/{end}")
-    public ResponseEntity<List<Auction>> getAuctionByDay(@PathVariable Timestamp start, @PathVariable Timestamp end ) {
+    public ResponseEntity<List<Auction>> getAuctionByDay(@PathVariable String start, @PathVariable String end ) {
         return ResponseEntity.ok(auctionService.findAuctionSortByBetweenStartdayAndEndday(start,end));
     }
 
@@ -69,5 +69,22 @@ public class AuctionController {
     public ResponseEntity<Auction> setState(@PathVariable Integer id, @RequestParam String state) {
         auctionService.setAuctionState(id, state);
         return ResponseEntity.ok().build();
+    }
+
+//    @GetMapping("/get-by-states")
+//    public List<Page<Auction>> getAuctionsByState(@RequestParam List<AuctionState> states) {
+//        return auctionService.getAuctionsByState(states);
+//    }
+
+    @GetMapping("/get-by-states")
+    public ResponseEntity<Page<Auction>> getAllAuctionsSortedAndPaged(
+            @RequestParam(defaultValue = "id") String sortBy,
+            @RequestParam(defaultValue = "") List<AuctionState> states,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "5") int size,
+            @RequestParam(defaultValue = "asc") String sortOrder) {
+        Sort.Direction direction = (sortOrder.equalsIgnoreCase("asc")) ? Sort.Direction.ASC : Sort.Direction.DESC;
+        Pageable pageable = PageRequest.of(page, size, direction, sortBy);
+        return ResponseEntity.ok(auctionService.getAuctionsByStates(states, pageable));
     }
 }
