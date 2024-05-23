@@ -6,9 +6,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import vn.webapp.backend.auction.enums.AuctionState;
-import vn.webapp.backend.auction.enums.JewelryState;
 import vn.webapp.backend.auction.model.Auction;
-import vn.webapp.backend.auction.model.Jewelry;
 
 import java.sql.Timestamp;
 import java.util.List;
@@ -19,6 +17,25 @@ public interface AuctionRepository extends JpaRepository<Auction, Integer> {
 
     List<Auction> findAuctionByNameContaining(String auctionName);
 
+    //    Page<Auction> findByState(AuctionState auctionState, Pageable pageable, Integer categoryId);
+//    @Query("SELECT a FROM Auction a WHERE (a.state = :auctionState) " +
+//            "AND (:categoryId = 0 OR a.jewelry.category.id = :categoryId)")
+//    Page<Auction> findByStateAndCategory(
+//            @Param("auctionState") AuctionState auctionState,
+//            Pageable pageable,
+//            @Param("categoryId") Integer categoryId
+//    );
 
-    Page<Auction> findByStateNot(AuctionState auctionState, Pageable pageable);
+    @Query("SELECT a FROM Auction a WHERE " +
+            "((:auctionState = 'DELETED' AND a.state != 'DELETED') " +
+            "OR (:auctionState != '' AND a.state = :auctionState)) " +
+            "AND (:categoryId = 0 OR a.jewelry.category.id = :categoryId) " )
+    Page<Auction> findByStateAndCategoryNotDeletedOrEmptyState(
+            @Param("auctionState") AuctionState auctionState,
+            Pageable pageable,
+            @Param("categoryId") Integer categoryId
+    );
+
+
+
 }

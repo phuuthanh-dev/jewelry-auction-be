@@ -7,6 +7,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import vn.webapp.backend.auction.enums.AuctionState;
 import vn.webapp.backend.auction.model.Auction;
 import vn.webapp.backend.auction.service.AuctionService;
 
@@ -23,12 +24,14 @@ public class AuctionController {
     @GetMapping("/sorted-and-paged")
     public ResponseEntity<Page<Auction>> getAllAuctionsSortedAndPaged(
             @RequestParam(defaultValue = "id") String sortBy,
+            @RequestParam(defaultValue = "DELETED") AuctionState state,
+            @RequestParam(defaultValue = "0") Integer categoryId,
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "5") int size,
             @RequestParam(defaultValue = "asc") String sortOrder) {
         Sort.Direction direction = (sortOrder.equalsIgnoreCase("asc")) ? Sort.Direction.ASC : Sort.Direction.DESC;
         Pageable pageable = PageRequest.of(page, size, direction, sortBy);
-        return ResponseEntity.ok(auctionService.getAllAuctions(pageable));
+        return ResponseEntity.ok(auctionService.getAllAuctions(state, pageable, categoryId));
     }
 
     @GetMapping("/get-all")

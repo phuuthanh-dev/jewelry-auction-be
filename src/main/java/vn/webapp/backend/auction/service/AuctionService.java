@@ -54,8 +54,8 @@ public class AuctionService implements IAuctionService{
     }
 
     @Override
-    public Page<Auction> getAllAuctions(Pageable pageable) {
-        return auctionRepository.findByStateNot(AuctionState.DELETED, pageable);
+    public Page<Auction> getAllAuctions(AuctionState state, Pageable pageable, Integer categoryId) {
+        return auctionRepository.findByStateAndCategoryNotDeletedOrEmptyState(state, pageable, categoryId);
     }
 
     @Override
