@@ -14,6 +14,10 @@ public class Endpoints {
             "/api/v1/auth/**"
     };
 
+    public static final String[] PUBLIC_PUT_ENDPOINTS = {
+            "/api/v1/auction/set-state/**"
+    };
+
     public static final String[] MANAGER_GET_ENDPOINTS = {
     };
 

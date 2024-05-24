@@ -23,7 +23,7 @@ public class AuctionController {
 
     @GetMapping("/sorted-and-paged")
     public ResponseEntity<Page<Auction>> getAllAuctionsSortedAndPaged(
-            @RequestParam(defaultValue = "id") String sortBy,
+            @RequestParam(defaultValue = "startDate") String sortBy,
             @RequestParam(defaultValue = "DELETED") AuctionState state,
             @RequestParam(defaultValue = "0") Integer categoryId,
             @RequestParam(defaultValue = "0") int page,
