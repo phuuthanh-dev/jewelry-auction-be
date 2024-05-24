@@ -1,8 +1,13 @@
 package vn.webapp.backend.auction.controller;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import vn.webapp.backend.auction.enums.AuctionState;
 import vn.webapp.backend.auction.model.Auction;
 import vn.webapp.backend.auction.model.AuctionHistory;
 import vn.webapp.backend.auction.service.AuctionHistoryService;
@@ -18,14 +23,33 @@ public class AuctionHistoryController {
 
     private final AuctionHistoryService auctionHistoryService;
 
-    @GetMapping("/get-by-auction/{id}")
-    public ResponseEntity<List<AuctionHistory>> getAuctionHistoryByAuctionId(@PathVariable Integer id) {
-        return ResponseEntity.ok(auctionHistoryService.getAuctionHistoryByAuctionId(id));
+//    @GetMapping("/get-by-auction/{id}")
+//    public ResponseEntity<List<AuctionHistory>> getAuctionHistoryByAuctionId(@PathVariable Integer id) {
+//        return ResponseEntity.ok(auctionHistoryService.getAuctionHistoryByAuctionId(id));
+//    }
+
+    @GetMapping("/get-by-auction")
+    public ResponseEntity<Page<AuctionHistory>> getAuctionHistoryByAuctionId(
+            @RequestParam(defaultValue = "time") String sortBy,
+            @RequestParam(defaultValue = "0") Integer id,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "3") int size,
+            @RequestParam(defaultValue = "desc") String sortOrder) {
+        Sort.Direction direction = (sortOrder.equalsIgnoreCase("desc")) ? Sort.Direction.DESC : Sort.Direction.ASC;
+        Pageable pageable = PageRequest.of(page, size, direction, sortBy);
+        return ResponseEntity.ok(auctionHistoryService.getAuctionHistoryByAuctionId(pageable, id));
     }
 
-    @GetMapping("/get-by-username/{username}")
-    public ResponseEntity<List<AuctionHistory>> getAuctionHistoryByUsername(@PathVariable String username) {
-        return ResponseEntity.ok(auctionHistoryService.getAuctionHistoryByUsername(username));
+    @GetMapping("/get-by-username")
+    public ResponseEntity<Page<AuctionHistory>> getAuctionHistoryByUsername(
+            @RequestParam(defaultValue = "time") String sortBy,
+            @RequestParam(defaultValue = "0") String username,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "3") int size,
+            @RequestParam(defaultValue = "desc") String sortOrder) {
+        Sort.Direction direction = (sortOrder.equalsIgnoreCase("desc")) ? Sort.Direction.DESC : Sort.Direction.ASC;
+        Pageable pageable = PageRequest.of(page, size, direction, sortBy);
+        return ResponseEntity.ok(auctionHistoryService.getAuctionHistoryByUsername(pageable, username));
     }
 
     @GetMapping("/get-by-date/{date}")

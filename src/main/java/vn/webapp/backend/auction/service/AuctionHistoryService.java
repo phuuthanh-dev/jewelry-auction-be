@@ -2,6 +2,8 @@ package vn.webapp.backend.auction.service;
 
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import vn.webapp.backend.auction.exception.ResourceNotFoundException;
 import vn.webapp.backend.auction.model.AuctionHistory;
@@ -22,17 +24,17 @@ public class AuctionHistoryService implements IAuctionHistoryService {
     private final UserRepository userRepository;
 
     @Override
-    public List<AuctionHistory> getAuctionHistoryByAuctionId(Integer auctionId) {
+    public Page<AuctionHistory> getAuctionHistoryByAuctionId(Pageable pageable, Integer auctionId) {
         var existingAuction = auctionRepository.findById(auctionId)
                 .orElseThrow(() -> new ResourceNotFoundException("Không tìm thấy phiên đấu giá."));
-        return auctionHistoryRepository.findByAuctionId(existingAuction.getId());
+        return auctionHistoryRepository.findByAuctionId(pageable, existingAuction.getId());
     }
 
     @Override
-    public List<AuctionHistory> getAuctionHistoryByUsername(String username) {
+    public Page<AuctionHistory> getAuctionHistoryByUsername(Pageable pageable, String username) {
         var existingUser = userRepository.findByUsername(username)
                 .orElseThrow(() -> new ResourceNotFoundException("Không tìm thấy người dùng."));
-        return auctionHistoryRepository.findByUsername(existingUser.getUsername());
+        return auctionHistoryRepository.findByUsername(pageable, existingUser.getUsername());
     }
 
     @Override
