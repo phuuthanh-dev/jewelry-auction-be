@@ -44,6 +44,11 @@ public class AuctionService implements IAuctionService{
     }
 
     @Override
+    public List<Auction> findTop3AuctionsByPriceAndState(List<AuctionState> states) {
+        return auctionRepository.findTop3ByStateInOrderByFirstPriceDesc(states);
+    }
+
+    @Override
     public List<Auction> findAuctionSortByBetweenStartdayAndEndday(String startDay, String endDay) {
         LocalDate localDate1 = LocalDate.parse(startDay);
         LocalDate localDate2 = LocalDate.parse(endDay);
@@ -76,21 +81,26 @@ public class AuctionService implements IAuctionService{
     }
 
     @Override
-    public List<Auction> findTodayAuctions() {
-        // Lấy ngày hiện tại
-        LocalDate today = LocalDate.now();
-
-        // Tính toán đầu và cuối ngày hiện tại
-        LocalDateTime startOfDay = today.atStartOfDay();
-        LocalDateTime endOfDay = today.atTime(LocalTime.MAX);
-
-        // Chuyển đổi LocalDateTime sang Timestamp
-        Timestamp startTimestamp = Timestamp.valueOf(startOfDay);
-        Timestamp endTimestamp = Timestamp.valueOf(endOfDay);
-
-        // Gọi phương thức repository
-        return auctionRepository.findAuctionSortByBetweenStartdayAndEndday(startTimestamp, endTimestamp);
+    public List<Auction> getAuctionByState(AuctionState state) {
+        return auctionRepository.findByState(state);
     }
+
+//    @Override
+//    public List<Auction> findTodayAuctions() {
+//        // Lấy ngày hiện tại
+//        LocalDate today = LocalDate.now();
+//
+//        // Tính toán đầu và cuối ngày hiện tại
+//        LocalDateTime startOfDay = today.atStartOfDay();
+//        LocalDateTime endOfDay = today.atTime(LocalTime.MAX);
+//
+//        // Chuyển đổi LocalDateTime sang Timestamp
+//        Timestamp startTimestamp = Timestamp.valueOf(startOfDay);
+//        Timestamp endTimestamp = Timestamp.valueOf(endOfDay);
+//
+//        // Gọi phương thức repository
+//        return auctionRepository.findAuctionSortByBetweenStartdayAndEndday(startTimestamp, endTimestamp);
+//    }
 
     @Override
     public Page<Auction> getAuctionsByStates(List<AuctionState> states, Pageable pageable) {

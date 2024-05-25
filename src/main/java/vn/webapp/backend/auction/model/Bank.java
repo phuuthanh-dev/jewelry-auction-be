@@ -10,16 +10,19 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "role")
-public class Role {
+@Table(name = "bank")
+public class Bank {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @Column(name = "name", unique = true, nullable = false, columnDefinition = "varchar(10)")
-    private String name;
+    @Column(name = "bank_name", unique = true, nullable = false, columnDefinition = "nvarchar(100)")
+    private String bankName;
 
-    @OneToMany(mappedBy = "role")
+    @Column(name = "trading_name", unique = true, nullable = false, columnDefinition = "nvarchar(20)")
+    private String tradingName;
+
+    @OneToMany(mappedBy = "bank")
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
     @JsonIgnore

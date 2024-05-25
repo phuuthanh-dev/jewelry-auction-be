@@ -1,6 +1,6 @@
 package vn.webapp.backend.auction.dto;
 
-import vn.webapp.backend.auction.model.Role;
+import vn.webapp.backend.auction.enums.Role;
 
 public record RegisterAccountRequest(
         String firstName,
