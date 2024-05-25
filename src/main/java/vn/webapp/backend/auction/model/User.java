@@ -8,6 +8,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import vn.webapp.backend.auction.enums.AccountState;
+import vn.webapp.backend.auction.enums.Role;
 
 import java.util.Collection;
 import java.util.List;
@@ -75,13 +76,22 @@ public class User implements UserDetails {
     @Column(name ="state" , nullable = false, length = 10)
     private AccountState state;
 
-//    @Column(name = "activation_code", nullable = false, length = 50)
-//    private String activationCode;
-
     @ManyToOne
-    @JoinColumn(name = "role_id")
+    @JoinColumn(name = "bank_id")
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
+    private Bank bank;
+
+    @Column(name ="bank_account_number", nullable = true, length = 30)
+    private String bankAccountNumber;
+
+//    @ManyToOne
+//    @JoinColumn(name = "role_id")
+//    @EqualsAndHashCode.Exclude
+//    @ToString.Exclude
+//    private Role role;
+
+    @Enumerated(EnumType.STRING)
     private Role role;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
@@ -103,8 +113,7 @@ public class User implements UserDetails {
     @JsonIgnore
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of(new SimpleGrantedAuthority(role.getName()));
-//        return Collections.singletonList(new SimpleGrantedAuthority(role.getName()));
+        return List.of(new SimpleGrantedAuthority(role.name()));
     }
 
     @Override

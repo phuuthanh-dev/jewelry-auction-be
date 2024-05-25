@@ -12,10 +12,11 @@ public interface IAuctionService {
     List<Auction> getAll();
     Auction getAuctionById(Integer id);
     void deleteAuction(Integer id);
-    List<Auction> findAuctionSortByBetweenStartdayAndEndday(String startDay, String endDay);
     List<Auction> findAuctionByName(String name);
     Page<Auction> getAllAuctions(AuctionState state, Pageable pageable, Integer categoryId);
     void setAuctionState(Integer id, String state);
-    List<Auction> findTodayAuctions();
     Page<Auction> getAuctionsByStates(List<AuctionState> states, Pageable pageable);
+    List<Auction> getAuctionByState(AuctionState state);
+    List<Auction> findTop3AuctionsByPriceAndState(List<AuctionState> states);
+    List<Auction> findAuctionSortByBetweenStartdayAndEndday(String startDay, String endDay);
 }

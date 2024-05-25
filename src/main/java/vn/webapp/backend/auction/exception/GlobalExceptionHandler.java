@@ -24,7 +24,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(AccountInactiveException.class)
     public ResponseEntity<ErrorResponse> handleAccountInactiveException(AccountInactiveException ex) {
         ErrorResponse err = new ErrorResponse(HttpStatus.BAD_REQUEST.value(), ex.getMessage());
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(err);
+        return ResponseEntity.status(202).body(err);
     }
 
     @ExceptionHandler(UserAlreadyExistsException.class)
