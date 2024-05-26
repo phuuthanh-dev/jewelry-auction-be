@@ -22,6 +22,9 @@ public class Bank {
     @Column(name = "trading_name", unique = true, nullable = false, columnDefinition = "nvarchar(20)")
     private String tradingName;
 
+    @Column(name = "logo", nullable = false, columnDefinition = "nvarchar(MAX)")
+    private String logo;
+
     @OneToMany(mappedBy = "bank")
     @EqualsAndHashCode.Exclude
     @ToString.Exclude

@@ -17,7 +17,9 @@ import vn.webapp.backend.auction.dto.RegisterAccountRequest;
 import vn.webapp.backend.auction.dto.RegisterAccountRequest;
 import vn.webapp.backend.auction.enums.AccountState;
 import vn.webapp.backend.auction.exception.*;
+import vn.webapp.backend.auction.model.Bank;
 import vn.webapp.backend.auction.model.User;
+import vn.webapp.backend.auction.repository.BankRepository;
 import vn.webapp.backend.auction.repository.UserRepository;
 import vn.webapp.backend.auction.service.email.EmailService;
 
@@ -27,6 +29,7 @@ import vn.webapp.backend.auction.service.email.EmailService;
 public class AuthenticationService {
     private final EmailService emailService;
     private final UserRepository userRepository;
+    private final BankRepository bankRepository;
     private final JwtService jwtService;
     private final AuthenticationManager authenticationManager;
     private final PasswordEncoder passwordEncoder;
@@ -77,6 +80,7 @@ public class AuthenticationService {
                 .ifPresent(user -> {
                     throw new UserAlreadyExistsException("Người dùng với email: " + request.email() + " đã tồn tại.");
                 });
+        Bank bank = bankRepository.findById(request.bankId()).get();
         var user = User.builder()
                 .firstName(request.firstName())
                 .lastName(request.lastName())
@@ -91,6 +95,9 @@ public class AuthenticationService {
                 .role(request.role())
                 .CCCD(request.CCCD())
                 .state(AccountState.INACTIVE)
+                .bankAccountName(request.bankAccountName())
+                .bankAccountNumber(request.bankAccountNumber())
+                .bank(bank)
                 .build();
         userRepository.save(user);
         emailService.sendActivationEmail(request.email(), user.getFullName(), jwtService.generateToken(user));
