@@ -20,7 +20,6 @@ public class PaymentService {
         String auctionId = request.getParameter("auctionId");
         String username = request.getParameter("username");
         Map<String, String> vnpParamsMap = vnPayConfig.getVNPayConfig(auctionId, username);
-
         vnpParamsMap.put("vnp_Amount", String.valueOf(amount));
         if (bankCode != null && !bankCode.isEmpty()) {
             vnpParamsMap.put("vnp_BankCode", bankCode);

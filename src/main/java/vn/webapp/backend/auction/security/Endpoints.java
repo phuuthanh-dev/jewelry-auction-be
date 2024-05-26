@@ -7,7 +7,8 @@ public class Endpoints {
             "/api/v1/jewelry/**", "/api/v1/jewelry-category/**", "/api/v1/auction/**",
             "/api/v1/aution-history/get-by-auction/**", "/api/v1/aution-history/get-by-username/**",
             "/api/v1/aution-history/get-by-date/**", "/api/v1/image/**", "/api/v1/user/by-email/**",
-            "/api/v1/user/by-username/**", "/api/v1/bank/**", "api/v1/payment/vn-pay" , "api/v1/payment/vn-pay-callback/**"
+            "/api/v1/user/by-username/**", "/api/v1/bank/**", "api/v1/payment/vn-pay" ,
+            "api/v1/payment/vn-pay-callback/**", "/api/v1/auction-registration/**"
     };
 
     public static final String[] PUBLIC_POST_ENDPOINTS = {

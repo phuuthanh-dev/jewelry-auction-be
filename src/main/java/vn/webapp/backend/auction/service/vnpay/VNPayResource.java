@@ -5,9 +5,10 @@ import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
-import vn.webapp.backend.auction.service.AuctionHistoryService;
-import vn.webapp.backend.auction.service.PaymentService;
-import vn.webapp.backend.auction.service.TransactionService;
+import vn.webapp.backend.auction.enums.AccountState;
+import vn.webapp.backend.auction.model.AuctionRegistration;
+import vn.webapp.backend.auction.model.User;
+import vn.webapp.backend.auction.service.*;
 
 import java.io.IOException;
 
@@ -18,7 +19,7 @@ import java.io.IOException;
 public class VNPayResource {
 
     private final PaymentService paymentService;
-    private final AuctionHistoryService auctionHistoryService;
+    private final AuctionRegistrationService auctionRegistrationService;
     private final TransactionService transactionService;
 
     @GetMapping("/vn-pay")
@@ -26,19 +27,8 @@ public class VNPayResource {
         return new ResponseObject<>(HttpStatus.OK, "Success", paymentService.createVnPayPayment(request));
     }
 
-//    @GetMapping("/vn-pay-callback/auctionId/{id}")
-//    public ResponseObject<PaymentDTO.VNPayResponse> payCallbackHandler(HttpServletRequest request, @PathVariable("id") String id) {
-//        String status = request.getParameter("vnp_ResponseCode");
-//        String baseUrl = "http://localhost:3000";
-//        if (status.equals("00")) {
-//            return new ResponseObject<>(HttpStatus.OK, "Success", new PaymentDTO.VNPayResponse("00", "Success", baseUrl + "/single-auction/" + id));
-//        } else {
-//            return new ResponseObject<>(HttpStatus.BAD_REQUEST, "Failed", new PaymentDTO.VNPayResponse("99", "Failed", baseUrl + "/single-auction/" + id));
-//        }
-//    }
-
     @GetMapping("/vn-pay-callback")
-    public void payCallbackHandler(HttpServletRequest request, @RequestParam("username") String username, @RequestParam("auctionId") String auctionId, HttpServletResponse response) throws IOException {
+    public void payCallbackHandler(HttpServletRequest request, @RequestParam("username") String username, @RequestParam("auctionId") Integer auctionId, HttpServletResponse response) throws IOException {
         String status = request.getParameter("vnp_ResponseCode");
         String baseUrl = "http://localhost:3000/single-auction/";
         String redirectUrl = baseUrl + auctionId;
@@ -46,7 +36,7 @@ public class VNPayResource {
         if (!status.equals("00")) {
             redirectUrl += "?paymentStatus=failed";
         } else {
-
+            auctionRegistrationService.registerUserForAuction(username, auctionId);
             redirectUrl += "?paymentStatus=success";
         }
         response.sendRedirect(redirectUrl);
@@ -191,6 +181,17 @@ public class VNPayResource {
 //        String paymentUrl = Config.vnp_PayUrl + "?" + queryUrl;
 //
 //        return paymentUrl;
+//    }
+
+    //    @GetMapping("/vn-pay-callback/auctionId/{id}")
+//    public ResponseObject<PaymentDTO.VNPayResponse> payCallbackHandler(HttpServletRequest request, @PathVariable("id") String id) {
+//        String status = request.getParameter("vnp_ResponseCode");
+//        String baseUrl = "http://localhost:3000";
+//        if (status.equals("00")) {
+//            return new ResponseObject<>(HttpStatus.OK, "Success", new PaymentDTO.VNPayResponse("00", "Success", baseUrl + "/single-auction/" + id));
+//        } else {
+//            return new ResponseObject<>(HttpStatus.BAD_REQUEST, "Failed", new PaymentDTO.VNPayResponse("99", "Failed", baseUrl + "/single-auction/" + id));
+//        }
 //    }
 
 }
