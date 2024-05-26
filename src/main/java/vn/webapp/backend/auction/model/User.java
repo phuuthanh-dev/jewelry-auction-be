@@ -82,8 +82,11 @@ public class User implements UserDetails {
     @ToString.Exclude
     private Bank bank;
 
-    @Column(name ="bank_account_number", nullable = true, length = 30)
+    @Column(name ="bank_account_number", nullable = false, length = 30)
     private String bankAccountNumber;
+
+    @Column(name ="bank_account_name", nullable = false, length = 30)
+    private String bankAccountName;
 
 //    @ManyToOne
 //    @JoinColumn(name = "role_id")

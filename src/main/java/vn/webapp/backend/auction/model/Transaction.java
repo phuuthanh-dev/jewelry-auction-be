@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import vn.webapp.backend.auction.enums.PaymentMethod;
 import vn.webapp.backend.auction.enums.TransactionState;
 
 import java.sql.Timestamp;
@@ -57,10 +58,7 @@ public class Transaction {
     @JoinColumn(name = "user_id")
     private User user;
 
-    @ManyToOne(cascade = {
-            CascadeType.PERSIST, CascadeType.DETACH,
-            CascadeType.MERGE, CascadeType.REFRESH
-    })
-    @JoinColumn(name = "payment_id")
-    private Payment payment;
+    @Enumerated(EnumType.STRING)
+    @Column(name ="payment_method", nullable = false, length = 20)
+    private PaymentMethod paymentMethod;
 }
