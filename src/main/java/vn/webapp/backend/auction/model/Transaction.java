@@ -8,6 +8,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import vn.webapp.backend.auction.enums.PaymentMethod;
 import vn.webapp.backend.auction.enums.TransactionState;
+import vn.webapp.backend.auction.enums.TransactionType;
 
 import java.sql.Timestamp;
 
@@ -35,14 +36,12 @@ public class Transaction {
     private Double feesIncurred;
 
     @Enumerated(EnumType.STRING)
+    @Column(name = "transaction_state", nullable = false)
     private TransactionState state;
 
-    @ManyToOne(cascade = {
-            CascadeType.PERSIST, CascadeType.DETACH,
-            CascadeType.MERGE, CascadeType.REFRESH
-    })
-    @JoinColumn(name = "type_id")
-    private TypeTransaction type;
+    @Enumerated(EnumType.STRING)
+    @Column(name = "transaction_type", nullable = false)
+    private TransactionType type;
 
     @ManyToOne(cascade = {
             CascadeType.PERSIST, CascadeType.DETACH,
