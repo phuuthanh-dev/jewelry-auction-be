@@ -1,14 +1,13 @@
-package vn.webapp.backend.auction.service.vnpay;
+package vn.webapp.backend.auction.controller;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
-import vn.webapp.backend.auction.enums.AccountState;
-import vn.webapp.backend.auction.model.AuctionRegistration;
-import vn.webapp.backend.auction.model.User;
+import vn.webapp.backend.auction.dto.PaymentResponse;
 import vn.webapp.backend.auction.service.*;
+import vn.webapp.backend.auction.service.vnpay.ResponseObject;
 
 import java.io.IOException;
 
@@ -16,14 +15,14 @@ import java.io.IOException;
 @CrossOrigin(origins = "http://localhost:3000")
 @RequestMapping("api/v1/payment")
 @RequiredArgsConstructor
-public class VNPayResource {
+public class PaymentController {
 
     private final PaymentService paymentService;
     private final AuctionRegistrationService auctionRegistrationService;
     private final TransactionService transactionService;
 
     @GetMapping("/vn-pay")
-    public ResponseObject<PaymentDTO.VNPayResponse> pay(HttpServletRequest request) {
+    public ResponseObject<PaymentResponse.VNPayResponse> pay(HttpServletRequest request) {
         return new ResponseObject<>(HttpStatus.OK, "Success", paymentService.createVnPayPayment(request));
     }
 
@@ -32,7 +31,6 @@ public class VNPayResource {
         String status = request.getParameter("vnp_ResponseCode");
         String baseUrl = "http://localhost:3000/single-auction/";
         String redirectUrl = baseUrl + auctionId;
-        System.out.println(username + " " + auctionId);
         if (!status.equals("00")) {
             redirectUrl += "?paymentStatus=failed";
         } else {
@@ -41,7 +39,6 @@ public class VNPayResource {
         }
         response.sendRedirect(redirectUrl);
     }
-
 
 //    @GetMapping("pay-bill")
 //    public String payBill(@PathParam("price") long price,@PathParam("id") Integer billId) throws UnsupportedEncodingException{
