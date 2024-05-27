@@ -22,4 +22,6 @@ public interface JewelryService {
     Page<Jewelry> getAllJeweries(Pageable pageable);
 
     List<Jewelry> getJewelriesInWaitList();
+
+    List<Jewelry> getJewelriesInHandOver();
 }

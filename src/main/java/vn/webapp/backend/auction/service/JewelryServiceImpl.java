@@ -66,4 +66,9 @@ public class JewelryServiceImpl implements JewelryService {
     public List<Jewelry> getJewelriesInWaitList() {
         return jewelryRepository.findJewelryInWaitlist();
     }
+
+    @Override
+    public List<Jewelry> getJewelriesInHandOver() {
+        return jewelryRepository.findJewelryInHandOver();
+    }
 }

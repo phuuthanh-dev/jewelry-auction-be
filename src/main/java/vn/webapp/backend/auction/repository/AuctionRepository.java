@@ -42,6 +42,8 @@ public interface AuctionRepository extends JpaRepository<Auction, Integer> {
             @Param("categoryId") Integer categoryId
     );
 
+    @Query("SELECT a FROM Auction a WHERE a.user.id = :staff_id")
+    List<Auction> findByStaffID(@Param("staff_id") Integer staff_id);
 
     Page<Auction> findByStateIn(List<AuctionState> states, Pageable pageable);
 }
