@@ -68,5 +68,8 @@ public class Jewelry {
     private JewelryCategory category;
 
     @OneToMany(mappedBy = "jewelry", cascade = CascadeType.ALL)
+    @EqualsAndHashCode.Exclude
+    @ToString.Exclude
+    @JsonIgnore
     private List<RequestApproval> requestApprovals;
 }

@@ -28,6 +28,8 @@ public class RequestApproval {
             CascadeType.MERGE, CascadeType.REFRESH
     })
     @JoinColumn(name = "jewelry_id")
+    @EqualsAndHashCode.Exclude
+    @ToString.Exclude
     private Jewelry jewelry;
 
     @Column(name = "valuation", nullable = false)
