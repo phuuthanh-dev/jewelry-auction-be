@@ -4,7 +4,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import vn.webapp.backend.auction.config.VNPAYConfig;
-import vn.webapp.backend.auction.service.vnpay.PaymentDTO;
+import vn.webapp.backend.auction.dto.PaymentResponse;
 import vn.webapp.backend.auction.service.vnpay.VNPayUtil;
 
 import java.util.Map;
@@ -14,7 +14,7 @@ import java.util.Map;
 public class PaymentService {
     private final VNPAYConfig vnPayConfig;
 
-    public PaymentDTO.VNPayResponse createVnPayPayment(HttpServletRequest request) {
+    public PaymentResponse.VNPayResponse createVnPayPayment(HttpServletRequest request) {
         long amount = Integer.parseInt(request.getParameter("amount")) * 100L;
         String bankCode = request.getParameter("bankCode");
         String auctionId = request.getParameter("auctionId");
@@ -33,7 +33,7 @@ public class PaymentService {
         queryUrl += "&vnp_SecureHash=" + vnpSecureHash;
         String paymentUrl = vnPayConfig.getVnp_PayUrl() + "?" + queryUrl;
 
-        return PaymentDTO.VNPayResponse.builder()
+        return PaymentResponse.VNPayResponse.builder()
                 .code("ok")
                 .message("success")
                 .paymentUrl(paymentUrl).build();
