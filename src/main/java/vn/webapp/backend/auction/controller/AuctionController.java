@@ -7,9 +7,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import vn.webapp.backend.auction.enums.AuctionState;
 import vn.webapp.backend.auction.model.Auction;
-import vn.webapp.backend.auction.model.Jewelry;
-import vn.webapp.backend.auction.model.User;
 import vn.webapp.backend.auction.service.AuctionService;
 
 import java.sql.Timestamp;
@@ -24,13 +23,15 @@ public class AuctionController {
 
     @GetMapping("/sorted-and-paged")
     public ResponseEntity<Page<Auction>> getAllAuctionsSortedAndPaged(
-            @RequestParam(defaultValue = "id") String sortBy,
+            @RequestParam(defaultValue = "startDate") String sortBy,
+            @RequestParam(defaultValue = "DELETED") AuctionState state,
+            @RequestParam(defaultValue = "0") Integer categoryId,
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "5") int size,
             @RequestParam(defaultValue = "asc") String sortOrder) {
         Sort.Direction direction = (sortOrder.equalsIgnoreCase("asc")) ? Sort.Direction.ASC : Sort.Direction.DESC;
         Pageable pageable = PageRequest.of(page, size, direction, sortBy);
-        return ResponseEntity.ok(auctionService.getAllAuctions(pageable));
+        return ResponseEntity.ok(auctionService.getAllAuctions(state, pageable, categoryId));
     }
 
     @GetMapping("/get-all")
@@ -43,15 +44,21 @@ public class AuctionController {
         return ResponseEntity.ok(auctionService.getAuctionById(id));
     }
 
-    @GetMapping("/get-by-day/{start}/{end}")
-    public ResponseEntity<List<Auction>> getAuctionById(@PathVariable Timestamp start, @PathVariable Timestamp end ) {
-        return ResponseEntity.ok(auctionService.findAuctionSortByBetweenStartdayAndEndday(start,end));
+    @GetMapping("/get-top-3-price")
+    public ResponseEntity<List<Auction>> getTop3Auction(@RequestParam List<AuctionState> state) {
+        List<Auction> top3Auctions = auctionService.findTop3AuctionsByPriceAndState(state);
+        return ResponseEntity.ok(top3Auctions);
     }
 
     @GetMapping("/get-by-name/{key}")
-    public ResponseEntity<List<Auction>> getAuctionById(@PathVariable String key) {
+    public ResponseEntity<List<Auction>> getAuctionByName(@PathVariable String key) {
         return ResponseEntity.ok(auctionService.findAuctionByName(key));
     }
+
+//    @GetMapping("/get-by-today")
+//    public ResponseEntity<List<Auction>> getAuctionByToday( ) {
+//        return ResponseEntity.ok(auctionService.findTodayAuctions());
+//    }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteAuction(@PathVariable Integer id) {
@@ -63,5 +70,22 @@ public class AuctionController {
     public ResponseEntity<Auction> setState(@PathVariable Integer id, @RequestParam String state) {
         auctionService.setAuctionState(id, state);
         return ResponseEntity.ok().build();
+    }
+
+    @GetMapping("/get-by-state")
+    public List<Auction> getAuctionsByState(@RequestParam AuctionState state) {
+        return auctionService.getAuctionByState(state);
+    }
+
+    @GetMapping("/get-by-states")
+    public ResponseEntity<Page<Auction>> getAllAuctionsSortedAndPaged(
+            @RequestParam(defaultValue = "id") String sortBy,
+            @RequestParam(defaultValue = "") List<AuctionState> states,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "5") int size,
+            @RequestParam(defaultValue = "asc") String sortOrder) {
+        Sort.Direction direction = (sortOrder.equalsIgnoreCase("asc")) ? Sort.Direction.ASC : Sort.Direction.DESC;
+        Pageable pageable = PageRequest.of(page, size, direction, sortBy);
+        return ResponseEntity.ok(auctionService.getAuctionsByStates(states, pageable));
     }
 }
