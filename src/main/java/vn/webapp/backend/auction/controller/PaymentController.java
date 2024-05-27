@@ -31,7 +31,6 @@ public class PaymentController {
         String status = request.getParameter("vnp_ResponseCode");
         String baseUrl = "http://localhost:3000/single-auction/";
         String redirectUrl = baseUrl + auctionId;
-        System.out.println(username + " " + auctionId);
         if (!status.equals("00")) {
             redirectUrl += "?paymentStatus=failed";
         } else {
