@@ -1,8 +1,8 @@
-package vn.webapp.backend.auction.service.vnpay;
+package vn.webapp.backend.auction.dto;
 
 import lombok.Builder;
 
-public abstract class PaymentDTO {
+public abstract class PaymentResponse {
     @Builder
     public static class VNPayResponse {
         public String code;
