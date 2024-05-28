@@ -101,6 +101,12 @@ public class User implements UserDetails {
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
     @JsonIgnore
+    private List<Token> tokens;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    @EqualsAndHashCode.Exclude
+    @ToString.Exclude
+    @JsonIgnore
     private List<Jewelry> jewelries;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
