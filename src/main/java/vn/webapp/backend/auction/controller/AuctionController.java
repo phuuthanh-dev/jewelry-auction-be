@@ -34,6 +34,13 @@ public class AuctionController {
         return ResponseEntity.ok(auctionService.getAllAuctions(state, pageable, categoryId));
     }
 
+    @GetMapping("/get-by-day/{startDate}/{endDate}")
+    public ResponseEntity<List<Auction>> getAllAuctionsSortedAndPaged(
+            @PathVariable String startDate,
+            @PathVariable String endDate) {
+        return ResponseEntity.ok(auctionService.findAuctionSortByBetweenStartdayAndEndday(startDate, endDate));
+    }
+
     @GetMapping("/get-all")
     public ResponseEntity<List<Auction>> getAll() {
         return ResponseEntity.ok(auctionService.getAll());
