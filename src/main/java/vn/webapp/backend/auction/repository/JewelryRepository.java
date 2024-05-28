@@ -21,4 +21,10 @@ public interface JewelryRepository extends JpaRepository<Jewelry, Integer> {
     List<Jewelry> getJewelriesByNameContaining(String name);
 
     Page<Jewelry> findByState(JewelryState jewelryState, Pageable pageable);
+
+    @Query("SELECT j FROM Jewelry j INNER JOIN RequestApproval r ON j.id = r.jewelry.id WHERE r.managerConfirm = false")
+    List<Jewelry> findJewelryInWaitlist();
+
+    @Query("SELECT j FROM Jewelry j INNER JOIN Auction a ON j.id = a.jewelry.id WHERE a.state = FINISHED")
+    List<Jewelry> findJewelryInHandOver();
 }
