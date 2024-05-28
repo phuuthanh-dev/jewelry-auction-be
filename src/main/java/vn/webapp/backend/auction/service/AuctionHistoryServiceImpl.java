@@ -42,5 +42,10 @@ public class AuctionHistoryServiceImpl implements AuctionHistoryService {
         return auctionHistoryRepository.findByDate(date);
     }
 
+    @Override
+    public List<AuctionHistory> getAuctionHistoryByAuctionIdWhenFinished(Integer id) {
+        return auctionHistoryRepository.findByAuctionIdWhenFinished(id);
+    }
+
 
 }

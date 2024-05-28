@@ -20,4 +20,6 @@ public interface AuctionService {
     List<Auction> findTop3AuctionsByPriceAndState(List<AuctionState> states);
     List<Auction> findAuctionSortByBetweenStartdayAndEndday(String startDay, String endDay);
     List<Auction> getByStaffID(Integer id);
+    List<Auction> getAuctionByJewelryId(Integer id);
+
 }

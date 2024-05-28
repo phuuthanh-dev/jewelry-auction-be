@@ -3,6 +3,7 @@ package vn.webapp.backend.auction.service;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import vn.webapp.backend.auction.enums.AccountState;
@@ -65,6 +66,11 @@ public class AuctionServiceImpl implements AuctionService{
     @Override
     public List<Auction> getByStaffID(Integer id) {
         return auctionRepository.findByStaffID(id);
+    }
+
+    @Override
+    public List<Auction> getAuctionByJewelryId(Integer id) {
+        return auctionRepository.findAuctionByJewelryId(id);
     }
 
 
