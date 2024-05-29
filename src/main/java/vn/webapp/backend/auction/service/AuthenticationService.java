@@ -29,6 +29,7 @@ import vn.webapp.backend.auction.repository.UserRepository;
 import vn.webapp.backend.auction.service.email.EmailService;
 
 import java.io.IOException;
+import java.time.LocalDateTime;
 
 
 @Service
@@ -42,7 +43,7 @@ public class AuthenticationService {
     private final PasswordEncoder passwordEncoder;
     private final TokenRepository tokenRepository;
 
-    public AuthenticationResponse authenticate(AuthenticationRequest request) throws MessagingException {
+    public AuthenticationResponse authenticate(AuthenticationRequest request, HttpServletRequest httpServletRequest) throws MessagingException {
         var user = userRepository.findByUsername(request.username())
                 .orElseThrow(() -> new ResourceNotFoundException(
                         "Người dùng với username: " + request.username()
@@ -58,10 +59,14 @@ public class AuthenticationService {
                     new UsernamePasswordAuthenticationToken(
                             request.username(),
                             request.password()));
+
+            String ipAddress = httpServletRequest.getRemoteAddr();
+            String deviceInfo = httpServletRequest.getHeader("User-Agent");
+
             var jwtToken = jwtService.generateToken(user);
             var refreshToken = jwtService.generateRefreshToken(user);
             revokeAllUserTokens(user);
-            saveUserToken(user, jwtToken);
+            saveUserToken(user, jwtToken, ipAddress, deviceInfo);
             return AuthenticationResponse.builder()
                     .accessToken(jwtToken)
                     .refreshToken(refreshToken)
@@ -70,13 +75,16 @@ public class AuthenticationService {
         return null;
     }
 
-    private void saveUserToken(User user, String jwtToken) {
+    private void saveUserToken(User user, String jwtToken, String ipAddress, String deviceInfo) {
         var token = Token.builder()
                 .user(user)
                 .token(jwtToken)
                 .tokenType(TokenType.BEARER)
                 .expired(false)
                 .revoked(false)
+                .createdTime(LocalDateTime.now())
+                .ipAddress(ipAddress)
+                .deviceInfo(deviceInfo)
                 .build();
         tokenRepository.save(token);
     }
@@ -95,7 +103,7 @@ public class AuthenticationService {
         }
     }
 
-    public AuthenticationResponse register(RegisterAccountRequest request) throws MessagingException {
+    public AuthenticationResponse register(RegisterAccountRequest request, HttpServletRequest httpServletRequest) throws MessagingException {
         userRepository.findByUsername(request.username())
                 .ifPresent(user -> {
                     throw new UserAlreadyExistsException("Người dùng với username: " + request.username() + " đã tồn tại.");
@@ -126,7 +134,12 @@ public class AuthenticationService {
         var savedUser = userRepository.save(user);
         var jwtToken = jwtService.generateToken(user);
         var refreshToken = jwtService.generateRefreshToken(user);
-        saveUserToken(savedUser, jwtToken);
+
+
+        String ipAddress = httpServletRequest.getRemoteAddr();
+        String deviceInfo = httpServletRequest.getHeader("User-Agent");
+
+        saveUserToken(savedUser, jwtToken,ipAddress, deviceInfo);
         emailService.sendActivationEmail(request.email(), user.getFullName(), jwtToken);
         return AuthenticationResponse.builder()
                 .accessToken(jwtToken)
@@ -161,9 +174,15 @@ public class AuthenticationService {
             var user = userRepository.findByUsername(username)
                     .orElseThrow();
             if (jwtService.isTokenValid(refreshToken, user)) {
-                var accessToken = jwtService.generateToken(user);
                 revokeAllUserTokens(user);
-                saveUserToken(user, accessToken);
+
+                var accessToken = jwtService.generateToken(user);
+
+
+                String ipAddress = request.getRemoteAddr();
+                String deviceInfo = request.getHeader("User-Agent");
+
+                saveUserToken(user, accessToken, ipAddress, deviceInfo);
                 var authResponse = AuthenticationResponse.builder()
                         .accessToken(accessToken)
                         .refreshToken(refreshToken)
@@ -192,7 +211,12 @@ public class AuthenticationService {
                 var accessToken = jwtService.generateToken(user);
                 refreshToken = jwtService.generateToken(user);
                 revokeAllUserTokens(user);
-                saveUserToken(user, accessToken);
+
+
+                String ipAddress = request.getRemoteAddr();
+                String deviceInfo = request.getHeader("User-Agent");
+
+                saveUserToken(user, accessToken, ipAddress, deviceInfo);
                 var authResponse = AuthenticationResponse.builder()
                         .accessToken(accessToken)
                         .refreshToken(refreshToken)

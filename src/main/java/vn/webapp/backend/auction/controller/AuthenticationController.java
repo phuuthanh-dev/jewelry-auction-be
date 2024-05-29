@@ -22,8 +22,8 @@ public class AuthenticationController {
 
     @PostMapping("/authenticate")
     public ResponseEntity<AuthenticationResponse> authenticate(
-            @RequestBody AuthenticationRequest request) throws MessagingException {
-        return ResponseEntity.ok(authenticationService.authenticate(request));
+            @RequestBody AuthenticationRequest request, HttpServletRequest httpServletRequest) throws MessagingException {
+        return ResponseEntity.ok(authenticationService.authenticate(request, httpServletRequest));
     }
 
     @PostMapping("/activation")
@@ -35,8 +35,8 @@ public class AuthenticationController {
 
     @PostMapping("/register")
     public ResponseEntity<AuthenticationResponse> register(
-            @RequestBody RegisterAccountRequest request) throws MessagingException {
-        return ResponseEntity.ok(authenticationService.register(request));
+            @RequestBody RegisterAccountRequest request, HttpServletRequest httpServletRequest) throws MessagingException {
+        return ResponseEntity.ok(authenticationService.register(request, httpServletRequest));
     }
 
     @PostMapping("/refresh-token")
