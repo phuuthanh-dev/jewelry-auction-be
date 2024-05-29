@@ -97,6 +97,12 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public User getLatestUserInAuctionHistoryByAuctionId(Integer auctionId) {
+        return userRepository.findLatestUserInAuctionHistoryByAuctionId(auctionId)
+                .orElseThrow(() -> new ResourceNotFoundException("Người dùng tương ứng không tồn tại"));
+    }
+
+    @Override
     public User registerStaff(RegisterAccountRequest request) {
         userRepository.findByUsername(request.username())
                 .ifPresent(existingUser -> {

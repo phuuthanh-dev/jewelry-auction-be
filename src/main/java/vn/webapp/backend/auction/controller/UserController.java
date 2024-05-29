@@ -79,4 +79,9 @@ public class UserController {
     public ResponseEntity<User> updateProfileUser(@RequestBody User user) {
         return ResponseEntity.ok(userService.updateUser(user));
     }
+
+    @GetMapping("/get-winner-auction/{auctionId}")
+    public ResponseEntity<User> getLatestUserInAuctionHistoryByAuctionId(@PathVariable Integer auctionId) {
+        return ResponseEntity.ok(userService.getLatestUserInAuctionHistoryByAuctionId(auctionId));
+    }
 }

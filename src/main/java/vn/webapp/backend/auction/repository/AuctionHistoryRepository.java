@@ -23,4 +23,5 @@ public interface AuctionHistoryRepository extends JpaRepository<AuctionHistory, 
     @Query("SELECT ah FROM AuctionHistory ah WHERE ah.auction.id = :id")
     List<AuctionHistory> findByAuctionIdWhenFinished(@Param("id") Integer id);
 
+
 }
