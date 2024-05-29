@@ -46,11 +46,4 @@ public class AuthenticationController {
     ) throws IOException {
         authenticationService.refreshToken(request, response);
     }
-
-    @PostMapping("/rotate-refresh-token")
-    public void rotateRefreshToken(HttpServletRequest request,
-                                   HttpServletResponse response
-    ) throws IOException {
-        authenticationService.rotateRefreshToken(request, response);
-    }
 }
