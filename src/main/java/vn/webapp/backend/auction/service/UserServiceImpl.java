@@ -12,6 +12,7 @@ import vn.webapp.backend.auction.enums.Role;
 import vn.webapp.backend.auction.exception.ResourceNotFoundException;
 import vn.webapp.backend.auction.exception.UserAlreadyExistsException;
 import vn.webapp.backend.auction.model.User;
+import vn.webapp.backend.auction.repository.AuctionRegistrationRepository;
 import vn.webapp.backend.auction.repository.UserRepository;
 
 import java.util.List;
@@ -22,6 +23,7 @@ import java.util.List;
 public class UserServiceImpl implements UserService {
     private final PasswordEncoder passwordEncoder;
     private final UserRepository userRepository;
+    private final AuctionRegistrationRepository auctionRegistrationRepository;
 
     @Override
     public User getUserByUsername(String username) {

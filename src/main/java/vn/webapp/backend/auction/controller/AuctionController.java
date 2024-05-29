@@ -34,6 +34,13 @@ public class AuctionController {
         return ResponseEntity.ok(auctionService.getAllAuctions(state, pageable, categoryId));
     }
 
+    @GetMapping("/get-by-day/{startDate}/{endDate}")
+    public ResponseEntity<List<Auction>> getAllAuctionsSortedAndPaged(
+            @PathVariable String startDate,
+            @PathVariable String endDate) {
+        return ResponseEntity.ok(auctionService.findAuctionSortByBetweenStartdayAndEndday(startDate, endDate));
+    }
+
     @GetMapping("/get-all")
     public ResponseEntity<List<Auction>> getAll() {
         return ResponseEntity.ok(auctionService.getAll());
@@ -87,5 +94,10 @@ public class AuctionController {
         Sort.Direction direction = (sortOrder.equalsIgnoreCase("asc")) ? Sort.Direction.ASC : Sort.Direction.DESC;
         Pageable pageable = PageRequest.of(page, size, direction, sortBy);
         return ResponseEntity.ok(auctionService.getAuctionsByStates(states, pageable));
+    }
+
+    @GetMapping("/get-by-staff-id/{id}")
+    public ResponseEntity<List<Auction>> getAuctionByStaffId(@PathVariable Integer id) {
+        return ResponseEntity.ok(auctionService.getByStaffID(id));
     }
 }

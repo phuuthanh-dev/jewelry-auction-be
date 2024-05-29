@@ -3,6 +3,8 @@ package vn.webapp.backend.auction.model;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.sql.Timestamp;
+
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
@@ -28,10 +30,18 @@ public class RequestApproval {
             CascadeType.MERGE, CascadeType.REFRESH
     })
     @JoinColumn(name = "jewelry_id")
+    @EqualsAndHashCode.Exclude
+    @ToString.Exclude
     private Jewelry jewelry;
 
     @Column(name = "valuation", nullable = false)
     private double valuation;
+
+    @Column(name = "desired_price", nullable = false)
+    private double desiredPrice;
+
+    @Column(name = "request_time", nullable = false)
+    private Timestamp requestTime;
 
     @Column(name = "manager_confirm", nullable = false)
     private boolean managerConfirm;

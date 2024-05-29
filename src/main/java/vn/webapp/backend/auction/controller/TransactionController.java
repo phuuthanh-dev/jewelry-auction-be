@@ -14,6 +14,7 @@ import java.util.List;
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/transaction")
 public class TransactionController {
+
     private final TransactionService transactionService;
 
     @GetMapping("/get-all")
@@ -29,11 +30,6 @@ public class TransactionController {
     @GetMapping("/get-by-user-name/{username}")
     public ResponseEntity<List<Transaction>> getTransactionByUsername(@PathVariable String username) {
         return ResponseEntity.ok(transactionService.getTransactionsByUsername(username));
-    }
-
-    @GetMapping("/get-by-user-type/{type}")
-    public ResponseEntity<List<Transaction>> getTransactionByType(@PathVariable String type) {
-        return ResponseEntity.ok(transactionService.getTransactionByType(type));
     }
 
     @PutMapping("/set-state/{id}")
