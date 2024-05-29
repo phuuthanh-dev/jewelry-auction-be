@@ -2,7 +2,10 @@ package vn.webapp.backend.auction.model;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.CreationTimestamp;
 import vn.webapp.backend.auction.enums.TokenType;
+
+import java.time.LocalDateTime;
 
 @Data
 @Builder
@@ -18,6 +21,9 @@ public class Token {
     @Column(unique = true)
     public String token;
 
+    @Column(unique = true)
+    public String refreshToken;
+
     @Enumerated(EnumType.STRING)
     public TokenType tokenType = TokenType.BEARER;
 
@@ -30,4 +36,11 @@ public class Token {
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
     public User user;
+
+    @CreationTimestamp
+    public LocalDateTime createdTime;
+
+    public String ipAddress;
+
+    public String deviceInfo;
 }
