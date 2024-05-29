@@ -63,4 +63,14 @@ public class JewelryController {
         return ResponseEntity.noContent().build();
     }
 
+    @GetMapping("/in-wait-list")
+    public ResponseEntity<List<Jewelry>> getJewelryInWaitlist() {
+        return ResponseEntity.ok(jewelryService.getJewelriesInWaitList());
+    }
+
+    @GetMapping("/in-handover-list")
+    public ResponseEntity<List<Jewelry>> getJewelryInHandOver() {
+        return ResponseEntity.ok(jewelryService.getJewelriesInHandOver());
+    }
+
 }

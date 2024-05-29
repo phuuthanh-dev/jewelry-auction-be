@@ -95,4 +95,9 @@ public class AuctionController {
         Pageable pageable = PageRequest.of(page, size, direction, sortBy);
         return ResponseEntity.ok(auctionService.getAuctionsByStates(states, pageable));
     }
+
+    @GetMapping("/get-by-staff-id/{id}")
+    public ResponseEntity<List<Auction>> getAuctionByStaffId(@PathVariable Integer id) {
+        return ResponseEntity.ok(auctionService.getByStaffID(id));
+    }
 }

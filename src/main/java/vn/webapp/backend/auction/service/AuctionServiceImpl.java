@@ -62,6 +62,11 @@ public class AuctionServiceImpl implements AuctionService{
         return auctionRepository.findAuctionSortByBetweenStartdayAndEndday(timestampStartDate1, timestampEndDate2);
     }
 
+    @Override
+    public List<Auction> getByStaffID(Integer id) {
+        return auctionRepository.findByStaffID(id);
+    }
+
 
     @Override
     public List<Auction> findAuctionByName(String name) {
