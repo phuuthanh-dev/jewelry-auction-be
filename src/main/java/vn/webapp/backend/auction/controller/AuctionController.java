@@ -100,4 +100,9 @@ public class AuctionController {
     public ResponseEntity<List<Auction>> getAuctionByStaffId(@PathVariable Integer id) {
         return ResponseEntity.ok(auctionService.getByStaffID(id));
     }
+
+    @GetMapping("/get-by-jewelry/{id}")
+    public ResponseEntity<List<Auction>> getAuctionByJewelryId(@PathVariable Integer id) {
+        return ResponseEntity.ok(auctionService.getAuctionByJewelryId(id));
+    }
 }

@@ -20,6 +20,10 @@ public interface AuctionHistoryRepository extends JpaRepository<AuctionHistory, 
     @Query(value = "SELECT * FROM auction_history ah WHERE CAST(ah.time AS DATE) = :date", nativeQuery = true)
     List<AuctionHistory> findByDate(@Param("date") String date);
 
-    @Query("SELECT COUNT(t) FROM AuctionHistory t WHERE t.user.username = :username")
-    Integer getTotalBidByUsername(@Param("username") String username);
+
+    @Query("SELECT ah FROM AuctionHistory ah WHERE ah.auction.id = :id")
+    List<AuctionHistory> findByAuctionIdWhenFinished(@Param("id") Integer id);
+
+
+
 }

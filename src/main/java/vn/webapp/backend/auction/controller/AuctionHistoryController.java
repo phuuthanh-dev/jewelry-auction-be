@@ -58,6 +58,11 @@ public class AuctionHistoryController {
         return ResponseEntity.ok(auctionHistoryService.getAuctionHistoryByDate(date));
     }
 
+
+    @GetMapping("/get-when-auction-finished/{id}")
+    public ResponseEntity<List<AuctionHistory>> getAuctionHistoryByAuctionIdWhenFinished(@PathVariable Integer id) {  //2024-12-10
+        return ResponseEntity.ok(auctionHistoryService.getAuctionHistoryByAuctionIdWhenFinished(id));
+    }
     @PostMapping
     public ResponseEntity<?> saveBidByUserAndAuction(@RequestBody BidRequest request) {
         auctionHistoryService.saveBidByUserAndAuction(request);

@@ -20,4 +20,5 @@ public interface UserService {
     User updateUser(User user);
     Page<User> getMemberByFullNameContainingAndState(String fullName ,AccountState state, Pageable pageable);
     Page<User> getStaffByFullNameContainingAndRoleAndState(String fullName, Role role, AccountState state , Pageable page);
+    User getLatestUserInAuctionHistoryByAuctionId(Integer auctionId);
  }

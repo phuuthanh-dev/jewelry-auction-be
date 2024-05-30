@@ -12,5 +12,6 @@ public interface AuctionHistoryService {
     Page<AuctionHistory> getAuctionHistoryByAuctionId(Pageable pageable, Integer auctionId);
     Page<AuctionHistory> getAuctionHistoryByUsername(Pageable pageable, String username);
     List<AuctionHistory> getAuctionHistoryByDate(String date);
+    List<AuctionHistory> getAuctionHistoryByAuctionIdWhenFinished(Integer id);
     void saveBidByUserAndAuction(BidRequest request);
 }

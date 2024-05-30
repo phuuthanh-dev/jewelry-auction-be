@@ -43,6 +43,10 @@ public class AuctionHistoryServiceImpl implements AuctionHistoryService {
     }
 
     @Override
+    public List<AuctionHistory> getAuctionHistoryByAuctionIdWhenFinished(Integer id) {
+        return auctionHistoryRepository.findByAuctionIdWhenFinished(id);
+    }
+
     public void saveBidByUserAndAuction(BidRequest request) {
         var existingUser = userRepository.findByUsername(request.username())
                 .orElseThrow(() -> new ResourceNotFoundException("Không tìm thấy người dùng."));
