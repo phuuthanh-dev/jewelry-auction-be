@@ -4,11 +4,14 @@ import jakarta.mail.MessagingException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import vn.webapp.backend.auction.dto.*;
 import vn.webapp.backend.auction.dto.RegisterAccountRequest;
 import vn.webapp.backend.auction.service.AuthenticationService;
+import vn.webapp.backend.auction.service.JwtService;
 
 import java.io.IOException;
 
@@ -22,8 +25,11 @@ public class AuthenticationController {
 
     @PostMapping("/authenticate")
     public ResponseEntity<AuthenticationResponse> authenticate(
-            @RequestBody AuthenticationRequest request, HttpServletRequest httpServletRequest) throws MessagingException {
-        return ResponseEntity.ok(authenticationService.authenticate(request, httpServletRequest));
+            @RequestBody AuthenticationRequest request, HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) throws MessagingException {
+
+        AuthenticationResponse authenticationResponse = authenticationService.authenticate(request, httpServletRequest, httpServletResponse);
+
+        return ResponseEntity.ok().body(authenticationResponse);
     }
 
     @PostMapping("/activation")

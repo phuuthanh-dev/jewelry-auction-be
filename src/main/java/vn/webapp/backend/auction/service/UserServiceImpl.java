@@ -72,7 +72,9 @@ public class UserServiceImpl implements UserService {
         existingUser.setAvatar(user.getAvatar());
         existingUser.setPhone(user.getPhone());
         existingUser.setYob(user.getYob());
-        existingUser.setBankAccountNumber((user.getBankAccountNumber()));
+        existingUser.setBankAccountNumber(user.getBankAccountNumber());
+        existingUser.setBankAccountName(user.getBankAccountName());
+        existingUser.setBank(user.getBank());
         return existingUser;
     }
 
