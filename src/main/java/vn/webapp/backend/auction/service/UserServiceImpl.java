@@ -67,7 +67,8 @@ public class UserServiceImpl implements UserService {
         existingUser.setAddress(user.getAddress());
         existingUser.setFirstName(user.getFirstName());
         existingUser.setLastName(user.getLastName());
-        existingUser.setProvince(user.getProvince());
+        existingUser.setDistrict(user.getDistrict());
+        existingUser.setWard(user.getWard());
         existingUser.setCity(user.getCity());
         existingUser.setAvatar(user.getAvatar());
         existingUser.setPhone(user.getPhone());
@@ -116,7 +117,8 @@ public class UserServiceImpl implements UserService {
                 .password(passwordEncoder.encode(request.password()))
                 .role(request.role())
                 .state(AccountState.ACTIVE)
-                .province(request.province())
+                .district(request.district())
+                .ward(request.ward())
                 .city(request.city())
                 .yob(request.yob())
                 .phone(request.phone())
