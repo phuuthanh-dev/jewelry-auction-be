@@ -5,6 +5,8 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 
 import java.security.Key;
@@ -14,6 +16,7 @@ import java.util.Map;
 import java.util.function.Function;
 
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.ResponseCookie;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import vn.webapp.backend.auction.model.User;
@@ -48,6 +51,16 @@ public class JwtService {
             UserDetails userDetails
     ) {
         return buildToken(new HashMap<>(), userDetails, refreshExpiration);
+    }
+
+    public ResponseCookie generateRefreshTokenCookie(String token) {
+        return ResponseCookie.from("refresh_token", token)
+                .path("/")
+                .maxAge(refreshExpiration) // 15 days in seconds
+                .httpOnly(true)
+                .secure(true)
+                .sameSite("Strict")
+                .build();
     }
 
     private String buildToken(Map<String, Object> extraClaims,
@@ -105,4 +118,16 @@ public class JwtService {
         return isTokenValid(token, userDetails);
     }
 
+
+    public String getTokenFromCookie(HttpServletRequest request, String cookieName) {
+        Cookie[] cookies = request.getCookies();
+        if (cookies != null) {
+            for (Cookie cookie : cookies) {
+                if (cookie.getName().equals(cookieName)) {
+                    return cookie.getValue();
+                }
+            }
+        }
+        return null; // Cookie not found
+    }
 }

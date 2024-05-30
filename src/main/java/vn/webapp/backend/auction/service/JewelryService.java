@@ -24,4 +24,7 @@ public interface JewelryService {
     List<Jewelry> getJewelriesInWaitList();
 
     List<Jewelry> getJewelriesInHandOver();
+
+    Page<Jewelry> getJewelriesByUsername(String username, Pageable pageable);
+
 }

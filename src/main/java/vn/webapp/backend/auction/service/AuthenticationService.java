@@ -6,6 +6,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -43,7 +44,7 @@ public class AuthenticationService {
     private final PasswordEncoder passwordEncoder;
     private final TokenRepository tokenRepository;
 
-    public AuthenticationResponse authenticate(AuthenticationRequest request, HttpServletRequest httpServletRequest) throws MessagingException {
+    public AuthenticationResponse authenticate(AuthenticationRequest request, HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) throws MessagingException {
         var user = userRepository.findByUsername(request.username())
                 .orElseThrow(() -> new ResourceNotFoundException(
                         "Người dùng với username: " + request.username()
@@ -65,11 +66,14 @@ public class AuthenticationService {
 
             var jwtToken = jwtService.generateToken(user);
             var refreshToken = jwtService.generateRefreshToken(user);
+
+            ResponseCookie refreshTokenCookie = jwtService.generateRefreshTokenCookie(refreshToken);
+            httpServletResponse.addHeader("Set-Cookie", refreshTokenCookie.toString());
+
             revokeAllUserTokens(user);
             saveUserToken(user, jwtToken, refreshToken, ipAddress, deviceInfo);
             return AuthenticationResponse.builder()
                     .accessToken(jwtToken)
-                    .refreshToken(refreshToken)
                     .build();
         }
         return null;
@@ -95,9 +99,10 @@ public class AuthenticationService {
         var user = userRepository.findByUsername(username)
                 .orElseThrow();
         if (jwtService.isTokenExpired(request.token())) {
-            emailService.sendActivationEmail(username, user.getFullName(), jwtService.generateToken(user));
+            var jwtToken = jwtService.generateToken(user);
+            emailService.sendActivationEmail(username, user.getFullName(), jwtToken);
             throw new ExpiredTokenException(
-                    "Email kích hoạt đã hết hạn. Vui lòng kiểm tra email để nhận hướng dẫn kích hoạt mới.");
+                    "Mã kích hoạt đã hết hạn. Vui lòng kiểm tra email để nhận hướng dẫn kích hoạt mới.");
         } else {
             user.setState(AccountState.ACTIVE);
             userRepository.save(user);
@@ -121,7 +126,8 @@ public class AuthenticationService {
                 .username(request.username())
                 .password(passwordEncoder.encode(request.password()))
                 .address(request.address())
-                .province(request.province())
+                .district(request.district())
+                .ward(request.ward())
                 .city(request.city())
                 .phone(request.phone())
                 .yob(request.yob())
@@ -136,7 +142,6 @@ public class AuthenticationService {
         var jwtToken = jwtService.generateToken(user);
         var refreshToken = jwtService.generateRefreshToken(user);
 
-
         String ipAddress = httpServletRequest.getRemoteAddr();
         String deviceInfo = httpServletRequest.getHeader("User-Agent");
 
@@ -144,7 +149,6 @@ public class AuthenticationService {
         emailService.sendActivationEmail(request.email(), user.getFullName(), jwtToken);
         return AuthenticationResponse.builder()
                 .accessToken(jwtToken)
-                .refreshToken(refreshToken)
                 .build();
     }
 
@@ -163,41 +167,45 @@ public class AuthenticationService {
             HttpServletRequest request,
             HttpServletResponse response
     ) throws IOException {
-        final String authHeader = request.getHeader(HttpHeaders.AUTHORIZATION);
-        final String refreshToken;
         final String username;
-        if (authHeader == null || !authHeader.startsWith("Bearer ")) {
-            return;
-        }
-        refreshToken = authHeader.substring(7);
-        username = jwtService.extractUsername(refreshToken);
-        if (username != null) {
-            var user = userRepository.findByUsername(username)
-                    .orElseThrow();
-            if (jwtService.isTokenValid(refreshToken, user)) {
-                var tokenOptional = tokenRepository.findByRefreshToken(refreshToken);
 
-                if (tokenOptional.isPresent() && !tokenOptional.get().expired && !tokenOptional.get().revoked) {
-                    var accessToken = jwtService.generateToken(user);
-                    var newRefreshToken = jwtService.generateRefreshToken(user);
-                    revokeAllUserTokens(user);
+        final String oldRefreshToken = jwtService.getTokenFromCookie(request, "refresh_token");
+        if (oldRefreshToken != null) {
+            username = jwtService.extractUsername(oldRefreshToken);
+            if (username != null) {
+                var user = userRepository.findByUsername(username)
+                        .orElseThrow();
+                if (jwtService.isTokenValid(oldRefreshToken, user)) {
+                    var tokenOptional = tokenRepository.findByRefreshToken(oldRefreshToken);
 
-                    String ipAddress = request.getRemoteAddr();
-                    String deviceInfo = request.getHeader("User-Agent");
+                    if (tokenOptional.isPresent() && !tokenOptional.get().expired && !tokenOptional.get().revoked) {
+                        var accessToken = jwtService.generateToken(user);
+                        var newRefreshToken = jwtService.generateRefreshToken(user);
+                        revokeAllUserTokens(user);
 
-                    saveUserToken(user, accessToken, newRefreshToken, ipAddress, deviceInfo);
-                    var authResponse = AuthenticationResponse.builder()
-                            .accessToken(accessToken)
-                            .refreshToken(newRefreshToken)
-                            .build();
-                    new ObjectMapper().writeValue(response.getOutputStream(), authResponse);
+                        String ipAddress = request.getRemoteAddr();
+                        String deviceInfo = request.getHeader("User-Agent");
+
+                        saveUserToken(user, accessToken, newRefreshToken, ipAddress, deviceInfo);
+
+                        ResponseCookie refreshTokenCookie = jwtService.generateRefreshTokenCookie(newRefreshToken);
+                        response.addHeader("Set-Cookie", refreshTokenCookie.toString());
+
+                        var authResponse = AuthenticationResponse.builder()
+                                .accessToken(accessToken)
+                                .build();
+                        new ObjectMapper().writeValue(response.getOutputStream(), authResponse);
+                    } else {
+                        response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Token is expired or revoked");
+                    }
                 } else {
-                    response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Token is expired or revoked");
+                    response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Invalid refresh token");
                 }
             } else {
-                response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Invalid refresh token");
+                response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Refresh token not found");
             }
+        } else {
+            response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Refresh token not found");
         }
     }
-
 }

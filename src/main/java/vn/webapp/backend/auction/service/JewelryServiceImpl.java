@@ -32,6 +32,11 @@ public class JewelryServiceImpl implements JewelryService {
     }
 
     @Override
+    public Page<Jewelry> getJewelriesByUsername(String username, Pageable pageable) {
+        return jewelryRepository.findByUserUsername(username, pageable);
+    }
+
+    @Override
     public List<Jewelry> getJewelryByUsername(String username) {
         List<Jewelry> jewelryList = jewelryRepository.findJewelryByUsername(username);
         if (jewelryList.isEmpty()) {
