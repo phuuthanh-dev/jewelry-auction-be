@@ -63,9 +63,16 @@ public class AuctionHistoryController {
     public ResponseEntity<List<AuctionHistory>> getAuctionHistoryByAuctionIdWhenFinished(@PathVariable Integer id) {  //2024-12-10
         return ResponseEntity.ok(auctionHistoryService.getAuctionHistoryByAuctionIdWhenFinished(id));
     }
+
     @PostMapping
     public ResponseEntity<?> saveBidByUserAndAuction(@RequestBody BidRequest request) {
         auctionHistoryService.saveBidByUserAndAuction(request);
+        return ResponseEntity.ok().build();
+    }
+
+    @DeleteMapping("/bids/{userId}/{auctionId}")
+    public ResponseEntity<?> deleteBidByUserAndAuction(@PathVariable Integer userId, @PathVariable Integer auctionId) {
+        auctionHistoryService.deleteBidByUserAndAuction(userId, auctionId);
         return ResponseEntity.ok().build();
     }
 }

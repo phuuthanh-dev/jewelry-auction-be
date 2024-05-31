@@ -14,4 +14,5 @@ public interface AuctionHistoryService {
     List<AuctionHistory> getAuctionHistoryByDate(String date);
     List<AuctionHistory> getAuctionHistoryByAuctionIdWhenFinished(Integer id);
     void saveBidByUserAndAuction(BidRequest request);
+    void deleteBidByUserAndAuction(Integer userId, Integer auctionId);
 }

@@ -55,7 +55,7 @@ public class AuctionRegistrationServiceImpl implements AuctionRegistrationServic
         AuctionRegistration registration = AuctionRegistration.builder()
                 .user(user)
                 .auction(auction)
-                .state(AuctionRegistrationState.VALID)
+                .auctionRegistrationState(AuctionRegistrationState.VALID)
                 .registrationDate(Timestamp.valueOf(LocalDateTime.now(ZoneId.of("UTC"))))
                 .registrationFee(registrationFee)
                 .transaction(transaction)

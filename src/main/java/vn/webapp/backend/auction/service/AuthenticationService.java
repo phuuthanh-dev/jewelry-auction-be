@@ -130,6 +130,7 @@ public class AuthenticationService {
                 .ward(request.ward())
                 .city(request.city())
                 .phone(request.phone())
+                .avatar("https://www.iconpacks.net/icons/2/free-user-icon-3296-thumb.png")
                 .yob(request.yob())
                 .role(request.role())
                 .CCCD(request.CCCD())

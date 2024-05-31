@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import vn.webapp.backend.auction.enums.AuctionHistoryState;
 import vn.webapp.backend.auction.enums.AuctionState;
 
 import java.sql.Date;
@@ -26,6 +27,12 @@ public class AuctionHistory {
 
     @Column(name = "time", nullable = false)
     private Timestamp time;
+
+    @Column(name = "bid_code", nullable = false, length = 20)
+    private String bidCode;
+
+    @Enumerated(EnumType.STRING)
+    private AuctionHistoryState state;
 
     @ManyToOne(cascade = {
             CascadeType.PERSIST, CascadeType.DETACH,
