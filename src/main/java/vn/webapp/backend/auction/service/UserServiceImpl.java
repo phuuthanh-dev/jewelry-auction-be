@@ -27,8 +27,8 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User getUserByUsername(String username) {
-        return userRepository.findByUsername(username)
-                .orElseThrow(() -> new ResourceNotFoundException("Người dùng tương ứng không tồn tại"));
+        return userRepository.findByUsername(username).get();
+//                .orElseThrow(() -> new ResourceNotFoundException("Người dùng tương ứng không tồn tại"));
     }
 
     @Override
@@ -39,8 +39,8 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User getUserByEmail(String email) {
-        return userRepository.findByEmail(email)
-                .orElseThrow(() -> new ResourceNotFoundException("Không tìm thấy tài khoản."));
+        return userRepository.findByEmail(email).get();
+//                .orElseThrow(() -> new ResourceNotFoundException("Không tìm thấy tài khoản."));
     }
 
     @Override
