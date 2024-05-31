@@ -28,7 +28,7 @@ public class AuctionRegistration {
 
     @Enumerated(EnumType.STRING)
     @Column(name = "auction_registration_state", nullable = false)
-    private AuctionRegistrationState state;
+    private AuctionRegistrationState auctionRegistrationState;
 
     @ManyToOne(cascade = {
             CascadeType.PERSIST, CascadeType.DETACH,

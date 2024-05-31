@@ -9,7 +9,9 @@ public class Endpoints {
             "/api/v1/auction-history/get-by-date/**", "/api/v1/image/**", "/api/v1/user/by-email/**",
             "/api/v1/user/by-username/**", "/api/v1/bank/**", "/api/v1/payment/vn-pay" ,
             "/api/v1/payment/vn-pay-callback/**", "/api/v1/auction-registration/**",
-            "/api/v1/transaction/**", "/api/v1/auth/logout", "api/v1/bank"
+            "/api/v1/transaction/**", "/api/v1/auth/logout", "api/v1/bank","/api/v1/aution-history/get-when-auction-finished/**",
+            "/api/v1/user/get-winner-auction/**"
+
     };
 
     public static final String[] PUBLIC_POST_ENDPOINTS = {
