@@ -11,6 +11,7 @@ import vn.webapp.backend.auction.model.AuctionHistory;
 
 import java.sql.Date;
 import java.util.List;
+import java.util.Optional;
 
 public interface AuctionHistoryRepository extends JpaRepository<AuctionHistory, Integer> {
     @Query("SELECT ah FROM AuctionHistory ah WHERE ah.auction.id = :id AND ah.state = 'ACTIVE'")
@@ -31,4 +32,6 @@ public interface AuctionHistoryRepository extends JpaRepository<AuctionHistory, 
     @Query("SELECT ah FROM AuctionHistory ah WHERE ah.auction.id = :auctionId AND ah.user.id = :userId AND ah.state = 'ACTIVE'")
     List<AuctionHistory> findByAuctionHistoryByAuctionAndUserActive(@Param("auctionId") Integer auctionId, @Param("userId") Integer userId);
 
+    @Query("SELECT ah FROM AuctionHistory ah WHERE ah.auction.id = :auctionId AND ah.state != 'HIDDEN' ORDER BY ah.time DESC")
+    List<AuctionHistory> findLastActiveBidByAuctionId(@Param("auctionId") Integer auctionId);
 }
