@@ -17,8 +17,6 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import vn.webapp.backend.auction.filter.JwtAuthenticationFilter;
 import vn.webapp.backend.auction.security.Endpoints;
 
-import static org.springframework.security.config.http.SessionCreationPolicy.STATELESS;
-
 @Configuration
 @EnableWebSecurity
 @RequiredArgsConstructor
