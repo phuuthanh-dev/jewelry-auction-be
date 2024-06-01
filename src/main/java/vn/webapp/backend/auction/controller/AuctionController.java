@@ -96,13 +96,21 @@ public class AuctionController {
         return ResponseEntity.ok(auctionService.getAuctionsByStates(states, pageable));
     }
 
-    @GetMapping("/get-by-staff-id/{id}")
-    public ResponseEntity<List<Auction>> getAuctionByStaffId(@PathVariable Integer id) {
-        return ResponseEntity.ok(auctionService.getByStaffID(id));
-    }
 
     @GetMapping("/get-by-jewelry/{id}")
     public ResponseEntity<List<Auction>> getAuctionByJewelryId(@PathVariable Integer id) {
         return ResponseEntity.ok(auctionService.getAuctionByJewelryId(id));
+    }
+
+    @GetMapping("/get-by-staff/{id}")
+    public ResponseEntity<Page<Auction>> getAuctionByStaffId(
+            @RequestParam(defaultValue = "id") String sortBy,
+            @PathVariable Integer id,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "5") int size,
+            @RequestParam(defaultValue = "asc") String sortOrder) {
+        Sort.Direction direction = (sortOrder.equalsIgnoreCase("asc")) ? Sort.Direction.ASC : Sort.Direction.DESC;
+        Pageable pageable = PageRequest.of(page, size, direction, sortBy);
+        return ResponseEntity.ok(auctionService.getByStaffID(id, pageable));
     }
 }
