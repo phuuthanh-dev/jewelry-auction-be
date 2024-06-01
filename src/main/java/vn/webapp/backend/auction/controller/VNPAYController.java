@@ -15,7 +15,7 @@ import java.io.IOException;
 @CrossOrigin(origins = "http://localhost:3000")
 @RequestMapping("api/v1/payment")
 @RequiredArgsConstructor
-public class PaymentController {
+public class VNPAYController {
 
     private final PaymentService paymentService;
     private final AuctionRegistrationService auctionRegistrationService;
