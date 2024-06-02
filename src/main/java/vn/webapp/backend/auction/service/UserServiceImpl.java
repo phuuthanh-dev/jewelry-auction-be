@@ -93,11 +93,26 @@ public class UserServiceImpl implements UserService {
             Role role,
             AccountState state,
             Pageable page) {
-        if (role == null)
-            return userRepository.findByFullNameContainingAndRoleAndState(fullName, Role.MEMBER, state, page);
 
-        return userRepository.findByFullNameContainingAndRoleAndState(fullName, role, state, page);
+        // Default to MEMBER if role is null
+        if (role == null) {
+            role = Role.MEMBER;
+        }
+
+        // Perform the query based on role
+        switch (role) {
+            case MEMBER:
+                return userRepository.findByFullNameContainingAndRoleAndState(fullName, Role.MEMBER, state, page);
+            case MANAGER:
+                return userRepository.findByFullNameContainingAndRoleAndState(fullName, Role.MANAGER, state, page);
+            case STAFF:
+                return userRepository.findByFullNameContainingAndRoleAndState(fullName, Role.STAFF, state, page);
+            default:
+                // Handle any other roles or default case
+                throw new IllegalArgumentException("Invalid role: " + role);
+        }
     }
+
 
     @Override
     public User getLatestUserInAuctionHistoryByAuctionId(Integer auctionId) {
@@ -133,4 +148,7 @@ public class UserServiceImpl implements UserService {
                 .build();
         return userRepository.save(user);
     }
+
+
+
 }

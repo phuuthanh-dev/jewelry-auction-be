@@ -50,8 +50,8 @@ public interface AuctionRepository extends JpaRepository<Auction, Integer> {
     @Query("SELECT a FROM Auction a WHERE a.jewelry.id = :jewelry_id")
     List<Auction> findAuctionByJewelryId(@Param("jewelry_id") Integer jewelry_id);
 
-
-
+    @Query("SELECT COUNT(a) FROM Auction a")
+    Integer countAllAuctions();
 
 
 }
