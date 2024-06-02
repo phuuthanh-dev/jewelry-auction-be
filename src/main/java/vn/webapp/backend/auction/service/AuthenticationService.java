@@ -46,9 +46,10 @@ public class AuthenticationService {
 
     public AuthenticationResponse authenticate(AuthenticationRequest request, HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) throws MessagingException {
         var user = userRepository.findByUsername(request.username())
-                .orElseThrow(() -> new ResourceNotFoundException(
-                        "Người dùng với username: " + request.username()
-                                + " không tồn tại. Vui lòng đăng ký tài khoản mới."));
+                .orElseGet(() -> userRepository.findByEmail(request.username())
+                        .orElseThrow(() -> new ResourceNotFoundException(
+                                "Người dùng với username hoặc email: " + request.username()
+                                        + " không tồn tại. Vui lòng đăng ký tài khoản mới.")));
         if (user.getState() == AccountState.INACTIVE) {
             emailService.sendActivationEmail(user.getEmail(), user.getFullName(),
                     jwtService.generateToken(user));
@@ -56,6 +57,7 @@ public class AuthenticationService {
         } else if (user.getState() == AccountState.DISABLE) {
             throw new AccountDisabledException("Tài khoản với username: " + request.username() + " đã bị vô hiệu hóa.");
         } else if (user.getState() == AccountState.ACTIVE) {
+
             authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(
                             request.username(),

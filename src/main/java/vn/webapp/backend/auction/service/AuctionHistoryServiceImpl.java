@@ -98,5 +98,13 @@ public class AuctionHistoryServiceImpl implements AuctionHistoryService {
         for (AuctionHistory auctionHistory : userBids) {
             auctionHistory.setState(AuctionHistoryState.HIDDEN);
         }
+
+        List<AuctionHistory> lastActiveBids = auctionHistoryRepository.findLastActiveBidByAuctionId(auctionId);
+        if (!lastActiveBids.isEmpty()) {
+            AuctionHistory lastActiveBid = lastActiveBids.get(0);
+            auction.setLastPrice(lastActiveBid.getPriceGiven());
+        } else {
+            auction.setLastPrice(0.0);  // or any default value if no active bid is found
+        }
     }
 }
