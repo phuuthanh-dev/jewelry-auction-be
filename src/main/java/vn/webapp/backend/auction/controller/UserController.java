@@ -15,9 +15,9 @@ import vn.webapp.backend.auction.model.User;
 import vn.webapp.backend.auction.service.UserService;
 
 @RestController
-@CrossOrigin(origins = "http://localhost:3000")
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/user")
+@CrossOrigin(origins = {"http://localhost:3000", "http://localhost:3001", "http://localhost"})
 public class UserController {
 
     private final UserService userService;
@@ -49,6 +49,8 @@ public class UserController {
         Pageable pageable = PageRequest.of(page, size, direction, sortBy);
         return ResponseEntity.ok(userService.getMemberByFullNameContainingAndState(fullName, state, pageable));
     }
+
+
 
     @GetMapping("/staff")
     public ResponseEntity<Page<User>> getStaff(
