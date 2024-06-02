@@ -68,7 +68,7 @@ public class JewelryServiceImpl implements JewelryService {
     }
 
     @Override
-    public List<Jewelry> getJewelriesInWaitList(Pageable pageable) {
+    public Page<Jewelry> getJewelriesInWaitList(Pageable pageable) {
         return jewelryRepository.findJewelryInWaitlist(pageable);
     }
 

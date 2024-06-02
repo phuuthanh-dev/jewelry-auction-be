@@ -2,6 +2,8 @@ package vn.webapp.backend.auction.model;
 
 import jakarta.persistence.*;
 import lombok.*;
+import vn.webapp.backend.auction.enums.AuctionHistoryState;
+import vn.webapp.backend.auction.enums.RequestApprovalState;
 
 import java.sql.Timestamp;
 
@@ -55,7 +57,7 @@ public class RequestApproval {
     @Column(name = "valuation", nullable = false)
     private double valuation;
 
-    @Column(name = "desired_price")
+    @Column(name = "desired_price", nullable = false)
     private double desiredPrice;
 
     @Column(name = "request_time", nullable = false)
@@ -63,9 +65,9 @@ public class RequestApproval {
     @Column(name = "response_time")
     private Timestamp responseTime;
 
-    @Column(name = "manager_confirm")
-    private boolean managerConfirm;
+    @Enumerated(EnumType.STRING)
+    private RequestApprovalState state;
 
-    @Column(name = "member_confirm")
-    private boolean memberConfirm;
+    @Column(name = "is_confirm")
+    private boolean isConfirm;
 }
