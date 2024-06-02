@@ -67,12 +67,15 @@ public class UserServiceImpl implements UserService {
         existingUser.setAddress(user.getAddress());
         existingUser.setFirstName(user.getFirstName());
         existingUser.setLastName(user.getLastName());
-        existingUser.setProvince(user.getProvince());
+        existingUser.setDistrict(user.getDistrict());
+        existingUser.setWard(user.getWard());
         existingUser.setCity(user.getCity());
         existingUser.setAvatar(user.getAvatar());
         existingUser.setPhone(user.getPhone());
         existingUser.setYob(user.getYob());
-        existingUser.setBankAccountNumber((user.getBankAccountNumber()));
+        existingUser.setBankAccountNumber(user.getBankAccountNumber());
+        existingUser.setBankAccountName(user.getBankAccountName());
+        existingUser.setBank(user.getBank());
         return existingUser;
     }
 
@@ -97,6 +100,12 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public User getLatestUserInAuctionHistoryByAuctionId(Integer auctionId) {
+        return userRepository.findLatestUserInAuctionHistoryByAuctionId(auctionId)
+                .orElseThrow(() -> new ResourceNotFoundException("Người dùng tương ứng không tồn tại"));
+    }
+
+    @Override
     public User registerStaff(RegisterAccountRequest request) {
         userRepository.findByUsername(request.username())
                 .ifPresent(existingUser -> {
@@ -114,7 +123,8 @@ public class UserServiceImpl implements UserService {
                 .password(passwordEncoder.encode(request.password()))
                 .role(request.role())
                 .state(AccountState.ACTIVE)
-                .province(request.province())
+                .district(request.district())
+                .ward(request.ward())
                 .city(request.city())
                 .yob(request.yob())
                 .phone(request.phone())

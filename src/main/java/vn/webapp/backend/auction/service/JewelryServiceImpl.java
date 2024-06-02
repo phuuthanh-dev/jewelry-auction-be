@@ -32,6 +32,11 @@ public class JewelryServiceImpl implements JewelryService {
     }
 
     @Override
+    public Page<Jewelry> getJewelriesByUsername(String username, Pageable pageable) {
+        return jewelryRepository.findByUserUsername(username, pageable);
+    }
+
+    @Override
     public List<Jewelry> getJewelryByUsername(String username) {
         List<Jewelry> jewelryList = jewelryRepository.findJewelryByUsername(username);
         if (jewelryList.isEmpty()) {
@@ -63,12 +68,12 @@ public class JewelryServiceImpl implements JewelryService {
     }
 
     @Override
-    public List<Jewelry> getJewelriesInWaitList() {
-        return jewelryRepository.findJewelryInWaitlist();
+    public List<Jewelry> getJewelriesInWaitList(Pageable pageable) {
+        return jewelryRepository.findJewelryInWaitlist(pageable);
     }
 
     @Override
-    public List<Jewelry> getJewelriesInHandOver() {
-        return jewelryRepository.findJewelryInHandOver();
+    public Page<Jewelry> getJewelriesInHandOver(Pageable pageable) {
+        return jewelryRepository.findJewelryInHandOver(pageable);
     }
 }

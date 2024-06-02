@@ -53,13 +53,17 @@ public class User implements UserDetails {
     @NotBlank(message = "The address is required")
     private String address;
 
-    @Column(name = "city", nullable = false, columnDefinition = "nvarchar(20)")
+    @Column(name = "city", nullable = false, columnDefinition = "nvarchar(50)")
     @NotBlank(message = "The city is required")
     private String city;
 
-    @Column(name = "province", nullable = false, columnDefinition = "nvarchar(20)")
-    @NotBlank(message = "The province is required")
-    private String province;
+    @Column(name = "district", nullable = false, columnDefinition = "nvarchar(50)")
+    @NotBlank(message = "The district is required")
+    private String district;
+
+    @Column(name = "ward", nullable = false, columnDefinition = "nvarchar(50)")
+    @NotBlank(message = "The ward is required")
+    private String ward;
 
     @Column(name = "year_of_birth", nullable = false, length = 4)
     private String yob;
@@ -109,11 +113,11 @@ public class User implements UserDetails {
     @JsonIgnore
     private List<Jewelry> jewelries;
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-    @EqualsAndHashCode.Exclude
-    @ToString.Exclude
-    @JsonIgnore
-    private List<RequestApproval> requestApprovals;
+//    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+//    @EqualsAndHashCode.Exclude
+//    @ToString.Exclude
+//    @JsonIgnore
+//    private List<RequestApproval> requestApprovals;
 
     public String getFullName() {
         return firstName + " " + lastName;

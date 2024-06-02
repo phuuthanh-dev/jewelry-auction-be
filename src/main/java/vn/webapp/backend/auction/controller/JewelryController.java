@@ -21,15 +21,35 @@ public class JewelryController {
 
     private final JewelryService jewelryService;
 
+//    @GetMapping("/sorted-and-paged")
+//    public ResponseEntity<Page<Jewelry>> getAllJewelriesSortedAndPaged(
+//            @RequestParam(defaultValue = "id") String sortBy,
+//            @RequestParam(defaultValue = "0") int page,
+//            @RequestParam(defaultValue = "5") int size,
+//            @RequestParam(defaultValue = "asc") String sortOrder) {
+//        Sort.Direction direction = (sortOrder.equalsIgnoreCase("asc")) ? Sort.Direction.ASC : Sort.Direction.DESC;
+//        Pageable pageable = PageRequest.of(page, size, direction, sortBy);
+//        return ResponseEntity.ok(jewelryService.getAllJeweries(pageable));
+//    }
+
     @GetMapping("/sorted-and-paged")
     public ResponseEntity<Page<Jewelry>> getAllJewelriesSortedAndPaged(
             @RequestParam(defaultValue = "id") String sortBy,
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "5") int size,
-            @RequestParam(defaultValue = "asc") String sortOrder) {
+            @RequestParam(defaultValue = "asc") String sortOrder,
+            @RequestParam(required = false) String username) {
         Sort.Direction direction = (sortOrder.equalsIgnoreCase("asc")) ? Sort.Direction.ASC : Sort.Direction.DESC;
         Pageable pageable = PageRequest.of(page, size, direction, sortBy);
-        return ResponseEntity.ok(jewelryService.getAllJeweries(pageable));
+
+        Page<Jewelry> jewelries;
+        if (username != null) {
+            jewelries = jewelryService.getJewelriesByUsername(username, pageable);
+        } else {
+            jewelries = jewelryService.getAllJeweries(pageable);
+        }
+
+        return ResponseEntity.ok(jewelries);
     }
 
     @GetMapping("/get-all")
@@ -64,13 +84,25 @@ public class JewelryController {
     }
 
     @GetMapping("/in-wait-list")
-    public ResponseEntity<List<Jewelry>> getJewelryInWaitlist() {
-        return ResponseEntity.ok(jewelryService.getJewelriesInWaitList());
+    public ResponseEntity<List<Jewelry>> getJewelryInWaitlist(
+            @RequestParam(defaultValue = "id") String sortBy,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "5") int size,
+            @RequestParam(defaultValue = "asc") String sortOrder) {
+        Sort.Direction direction = (sortOrder.equalsIgnoreCase("asc")) ? Sort.Direction.ASC : Sort.Direction.DESC;
+        Pageable pageable = PageRequest.of(page, size, direction, sortBy);
+        return ResponseEntity.ok(jewelryService.getJewelriesInWaitList(pageable));
     }
 
     @GetMapping("/in-handover-list")
-    public ResponseEntity<List<Jewelry>> getJewelryInHandOver() {
-        return ResponseEntity.ok(jewelryService.getJewelriesInHandOver());
+    public ResponseEntity<Page<Jewelry>> getJewelryInHandOver(
+            @RequestParam(defaultValue = "id") String sortBy,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "5") int size,
+            @RequestParam(defaultValue = "asc") String sortOrder) {
+        Sort.Direction direction = (sortOrder.equalsIgnoreCase("asc")) ? Sort.Direction.ASC : Sort.Direction.DESC;
+        Pageable pageable = PageRequest.of(page, size, direction, sortBy);
+        return ResponseEntity.ok(jewelryService.getJewelriesInHandOver(pageable));
     }
 
 }

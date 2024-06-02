@@ -17,8 +17,6 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import vn.webapp.backend.auction.filter.JwtAuthenticationFilter;
 import vn.webapp.backend.auction.security.Endpoints;
 
-import static org.springframework.security.config.http.SessionCreationPolicy.STATELESS;
-
 @Configuration
 @EnableWebSecurity
 @RequiredArgsConstructor
@@ -45,6 +43,7 @@ public class SecurityConfiguration {
                 .authorizeHttpRequests(
                         configurer -> configurer
                                 .requestMatchers(WHITE_LIST_URL).permitAll()
+                                .requestMatchers("/ws/**").permitAll()
                                 .requestMatchers(HttpMethod.GET, Endpoints.PUBLIC_GET_ENDPOINTS).permitAll()
                                 .requestMatchers(HttpMethod.POST, Endpoints.PUBLIC_POST_ENDPOINTS).permitAll()
                                 .requestMatchers(HttpMethod.PUT, Endpoints.PUBLIC_PUT_ENDPOINTS).permitAll()
@@ -60,7 +59,7 @@ public class SecurityConfiguration {
                 .csrf(csrf -> csrf.disable())
                 .sessionManagement((session) -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authenticationProvider(authenticationProvider)
-                .httpBasic(Customizer.withDefaults())
+//                .httpBasic(Customizer.withDefaults())
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
                 .logout(logout ->
                         logout.logoutUrl("/api/v1/auth/logout")
