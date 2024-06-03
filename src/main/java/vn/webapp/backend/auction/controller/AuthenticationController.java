@@ -28,8 +28,14 @@ public class AuthenticationController {
             @RequestBody AuthenticationRequest request, HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) throws MessagingException {
 
         AuthenticationResponse authenticationResponse = authenticationService.authenticate(request, httpServletRequest, httpServletResponse);
-
         return ResponseEntity.ok().body(authenticationResponse);
+    }
+
+    @PostMapping("/change-password")
+    public ResponseEntity<AuthenticationResponse> changePassword (
+            @RequestBody ChangePasswordRequest request) {
+        ResponseEntity.ok(authenticationService.changePassword(request));
+        return ResponseEntity.ok().build();
     }
 
     @PostMapping("/activation")

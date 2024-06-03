@@ -38,6 +38,12 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(err);
     }
 
+    @ExceptionHandler(OldPasswordMismatchException.class)
+    public ResponseEntity<ErrorResponse> handleOldPasswordMismatchException(OldPasswordMismatchException ex) {
+        ErrorResponse err = new ErrorResponse(HttpStatus.NOT_FOUND.value(), ex.getMessage());
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(err);
+    }
+
     @ExceptionHandler
     public ResponseEntity<ErrorResponse> handleUnwantedException(Exception ex) {
         ErrorResponse err = new ErrorResponse(HttpStatus.BAD_REQUEST.value(), ex.getMessage());

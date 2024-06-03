@@ -211,4 +211,20 @@ public class AuthenticationService {
             response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Refresh token not found");
         }
     }
+
+    public AuthenticationResponse changePassword(ChangePasswordRequest request) {
+        var user = userRepository.findByUsername(jwtService.extractUsername(request.token()))
+                .orElseThrow();
+//        var user = userRepository.findByUsername(request.username())
+//                .orElseThrow();
+        if (!passwordEncoder.matches(request.oldPassword(), user.getPassword())) {
+            throw new OldPasswordMismatchException("Mật khẩu cũ không đúng.");
+        }
+        user.setPassword(passwordEncoder.encode(request.newPassword()));
+        userRepository.save(user);
+        var jwtToken = jwtService.generateToken(user);
+        return AuthenticationResponse.builder()
+                .accessToken(jwtToken)
+                .build();
+    }
 }
