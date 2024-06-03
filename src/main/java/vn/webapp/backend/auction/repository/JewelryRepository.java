@@ -22,12 +22,11 @@ public interface JewelryRepository extends JpaRepository<Jewelry, Integer> {
 
     Page<Jewelry> findByState(JewelryState jewelryState, Pageable pageable);
 
-    @Query("SELECT j FROM Jewelry j INNER JOIN RequestApproval r ON j.id = r.jewelry.id WHERE r.sender.role = 'MEMBER'")
-    List<Jewelry> findJewelryInWaitlist(Pageable pageable);
+    @Query("SELECT j FROM Jewelry j INNER JOIN RequestApproval r ON j.id = r.jewelry.id WHERE r.sender.role = 'MEMBER' AND r.isConfirm = false AND r.state = 'ACTIVE'")
+    Page<Jewelry> findJewelryInWaitlist(Pageable pageable);
 
     @Query("SELECT j FROM Jewelry j INNER JOIN Auction a ON j.id = a.jewelry.id WHERE a.state = 'FINISHED'")
     Page<Jewelry> findJewelryInHandOver(Pageable pageable);
-
 
     Page<Jewelry> findByUserUsername(String username, Pageable pageable);
 }

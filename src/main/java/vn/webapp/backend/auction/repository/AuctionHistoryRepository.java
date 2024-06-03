@@ -9,13 +9,11 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import vn.webapp.backend.auction.model.AuctionHistory;
 
-import java.sql.Date;
 import java.util.List;
-import java.util.Optional;
 
 public interface AuctionHistoryRepository extends JpaRepository<AuctionHistory, Integer> {
     @Query("SELECT ah FROM AuctionHistory ah WHERE ah.auction.id = :id AND ah.state = 'ACTIVE'")
-    Page<AuctionHistory> findByAuctionId(Pageable pageable,  @Param("id") Integer id);
+    Page<AuctionHistory> findByAuctionId(Pageable pageable, @Param("id") Integer id);
 
     @Query("SELECT ah FROM AuctionHistory ah WHERE ah.user.username = :username")
     Page<AuctionHistory> findByUsername(Pageable pageable, @Param("username") String username);
@@ -34,4 +32,5 @@ public interface AuctionHistoryRepository extends JpaRepository<AuctionHistory, 
 
     @Query("SELECT ah FROM AuctionHistory ah WHERE ah.auction.id = :auctionId AND ah.state != 'HIDDEN' ORDER BY ah.time DESC")
     List<AuctionHistory> findLastActiveBidByAuctionId(@Param("auctionId") Integer auctionId);
+
 }

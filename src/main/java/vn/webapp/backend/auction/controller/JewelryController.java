@@ -84,7 +84,7 @@ public class JewelryController {
     }
 
     @GetMapping("/in-wait-list")
-    public ResponseEntity<List<Jewelry>> getJewelryInWaitlist(
+    public ResponseEntity<Page<Jewelry>> getJewelryInWaitlist(
             @RequestParam(defaultValue = "id") String sortBy,
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "5") int size,
