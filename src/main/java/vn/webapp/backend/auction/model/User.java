@@ -113,11 +113,11 @@ public class User implements UserDetails {
     @JsonIgnore
     private List<Jewelry> jewelries;
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-    @EqualsAndHashCode.Exclude
-    @ToString.Exclude
-    @JsonIgnore
-    private List<RequestApproval> requestApprovals;
+//    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+//    @EqualsAndHashCode.Exclude
+//    @ToString.Exclude
+//    @JsonIgnore
+//    private List<RequestApproval> requestApprovals;
 
     public String getFullName() {
         return firstName + " " + lastName;

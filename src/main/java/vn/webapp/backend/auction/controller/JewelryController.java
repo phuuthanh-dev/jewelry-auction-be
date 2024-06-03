@@ -84,13 +84,25 @@ public class JewelryController {
     }
 
     @GetMapping("/in-wait-list")
-    public ResponseEntity<List<Jewelry>> getJewelryInWaitlist() {
-        return ResponseEntity.ok(jewelryService.getJewelriesInWaitList());
+    public ResponseEntity<Page<Jewelry>> getJewelryInWaitlist(
+            @RequestParam(defaultValue = "id") String sortBy,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "5") int size,
+            @RequestParam(defaultValue = "asc") String sortOrder) {
+        Sort.Direction direction = (sortOrder.equalsIgnoreCase("asc")) ? Sort.Direction.ASC : Sort.Direction.DESC;
+        Pageable pageable = PageRequest.of(page, size, direction, sortBy);
+        return ResponseEntity.ok(jewelryService.getJewelriesInWaitList(pageable));
     }
 
     @GetMapping("/in-handover-list")
-    public ResponseEntity<List<Jewelry>> getJewelryInHandOver() {
-        return ResponseEntity.ok(jewelryService.getJewelriesInHandOver());
+    public ResponseEntity<Page<Jewelry>> getJewelryInHandOver(
+            @RequestParam(defaultValue = "id") String sortBy,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "5") int size,
+            @RequestParam(defaultValue = "asc") String sortOrder) {
+        Sort.Direction direction = (sortOrder.equalsIgnoreCase("asc")) ? Sort.Direction.ASC : Sort.Direction.DESC;
+        Pageable pageable = PageRequest.of(page, size, direction, sortBy);
+        return ResponseEntity.ok(jewelryService.getJewelriesInHandOver(pageable));
     }
 
 }

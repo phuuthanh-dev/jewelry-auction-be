@@ -93,18 +93,23 @@ public class AuctionHistoryServiceImpl implements AuctionHistoryService {
                 .orElseThrow(() -> new ResourceNotFoundException("Không tìm thấy phiên đấu giá."));
         var auctionRegistration = auctionRegistrationRepository.findByAuctionIdAndUserIdValid(userId, auctionId)
                 .orElseThrow(() -> new ResourceNotFoundException("Người dùng chưa đăng kí phiên đấu giá."));
+
+        // KICK KHỎI PHIÊN ĐẤU GIÁ
         auctionRegistration.setAuctionRegistrationState(AuctionRegistrationState.KICKED_OUT);
-        List<AuctionHistory> userBids = auctionHistoryRepository.findByAuctionHistoryByAuctionAndUserActive(userId, auctionId);
+
+        // ẨN NHỮNG LẦN ĐẤU GIÁ CỦA USER ĐÓ ĐI
+        List<AuctionHistory> userBids = auctionHistoryRepository.findByAuctionHistoryByAuctionAndUserActive(auctionId, userId);
         for (AuctionHistory auctionHistory : userBids) {
             auctionHistory.setState(AuctionHistoryState.HIDDEN);
         }
 
+        // SET LẠI GIÁ CUỐI CỦA PHIÊN
         List<AuctionHistory> lastActiveBids = auctionHistoryRepository.findLastActiveBidByAuctionId(auctionId);
         if (!lastActiveBids.isEmpty()) {
             AuctionHistory lastActiveBid = lastActiveBids.get(0);
             auction.setLastPrice(lastActiveBid.getPriceGiven());
         } else {
-            auction.setLastPrice(0.0);  // or any default value if no active bid is found
+            auction.setLastPrice(null);
         }
     }
 }

@@ -19,7 +19,7 @@ public interface AuctionService {
     List<Auction> getAuctionByState(AuctionState state);
     List<Auction> findTop3AuctionsByPriceAndState(List<AuctionState> states);
     List<Auction> findAuctionSortByBetweenStartdayAndEndday(String startDay, String endDay);
-    List<Auction> getByStaffID(Integer id);
+    Page<Auction> getByStaffID(Integer id, Pageable pageable);
     List<Auction> getAuctionByJewelryId(Integer id);
 
 }
