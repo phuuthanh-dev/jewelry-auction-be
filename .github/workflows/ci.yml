@@ -18,7 +18,7 @@ jobs:
           - "1433:1433"
         env:
           ACCEPT_EULA: Y
-          SA_PASSWORD: ${{ secrets.SQL_SA_PASSWORD }}
+          SA_PASSWORD: Thanhth@nh1
           MSSQL_PID: Express
 
     steps:
@@ -38,4 +38,4 @@ jobs:
         run: mvn test
 
       - name: Run Spring Boot application
-        run: java -jar -Dspring.datasource.password=${{ secrets.SQL_SA_PASSWORD }} target/*.jar
+        run: java -jar target/*.jar
