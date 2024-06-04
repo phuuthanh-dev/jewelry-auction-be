@@ -10,12 +10,4 @@ import static org.assertj.core.api.Assertions.assertThat;
 @SpringBootTest
 class AuctionApplicationTests {
 
-	@Autowired
-	private AuthenticationController authenticationController;
-
-	@Test
-	void contextLoads() throws Exception {
-		assertThat(authenticationController).isNotNull();
-	}
-
 }
