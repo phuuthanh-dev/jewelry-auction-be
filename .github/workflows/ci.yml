@@ -38,4 +38,4 @@ jobs:
         run: mvn test
 
       - name: Run Spring Boot application
-        run: java -jar target/*.jar
+        run: java -jar -Dspring.datasource.password=${{ secrets.SQL_SA_PASSWORD }} target/*.jar
