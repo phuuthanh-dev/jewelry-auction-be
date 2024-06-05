@@ -67,12 +67,15 @@ public class UserServiceImpl implements UserService {
         existingUser.setAddress(user.getAddress());
         existingUser.setFirstName(user.getFirstName());
         existingUser.setLastName(user.getLastName());
-        existingUser.setProvince(user.getProvince());
+        existingUser.setDistrict(user.getDistrict());
+        existingUser.setWard(user.getWard());
         existingUser.setCity(user.getCity());
         existingUser.setAvatar(user.getAvatar());
         existingUser.setPhone(user.getPhone());
         existingUser.setYob(user.getYob());
-        existingUser.setBankAccountNumber((user.getBankAccountNumber()));
+        existingUser.setBankAccountNumber(user.getBankAccountNumber());
+        existingUser.setBankAccountName(user.getBankAccountName());
+        existingUser.setBank(user.getBank());
         return existingUser;
     }
 
@@ -90,10 +93,31 @@ public class UserServiceImpl implements UserService {
             Role role,
             AccountState state,
             Pageable page) {
-        if (role == null)
-            return userRepository.findByFullNameContainingAndRoleAndState(fullName, Role.MEMBER, state, page);
 
-        return userRepository.findByFullNameContainingAndRoleAndState(fullName, role, state, page);
+        // Default to MEMBER if role is null
+        if (role == null) {
+            role = Role.MEMBER;
+        }
+
+        // Perform the query based on role
+        switch (role) {
+            case MEMBER:
+                return userRepository.findByFullNameContainingAndRoleAndState(fullName, Role.MEMBER, state, page);
+            case MANAGER:
+                return userRepository.findByFullNameContainingAndRoleAndState(fullName, Role.MANAGER, state, page);
+            case STAFF:
+                return userRepository.findByFullNameContainingAndRoleAndState(fullName, Role.STAFF, state, page);
+            default:
+                // Handle any other roles or default case
+                throw new IllegalArgumentException("Invalid role: " + role);
+        }
+    }
+
+
+    @Override
+    public User getLatestUserInAuctionHistoryByAuctionId(Integer auctionId) {
+        return userRepository.findLatestUserInAuctionHistoryByAuctionId(auctionId)
+                .orElseThrow(() -> new ResourceNotFoundException("Người dùng tương ứng không tồn tại"));
     }
 
     @Override
@@ -114,7 +138,8 @@ public class UserServiceImpl implements UserService {
                 .password(passwordEncoder.encode(request.password()))
                 .role(request.role())
                 .state(AccountState.ACTIVE)
-                .province(request.province())
+                .district(request.district())
+                .ward(request.ward())
                 .city(request.city())
                 .yob(request.yob())
                 .phone(request.phone())
@@ -123,4 +148,7 @@ public class UserServiceImpl implements UserService {
                 .build();
         return userRepository.save(user);
     }
+
+
+
 }

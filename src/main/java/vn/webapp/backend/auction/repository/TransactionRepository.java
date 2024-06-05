@@ -1,5 +1,7 @@
 package vn.webapp.backend.auction.repository;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -9,7 +11,13 @@ import java.util.List;
 
 public interface TransactionRepository extends JpaRepository<Transaction, Integer> {
     @Query("SELECT t FROM Transaction t WHERE t.user.username = :username")
-    List<Transaction> findTransactionsByUsername(@Param("username") String username);
+    Page<Transaction> findTransactionsByUsername(@Param("username") String username, Pageable pageable);
     @Query("SELECT t FROM Transaction t WHERE t.type = :typename")
     List<Transaction> findTransactionByType(@Param("typename") String typename);
+    @Query("SELECT COUNT(t) FROM Transaction t WHERE t.type = 'REGISTRATION' AND t.user.username = :username")
+    Integer getCountTransactionsRegistrationByUsername(@Param("username") String username);
+    @Query("SELECT SUM(t.totalPrice) FROM Transaction t WHERE t.type = 'PAYMENT_TO_BUYER' AND t.user.username = :username")
+    Double getTotalPriceJewelryWonByUsername(@Param("username") String username);
+    @Query("SELECT COUNT(t) FROM Transaction t WHERE t.type = 'PAYMENT_TO_BUYER' AND t.user.username = :username")
+    Integer getTotalJewelryWon(@Param("username") String username);
 }

@@ -8,7 +8,7 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 
 @Configuration
-public class VNPAYConfig {
+public class VNPAYConfiguration {
     @Getter
     @Value("${payment.vnPay.url}")
     private String vnp_PayUrl;

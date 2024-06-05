@@ -2,6 +2,8 @@ package vn.webapp.backend.auction.model;
 
 import jakarta.persistence.*;
 import lombok.*;
+import vn.webapp.backend.auction.enums.AuctionHistoryState;
+import vn.webapp.backend.auction.enums.RequestApprovalState;
 
 import java.sql.Timestamp;
 
@@ -23,7 +25,25 @@ public class RequestApproval {
     @JoinColumn(name = "staff_id")
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
-    private User user;
+    private User staff;
+
+    @ManyToOne(cascade = {
+            CascadeType.PERSIST, CascadeType.DETACH,
+            CascadeType.MERGE, CascadeType.REFRESH
+    })
+    @JoinColumn(name = "user_id_send")
+    @EqualsAndHashCode.Exclude
+    @ToString.Exclude
+    private User sender;
+
+    @ManyToOne(cascade = {
+            CascadeType.PERSIST, CascadeType.DETACH,
+            CascadeType.MERGE, CascadeType.REFRESH
+    })
+    @JoinColumn(name = "user_id_respond")
+    @EqualsAndHashCode.Exclude
+    @ToString.Exclude
+    private User responder;
 
     @ManyToOne(cascade = {
             CascadeType.PERSIST, CascadeType.DETACH,
@@ -42,10 +62,12 @@ public class RequestApproval {
 
     @Column(name = "request_time", nullable = false)
     private Timestamp requestTime;
+    @Column(name = "response_time")
+    private Timestamp responseTime;
 
-    @Column(name = "manager_confirm", nullable = false)
-    private boolean managerConfirm;
+    @Enumerated(EnumType.STRING)
+    private RequestApprovalState state;
 
-    @Column(name = "member_confirm", nullable = false)
-    private boolean memberConfirm;
+    @Column(name = "is_confirm")
+    private boolean isConfirm;
 }

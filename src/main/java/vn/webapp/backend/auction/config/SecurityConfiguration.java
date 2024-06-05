@@ -21,6 +21,17 @@ import vn.webapp.backend.auction.security.Endpoints;
 @EnableWebSecurity
 @RequiredArgsConstructor
 public class SecurityConfiguration {
+    private static final String[] WHITE_LIST_URL = {"/api/v1/auth/**",
+            "/v2/api-docs",
+            "/v3/api-docs",
+            "/v3/api-docs/**",
+            "/swagger-resources",
+            "/swagger-resources/**",
+            "/configuration/ui",
+            "/configuration/security",
+            "/swagger-ui/**",
+            "/webjars/**",
+            "/swagger-ui.html"};
     private final AuthenticationProvider authenticationProvider;
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
     private final LogoutHandler logoutHandler;
@@ -28,8 +39,12 @@ public class SecurityConfiguration {
     @Bean
     @CrossOrigin
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        http.authorizeHttpRequests(
+        http
+                .cors(Customizer.withDefaults())
+                .authorizeHttpRequests(
                         configurer -> configurer
+                                .requestMatchers(WHITE_LIST_URL).permitAll()
+                                .requestMatchers("/ws/**").permitAll()
                                 .requestMatchers(HttpMethod.GET, Endpoints.PUBLIC_GET_ENDPOINTS).permitAll()
                                 .requestMatchers(HttpMethod.POST, Endpoints.PUBLIC_POST_ENDPOINTS).permitAll()
                                 .requestMatchers(HttpMethod.PUT, Endpoints.PUBLIC_PUT_ENDPOINTS).permitAll()
@@ -40,6 +55,7 @@ public class SecurityConfiguration {
                                 .requestMatchers(HttpMethod.GET, Endpoints.ADMIN_GET_ENDPOINTS).hasAuthority("ADMIN")
                                 .requestMatchers(HttpMethod.POST, Endpoints.ADMIN_POST_ENDPOINTS).hasAuthority("ADMIN")
                                 .requestMatchers(HttpMethod.PUT, Endpoints.ADMIN_PUT_ENDPOINTS).hasAuthority("ADMIN")
+                                .anyRequest().authenticated()
                 )
                 .csrf(csrf -> csrf.disable())
                 .sessionManagement((session) -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
@@ -50,25 +66,7 @@ public class SecurityConfiguration {
                         logout.logoutUrl("/api/v1/auth/logout")
                                 .addLogoutHandler(logoutHandler)
                                 .logoutSuccessHandler((request, response, authentication) -> SecurityContextHolder.clearContext())
-                )
-        ;
-
-        http.authorizeHttpRequests(configurer -> configurer
-                .requestMatchers(
-                        "/v3/api-docs/**",
-                        "/v2/api-docs",
-                        "/api/v1/auth/**",
-                        "/v2/api-docs",
-                        "/swagger-resources/**",
-                        "/swagger-resources",
-                        "/configuration/ui",
-                        "/configuration/security**",
-                        "/swagger-ui/**",
-                        "/webjars/**",
-                        "/swagger-ui.html**"
-                )
-                .permitAll()
-        );
+                );
         return http.build();
     }
 }
