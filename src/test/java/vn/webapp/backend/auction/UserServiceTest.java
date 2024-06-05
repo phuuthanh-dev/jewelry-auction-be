@@ -43,6 +43,7 @@ public class UserServiceTest extends AbstractTestNGSpringContextTests {
     }
 
     @Test
+<<<<<<< HEAD
     public void testGetUserByEmailReturnsWell() {
         // Expected
         String email = "phuuthanh2003@gmail.com";
@@ -54,6 +55,8 @@ public class UserServiceTest extends AbstractTestNGSpringContextTests {
     }
 
     @Test
+=======
+>>>>>>> 4377cc4a7e14c0496d1851f36a932b57ec105b59
     public void testGetUserByIdReturnsNull() {
         Integer nonExistId = 99;
 
@@ -74,4 +77,8 @@ public class UserServiceTest extends AbstractTestNGSpringContextTests {
         assertThrows(ResourceNotFoundException.class, () -> userService.getUserByEmail(nonExistEmail));
     }
 
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> 4377cc4a7e14c0496d1851f36a932b57ec105b59

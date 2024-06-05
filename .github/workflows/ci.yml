@@ -59,7 +59,6 @@ jobs:
         run: mvn -B package -DskipTests --file pom.xml
 
       - name: Distribute jar-war file
-
         run: mkdir staging && cp target/*.jar staging
 
       - name: Make hyperlink to jar-war file # Tạo hyperlink để download build
