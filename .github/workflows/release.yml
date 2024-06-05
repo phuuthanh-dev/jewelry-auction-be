@@ -33,5 +33,3 @@ jobs:
           name: 'Auction REST API - v${{ steps.get_version.outputs.version }}'
           tag_name: ${{ steps.get_version.outputs.version }}
           generate_release_notes: true
-        env:
-          GITHUB_TOKEN: ${{ secrets.YOUR_PERSONAL_ACCESS_TOKEN }}
