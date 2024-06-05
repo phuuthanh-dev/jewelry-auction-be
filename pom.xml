@@ -10,7 +10,7 @@
     </parent>
     <groupId>vn.webapp.backend</groupId>
     <artifactId>auction</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>1.0.0</version>
     <name>auction</name>
     <description>Project for Spring Boot for Auction Jewelry</description>
     <properties>
