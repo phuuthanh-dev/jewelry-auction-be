@@ -39,4 +39,23 @@ public class EmailService {
 
         javaMailSender.send(message);
     }
+
+    @Async
+    public void sendResetPasswordEmail(String to, String fullName, String token) throws MessagingException {
+        MimeMessage message = javaMailSender.createMimeMessage();
+        MimeMessageHelper helper = new MimeMessageHelper(message, true);
+
+        String url = "http://localhost:3000/reset-password/" + token;
+
+        String html = emailContent.setHtmlContent(fullName, "Đặt lại mật khẩu", url,
+                "Bạn vừa yêu cầu đặt lại mật khẩu tại DGS",
+                "Vui lòng nhấn nút bên dưới để đặt lại mật khẩu: ");
+
+        helper.setFrom(emailUsername);
+        helper.setTo(to);
+        helper.setSubject("Đặt lại mật khẩu tại DGS.");
+        helper.setText(html, true);
+
+        javaMailSender.send(message);
+    }
 }

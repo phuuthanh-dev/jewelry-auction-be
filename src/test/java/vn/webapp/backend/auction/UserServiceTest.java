@@ -74,4 +74,8 @@ public class UserServiceTest extends AbstractTestNGSpringContextTests {
         assertThrows(ResourceNotFoundException.class, () -> userService.getUserByEmail(nonExistEmail));
     }
 
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> bd83863cf55ed8f88ea49d02348c7073c2492e74

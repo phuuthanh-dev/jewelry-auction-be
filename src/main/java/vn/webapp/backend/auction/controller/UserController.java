@@ -6,6 +6,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import vn.webapp.backend.auction.dto.RegisterAccountRequest;
 import vn.webapp.backend.auction.enums.AccountState;
@@ -14,9 +15,9 @@ import vn.webapp.backend.auction.model.User;
 import vn.webapp.backend.auction.service.UserService;
 
 @RestController
-@CrossOrigin(origins = "http://localhost:3000")
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/user")
+@CrossOrigin(origins = {"http://localhost:3000", "http://localhost:3001", "http://localhost"})
 public class UserController {
 
     private final UserService userService;
@@ -49,6 +50,8 @@ public class UserController {
         return ResponseEntity.ok(userService.getMemberByFullNameContainingAndState(fullName, state, pageable));
     }
 
+
+
     @GetMapping("/staff")
     public ResponseEntity<Page<User>> getStaff(
             @RequestParam(required = false) String fullName,
@@ -78,5 +81,10 @@ public class UserController {
     @PutMapping()
     public ResponseEntity<User> updateProfileUser(@RequestBody User user) {
         return ResponseEntity.ok(userService.updateUser(user));
+    }
+
+    @GetMapping("/get-winner-auction/{auctionId}")
+    public ResponseEntity<User> getLatestUserInAuctionHistoryByAuctionId(@PathVariable Integer auctionId) {
+        return ResponseEntity.ok(userService.getLatestUserInAuctionHistoryByAuctionId(auctionId));
     }
 }

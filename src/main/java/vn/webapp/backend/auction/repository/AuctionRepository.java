@@ -12,6 +12,7 @@ import java.sql.Timestamp;
 import java.util.List;
 
 public interface AuctionRepository extends JpaRepository<Auction, Integer> {
+
     @Query("SELECT a FROM Auction a WHERE a.startDate >= :startday AND a.endDate <= :endday")
     List<Auction> findAuctionSortByBetweenStartdayAndEndday(@Param("startday") Timestamp startday, @Param("endday") Timestamp endday);
 
@@ -42,6 +43,16 @@ public interface AuctionRepository extends JpaRepository<Auction, Integer> {
             @Param("categoryId") Integer categoryId
     );
 
+    @Query("SELECT a FROM Auction a WHERE a.user.id = :staff_id")
+    Page<Auction> findByStaffID(@Param("staff_id") Integer staff_id, Pageable pageable);
 
     Page<Auction> findByStateIn(List<AuctionState> states, Pageable pageable);
+
+    @Query("SELECT a FROM Auction a WHERE a.jewelry.id = :jewelry_id")
+    List<Auction> findAuctionByJewelryId(@Param("jewelry_id") Integer jewelry_id);
+
+    @Query("SELECT COUNT(a) FROM Auction a")
+    Integer countAllAuctions();
+
+
 }

@@ -13,6 +13,7 @@ import java.util.List;
 @SpringBootTest
 class BankServiceTest extends AbstractTestNGSpringContextTests {
 
+<<<<<<< HEAD
 	@Autowired
 	private BankService bankService;
 
@@ -31,4 +32,24 @@ class BankServiceTest extends AbstractTestNGSpringContextTests {
 		assertNotNull(foundBank);
 		assertEquals(foundBank.getBankName(), "Ngân hàng Nông nghiệp và Phát triển Nông thôn Việt Nam");
 	}
+=======
+    @Autowired
+    private BankService bankService;
+
+    @Test
+    public void testGetAllBankAndReturnsWell() {
+        List<Bank> banks = bankService.getAll();
+        assertNotNull(banks);
+        assertFalse(banks.isEmpty());
+    }
+
+    @Test
+    public void testGetBankByIdAndReturnRightBank() {
+        Bank bank = new Bank();
+        bank.setId(1);
+        Bank foundBank = bankService.getById(bank.getId());
+        assertNotNull(foundBank);
+        assertEquals(foundBank.getBankName(), "Ngân hàng Nông nghiệp và Phát triển Nông thôn Việt Nam");
+    }
+>>>>>>> bd83863cf55ed8f88ea49d02348c7073c2492e74
 }

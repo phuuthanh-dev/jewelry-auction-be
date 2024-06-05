@@ -5,6 +5,8 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 
 import java.security.Key;
@@ -13,6 +15,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
 
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.ResponseCookie;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import vn.webapp.backend.auction.model.User;
@@ -20,7 +24,17 @@ import vn.webapp.backend.auction.model.User;
 @Service
 @RequiredArgsConstructor
 public class JwtService {
-    public static final String SECRET_KEY  = "jAkq3Mbc9Tz7X4D5Y6L8Q5C9wK8z2Gf9A6PqS5R8tV3v2O5wF8rM7U6pR4yN3T9q";
+
+    @Value("${application.security.jwt.secret-key}")
+    public String secretKey;
+
+    @Value("${application.security.jwt.expiration}")
+    public long jwtExpiration;
+
+    @Value("${application.security.jwt.refresh-token.expiration}")
+    public long refreshExpiration;
+
+    public static final String REFRESH_SECRET_KEY = "sUpErSeCrEtReFrEsHkEy1234567890abcdefghijklmnopqrstuv";
 
     public String generateToken(UserDetails userDetails) {
         return generateToken(new HashMap<>(), userDetails);
@@ -28,20 +42,44 @@ public class JwtService {
 
     public String generateToken(
             Map<String, Object> extraClaims,
-            UserDetails userDetails) {
+            UserDetails userDetails
+    ) {
+        return buildToken(extraClaims, userDetails, jwtExpiration);
+    }
+
+    public String generateRefreshToken(
+            UserDetails userDetails
+    ) {
+        return buildToken(new HashMap<>(), userDetails, refreshExpiration);
+    }
+
+    public ResponseCookie generateRefreshTokenCookie(String token) {
+        return ResponseCookie.from("refresh_token", token)
+                .path("/")
+                .maxAge(refreshExpiration) // 15 days in seconds
+                .httpOnly(true)
+                .secure(true)
+                .sameSite("Strict")
+                .build();
+    }
+
+    private String buildToken(Map<String, Object> extraClaims,
+                              UserDetails userDetails,
+                              long expiration) {
         return Jwts
                 .builder()
                 .setClaims(extraClaims)
                 .claim("authorities", userDetails.getAuthorities())
                 .setSubject(userDetails.getUsername())
                 .setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(new Date(System.currentTimeMillis()  + 1000 * 60 * 60 * 24 * 24))
+                .setExpiration(new Date(System.currentTimeMillis() + expiration
+                ))
                 .signWith(getSignInKey(), SignatureAlgorithm.HS256)
                 .compact();
     }
 
     private Key getSignInKey() {
-        byte[] keyBytes = Decoders.BASE64.decode(SECRET_KEY);
+        byte[] keyBytes = Decoders.BASE64.decode(secretKey);
         return Keys.hmacShaKeyFor(keyBytes);
     }
 
@@ -76,4 +114,20 @@ public class JwtService {
         return extractClaim(token, Claims::getExpiration);
     }
 
+    public boolean isRefreshTokenValid(String token, UserDetails userDetails) {
+        return isTokenValid(token, userDetails);
+    }
+
+
+    public String getTokenFromCookie(HttpServletRequest request, String cookieName) {
+        Cookie[] cookies = request.getCookies();
+        if (cookies != null) {
+            for (Cookie cookie : cookies) {
+                if (cookie.getName().equals(cookieName)) {
+                    return cookie.getValue();
+                }
+            }
+        }
+        return null; // Cookie not found
+    }
 }

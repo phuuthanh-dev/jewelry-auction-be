@@ -1,6 +1,12 @@
 package vn.webapp.backend.auction.dto;
 
+import jakarta.persistence.Column;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
 import vn.webapp.backend.auction.enums.Role;
+import vn.webapp.backend.auction.model.Bank;
 
 public record RegisterAccountRequest(
         String firstName,
@@ -9,10 +15,14 @@ public record RegisterAccountRequest(
         String password,
         String email,
         String address,
-        String province,
         String city,
+        String district,
+        String ward,
         String yob,
         String phone,
         String CCCD,
-        Role role) {
+        Role role,
+        String bankAccountName,
+        String bankAccountNumber,
+        Integer bankId) {
 }

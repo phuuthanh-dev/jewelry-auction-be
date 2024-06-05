@@ -14,6 +14,7 @@ import java.util.Optional;
 
 public interface UserRepository extends JpaRepository<User, Integer> {
     Optional<User> findByEmail(String email);
+
     Optional<User> findByUsername(String usename);
 
     @Query("SELECT u FROM User u WHERE u.role = :role")
@@ -22,19 +23,17 @@ public interface UserRepository extends JpaRepository<User, Integer> {
     @Query("UPDATE User u SET u.avatar = :avatar WHERE u.username = :username")
     void updateAvatar(String username, String avatar);
 
-    @Query("SELECT u FROM User u " +
-            "WHERE (:fullName IS NULL OR CONCAT(u.firstName,' ',u.lastName) LIKE %:fullName%) " +
-            "AND (:roleId IS NULL OR u.role = :role) " +
-            "AND (:state IS NULL OR u.state = :state)")
-    Page<User> findByFullNameContainingAndRoleAndState(
-            @Param("fullName") String fullName,
-            @Param("roleId") Role role,
-            @Param("state") AccountState state,
-            Pageable pageable);
+    @Query("SELECT u FROM User u " + "WHERE (:fullName IS NULL OR CONCAT(u.firstName,' ',u.lastName) LIKE %:fullName%) " + "AND (:role IS NULL OR u.role = :role) " + "AND (:state IS NULL OR u.state = :state)")
+    Page<User> findByFullNameContainingAndRoleAndState(@Param("fullName") String fullName, @Param("role") Role role, @Param("state") AccountState state, Pageable pageable);
 
-    Page<User> findByFullNameContainingAndRoleNotAndState(
-            String fullName,
-            Integer roleId,
-            AccountState state,
-            Pageable pageable);
+    Page<User> findByFullNameContainingAndRoleNotAndState(String fullName, Integer roleId, AccountState state, Pageable pageable);
+
+    @Query("SELECT ah.user " +
+            "FROM AuctionHistory ah " +
+            "WHERE ah.auction.id = :auctionId " +
+            "AND ah.time = (SELECT MAX(ah2.time) FROM AuctionHistory ah2 WHERE ah2.auction.id = :auctionId AND ah2.state=ACTIVE)")
+    Optional<User> findLatestUserInAuctionHistoryByAuctionId(@Param("auctionId") Integer auctionId);
+
+    @Query("SELECT COUNT(u) FROM User u")
+    Integer getTotalUser();
 }
