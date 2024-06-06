@@ -67,4 +67,9 @@ public class RequestApporvalServiceImpl implements RequestApprovalService{
         requestApprovalRepository.save(newRequest);
         return newRequest;
     }
+
+    @Override
+    public Page<RequestApproval> getRequestApprovalByUserId(Integer id, Pageable pageable) {
+        return requestApprovalRepository.findRequestApprovalByUserId(id, pageable);
+    }
 }

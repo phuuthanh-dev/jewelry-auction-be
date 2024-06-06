@@ -12,4 +12,5 @@ public interface RequestApprovalService {
     void setRequestState(Integer id, String state);
     Page<RequestApproval> getRequestBySenderRole(Role role, Pageable pageable);
     RequestApproval requestFromUser(UserRequestApproval request);
+    Page<RequestApproval> getRequestApprovalByUserId(Integer id, Pageable pageable);
 }
