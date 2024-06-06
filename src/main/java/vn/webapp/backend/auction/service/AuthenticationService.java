@@ -19,6 +19,7 @@ import lombok.RequiredArgsConstructor;
 import vn.webapp.backend.auction.dto.*;
 import vn.webapp.backend.auction.dto.RegisterAccountRequest;
 import vn.webapp.backend.auction.enums.AccountState;
+import vn.webapp.backend.auction.enums.Role;
 import vn.webapp.backend.auction.enums.TokenType;
 import vn.webapp.backend.auction.exception.*;
 import vn.webapp.backend.auction.model.Bank;
@@ -226,5 +227,17 @@ public class AuthenticationService {
         return AuthenticationResponse.builder()
                 .accessToken(jwtToken)
                 .build();
+    }
+
+    public void forgotPassword(ForgotPasswordRequest request) throws MessagingException {
+        var existingUser = userRepository.findByEmail(request.email())
+                .orElseThrow(() -> new UserNotFoundException(
+                        "Người dùng với email '" + request.email() + "' không tồn tại."));
+        if (existingUser.getRole() != Role.MEMBER) {
+            throw new UnauthorizedException(
+                    "Bạn không có quyền truy cập. Vui lòng liên hệ quản trị viên để được hỗ trợ.");
+        }
+        emailService.sendResetPasswordEmail(request.email(), existingUser.getFullName(),
+                jwtService.generateToken(existingUser));
     }
 }

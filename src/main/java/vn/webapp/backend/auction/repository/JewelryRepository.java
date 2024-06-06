@@ -29,4 +29,7 @@ public interface JewelryRepository extends JpaRepository<Jewelry, Integer> {
     Page<Jewelry> findJewelryInHandOver(Pageable pageable);
 
     Page<Jewelry> findByUserUsername(String username, Pageable pageable);
+
+    @Query("SELECT COUNT(j) FROM Jewelry j WHERE j.state = 'ACTIVE'")
+    Integer countAllJewelriesActive();
 }

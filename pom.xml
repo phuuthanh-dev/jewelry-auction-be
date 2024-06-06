@@ -10,7 +10,7 @@
     </parent>
     <groupId>vn.webapp.backend</groupId>
     <artifactId>auction</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>1.0.0</version>
     <name>auction</name>
     <description>Project for Spring Boot for Auction Jewelry</description>
     <properties>
@@ -99,6 +99,13 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-websocket</artifactId>
+        </dependency>
+        <!-- TestNG -->
+        <dependency>
+            <groupId>org.testng</groupId>
+            <artifactId>testng</artifactId>
+            <version>7.10.2</version>
+            <scope>test</scope>
         </dependency>
     </dependencies>
 

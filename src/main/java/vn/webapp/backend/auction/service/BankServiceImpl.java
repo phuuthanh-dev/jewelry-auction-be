@@ -18,4 +18,10 @@ public class BankServiceImpl implements BankService {
     public List<Bank> getAll() {
         return this.bankRepository.findAll();
     }
+
+    @Override
+    public Bank getById(Integer id) {
+        return this.bankRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Bank not found"));
+    }
 }

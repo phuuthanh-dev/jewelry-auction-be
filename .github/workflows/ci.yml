@@ -1,0 +1,68 @@
+name: Spring Boot CI
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  run-tests:
+    name: Run Tests
+    runs-on: ubuntu-latest
+    services:
+      sqlserver:
+        image: mcr.microsoft.com/mssql/server:2019-latest
+        ports:
+          - "1433:1433"
+        env:
+          ACCEPT_EULA: Y
+          SA_PASSWORD: ${{ secrets.SQL_SA_PASSWORD }}
+          MSSQL_PID: Express
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v2
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+
+      - name: Execute init.sql
+        run: |
+          sqlcmd -S localhost -U sa -P ${{ secrets.SQL_SA_PASSWORD }} -i db/init.sql
+
+      - name: Run Unit Tests
+        run: mvn test
+
+      - name: Run Integration Tests
+        run: mvn verify
+
+  build:
+    name: Build
+    needs: run-tests
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v2
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+
+      - name: Build with Maven
+        run: mvn -B package -DskipTests --file pom.xml
+
+      - name: Distribute jar-war file
+        run: mkdir staging && cp target/*.jar staging
+
+      - name: Make hyperlink to jar-war file # Tạo hyperlink để download build
+        uses: actions/upload-artifact@v2
+        with:
+          name: 1.0-SNAPSHOT.jar # Bản build được đánh version 1.0-SNAPSHOT
+          path: staging

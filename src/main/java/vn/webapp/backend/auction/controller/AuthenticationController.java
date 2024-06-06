@@ -32,7 +32,7 @@ public class AuthenticationController {
     }
 
     @PostMapping("/change-password")
-    public ResponseEntity<AuthenticationResponse> changePassword (
+    public ResponseEntity<AuthenticationResponse> changePassword(
             @RequestBody ChangePasswordRequest request) {
         ResponseEntity.ok(authenticationService.changePassword(request));
         return ResponseEntity.ok().build();
@@ -57,5 +57,12 @@ public class AuthenticationController {
             HttpServletResponse response
     ) throws IOException {
         authenticationService.refreshToken(request, response);
+    }
+
+    @PostMapping("/forgot-password")
+    public ResponseEntity<AuthenticationResponse> forgotPassword(
+            @RequestBody ForgotPasswordRequest request) throws MessagingException {
+        authenticationService.forgotPassword(request);
+        return ResponseEntity.ok().build();
     }
 }
