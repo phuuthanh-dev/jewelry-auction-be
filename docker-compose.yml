@@ -1,0 +1,17 @@
+version: '3.8'
+
+services:
+  auction-api:
+    image: ghcr.io/phuuthanh2003/auction-api:latest
+    ports:
+      - "8080:8080"
+    depends_on:
+      - auction-database
+
+  auction-database:
+    image: ghcr.io/phuuthanh2003/auction-database:latest
+    environment:
+      - ACCEPT_EULA=Y
+      - SA_PASSWORD=Thanhth@nh1
+    ports:
+      - "1433:1433"

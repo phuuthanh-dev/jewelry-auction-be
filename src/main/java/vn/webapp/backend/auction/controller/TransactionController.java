@@ -1,9 +1,15 @@
 package vn.webapp.backend.auction.controller;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import vn.webapp.backend.auction.dto.UserTransactionResponse;
 import vn.webapp.backend.auction.model.Auction;
+import vn.webapp.backend.auction.model.AuctionHistory;
 import vn.webapp.backend.auction.model.Transaction;
 import vn.webapp.backend.auction.service.TransactionService;
 
@@ -14,6 +20,7 @@ import java.util.List;
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/transaction")
 public class TransactionController {
+
     private final TransactionService transactionService;
 
     @GetMapping("/get-all")
@@ -27,13 +34,8 @@ public class TransactionController {
     }
 
     @GetMapping("/get-by-user-name/{username}")
-    public ResponseEntity<List<Transaction>> getTransactionByUsername(@PathVariable String username) {
-        return ResponseEntity.ok(transactionService.getTransactionsByUsername(username));
-    }
-
-    @GetMapping("/get-by-user-type/{type}")
-    public ResponseEntity<List<Transaction>> getTransactionByType(@PathVariable String type) {
-        return ResponseEntity.ok(transactionService.getTransactionByType(type));
+    public ResponseEntity<UserTransactionResponse> getTransactionByUsername(@PathVariable String username) {
+        return ResponseEntity.ok(transactionService.getTransactionsDashboardByUsername(username));
     }
 
     @PutMapping("/set-state/{id}")
@@ -41,4 +43,17 @@ public class TransactionController {
         transactionService.setTransactionState(id, state);
         return ResponseEntity.ok().build();
     }
+
+    @GetMapping("/get-by-username")
+    public ResponseEntity<Page<Transaction>> getAuctionHistoryByUsername(
+            @RequestParam(defaultValue = "createDate") String sortBy,
+            @RequestParam(defaultValue = "0") String username,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "5") int size,
+            @RequestParam(defaultValue = "desc") String sortOrder) {
+        Sort.Direction direction = (sortOrder.equalsIgnoreCase("desc")) ? Sort.Direction.DESC : Sort.Direction.ASC;
+        Pageable pageable = PageRequest.of(page, size, direction, sortBy);
+        return ResponseEntity.ok(transactionService.getTransactionsByUsername(username, pageable));
+    }
+
 }

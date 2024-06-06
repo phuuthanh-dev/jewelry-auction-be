@@ -7,8 +7,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import vn.webapp.backend.auction.dto.SendJewelryFromUserRequest;
 import vn.webapp.backend.auction.model.Jewelry;
-import vn.webapp.backend.auction.model.User;
 import vn.webapp.backend.auction.service.JewelryService;
 
 import java.util.List;
@@ -21,15 +21,35 @@ public class JewelryController {
 
     private final JewelryService jewelryService;
 
+//    @GetMapping("/sorted-and-paged")
+//    public ResponseEntity<Page<Jewelry>> getAllJewelriesSortedAndPaged(
+//            @RequestParam(defaultValue = "id") String sortBy,
+//            @RequestParam(defaultValue = "0") int page,
+//            @RequestParam(defaultValue = "5") int size,
+//            @RequestParam(defaultValue = "asc") String sortOrder) {
+//        Sort.Direction direction = (sortOrder.equalsIgnoreCase("asc")) ? Sort.Direction.ASC : Sort.Direction.DESC;
+//        Pageable pageable = PageRequest.of(page, size, direction, sortBy);
+//        return ResponseEntity.ok(jewelryService.getAllJeweries(pageable));
+//    }
+
     @GetMapping("/sorted-and-paged")
     public ResponseEntity<Page<Jewelry>> getAllJewelriesSortedAndPaged(
             @RequestParam(defaultValue = "id") String sortBy,
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "5") int size,
-            @RequestParam(defaultValue = "asc") String sortOrder) {
+            @RequestParam(defaultValue = "asc") String sortOrder,
+            @RequestParam(required = false) String username) {
         Sort.Direction direction = (sortOrder.equalsIgnoreCase("asc")) ? Sort.Direction.ASC : Sort.Direction.DESC;
         Pageable pageable = PageRequest.of(page, size, direction, sortBy);
-        return ResponseEntity.ok(jewelryService.getAllJeweries(pageable));
+
+        Page<Jewelry> jewelries;
+        if (username != null) {
+            jewelries = jewelryService.getJewelriesByUsername(username, pageable);
+        } else {
+            jewelries = jewelryService.getAllJeweries(pageable);
+        }
+
+        return ResponseEntity.ok(jewelries);
     }
 
     @GetMapping("/get-all")
@@ -62,5 +82,38 @@ public class JewelryController {
         jewelryService.deleteJewelry(id);
         return ResponseEntity.noContent().build();
     }
+
+    @GetMapping("/in-wait-list")
+    public ResponseEntity<Page<Jewelry>> getJewelryInWaitlist(
+            @RequestParam(defaultValue = "id") String sortBy,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "5") int size,
+            @RequestParam(defaultValue = "asc") String sortOrder) {
+        Sort.Direction direction = (sortOrder.equalsIgnoreCase("asc")) ? Sort.Direction.ASC : Sort.Direction.DESC;
+        Pageable pageable = PageRequest.of(page, size, direction, sortBy);
+        return ResponseEntity.ok(jewelryService.getJewelriesInWaitList(pageable));
+    }
+
+    @GetMapping("/in-handover-list")
+    public ResponseEntity<Page<Jewelry>> getJewelryInHandOver(
+            @RequestParam(defaultValue = "id") String sortBy,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "5") int size,
+            @RequestParam(defaultValue = "asc") String sortOrder) {
+        Sort.Direction direction = (sortOrder.equalsIgnoreCase("asc")) ? Sort.Direction.ASC : Sort.Direction.DESC;
+        Pageable pageable = PageRequest.of(page, size, direction, sortBy);
+        return ResponseEntity.ok(jewelryService.getJewelriesInHandOver(pageable));
+    }
+
+    @PostMapping("/jewelry-request")
+    public ResponseEntity<Jewelry> requestJewelry(@RequestBody SendJewelryFromUserRequest request) {
+        return ResponseEntity.ok(jewelryService.requestJewelry(request));
+    }
+
+    @GetMapping("/latest")
+    public ResponseEntity<Jewelry> lastJewelry() {
+        return ResponseEntity.ok(jewelryService.getLatestJewelry());
+    }
+
 
 }

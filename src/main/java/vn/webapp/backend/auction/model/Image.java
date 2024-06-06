@@ -2,9 +2,7 @@ package vn.webapp.backend.auction.model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -32,6 +30,8 @@ public class Image {
             CascadeType.MERGE, CascadeType.REFRESH
     })
     @JoinColumn(name = "jewelry_id")
+    @EqualsAndHashCode.Exclude
+    @ToString.Exclude
     private Jewelry jewelry;
 
 }

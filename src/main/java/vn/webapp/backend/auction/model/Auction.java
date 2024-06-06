@@ -1,5 +1,6 @@
 package vn.webapp.backend.auction.model;
 
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -30,7 +31,7 @@ public class Auction {
     @Column(name = "name", nullable = false, columnDefinition = "nvarchar(50)")
     private String name;
 
-    @Column(name = "description", nullable = false, columnDefinition = "nvarchar(200)")
+    @Column(name = "description", nullable = false, columnDefinition = "nvarchar(MAX)")
     private String description;
 
     @Column(name = "first_price", nullable = false)
@@ -84,4 +85,5 @@ public class Auction {
         }
         return 0;
     }
+
 }
