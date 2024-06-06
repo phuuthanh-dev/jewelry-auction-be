@@ -14,22 +14,22 @@ import java.util.List;
 class BankServiceTest extends AbstractTestNGSpringContextTests {
 
 
-//    @Autowired
-//    private BankService bankService;
-//
-//    @Test
-//    public void testGetAllBankAndReturnsWell() {
-//        List<Bank> banks = bankService.getAll();
-//        assertNotNull(banks);
-//        assertFalse(banks.isEmpty());
-//    }
-//
-//    @Test
-//    public void testGetBankByIdAndReturnRightBank() {
-//        Bank bank = new Bank();
-//        bank.setId(1);
-//        Bank foundBank = bankService.getById(bank.getId());
-//        assertNotNull(foundBank);
-//        assertEquals(foundBank.getBankName(), "Ngân hàng Nông nghiệp và Phát triển Nông thôn Việt Nam");
-//    }
+    @Autowired
+    private BankService bankService;
+
+    @Test
+    public void testGetAllBankAndReturnsWell() {
+        List<Bank> banks = bankService.getAll();
+        assertNotNull(banks);
+        assertFalse(banks.isEmpty());
+    }
+
+    @Test
+    public void testGetBankByIdAndReturnRightBank() {
+        Bank bank = new Bank();
+        bank.setId(1);
+        Bank foundBank = bankService.getById(bank.getId());
+        assertNotNull(foundBank);
+        assertEquals(foundBank.getBankName(), "Ngân hàng Nông nghiệp và Phát triển Nông thôn Việt Nam");
+    }
 }
