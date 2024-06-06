@@ -1,10 +1,10 @@
-version: '3.8'
+version: '3.0'
 
 services:
   auction-api:
     image: ghcr.io/phuuthanh2003/auction-api:latest
     ports:
-      - "8080:8080"
+      - "8085:8080"
     depends_on:
       - auction-database
 

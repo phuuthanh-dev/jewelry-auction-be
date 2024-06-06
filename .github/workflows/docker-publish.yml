@@ -54,7 +54,7 @@ jobs:
 
 
       - name: 'Publish Auction Backend Docker Image'
-        working-directory: ${{ github.workspace }}/server
+        working-directory: ${{ github.workspace }}
         run: |
           docker build . -t ghcr.io/phuuthanh2003/auction-api:${{ steps.get_version.outputs.version }} -t ghcr.io/phuuthanh2003/auction-api:latest
           docker push ghcr.io/phuuthanh2003/auction-api:${{ steps.get_version.outputs.version }}
