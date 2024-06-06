@@ -15,64 +15,64 @@ import static org.testng.Assert.*;
 @SpringBootTest
 public class UserServiceTest extends AbstractTestNGSpringContextTests {
 
-//    @Autowired
-//    private UserService userService;
-//
-//    @Test
-//    public void testGetUserByUsernameReturnsWell() {
-//        // Expected
-//        String username = "phuuthanh2003";
-//        // Act
-//        User user = userService.getUserByUsername(username);
-//        // Assert
-//        assertNotNull(user);
-//        assertEquals(user.getUsername(), username);
-//    }
-//
-//    @Test
-//    public void testGetUserByIdReturnsWell() {
-//        // Expected
-//        Integer id = 1;
-//
-//        // Act
-//        User user = userService.getUserById(id);
-//
-//        // Assert
-//        assertNotNull(user);
-//        assertEquals(user.getId(), id);
-//    }
-//
-//    @Test
-//    public void testGetUserByEmailReturnsWell() {
-//        // Expected
-//        String email = "phuuthanh2003@gmail.com";
-//        // Act
-//        User user = userService.getUserByEmail(email);
-//        // Assert
-//        assertNotNull(user);
-//        assertEquals(user.getEmail(), email);
-//    }
-//
-//    @Test
-//    public void testGetUserByIdReturnsNull() {
-//        Integer nonExistId = 99;
-//
-//        assertThrows(ResourceNotFoundException.class, () -> userService.getUserById(nonExistId));
-//    }
-//
-//    @Test
-//    public void testGetUserByUsernameReturnsNull() {
-//        String nonExistUsername = "null";
-//
-//        assertThrows(ResourceNotFoundException.class, () -> userService.getUserByUsername(nonExistUsername));
-//    }
-//
-//    @Test
-//    public void testGetUserByEmailReturnsNull() {
-//        String nonExistEmail = "null";
-//
-//        assertThrows(ResourceNotFoundException.class, () -> userService.getUserByEmail(nonExistEmail));
-//    }
+    @Autowired
+    private UserService userService;
+
+    @Test
+    public void testGetUserByUsernameReturnsWell() {
+        // Expected
+        String username = "phuuthanh2003";
+        // Act
+        User user = userService.getUserByUsername(username);
+        // Assert
+        assertNotNull(user);
+        assertEquals(user.getUsername(), username);
+    }
+
+    @Test
+    public void testGetUserByIdReturnsWell() {
+        // Expected
+        Integer id = 1;
+
+        // Act
+        User user = userService.getUserById(id);
+
+        // Assert
+        assertNotNull(user);
+        assertEquals(user.getId(), id);
+    }
+
+    @Test
+    public void testGetUserByEmailReturnsWell() {
+        // Expected
+        String email = "phuuthanh2003@gmail.com";
+        // Act
+        User user = userService.getUserByEmail(email);
+        // Assert
+        assertNotNull(user);
+        assertEquals(user.getEmail(), email);
+    }
+
+    @Test
+    public void testGetUserByIdReturnsNull() {
+        Integer nonExistId = 99;
+
+        assertThrows(ResourceNotFoundException.class, () -> userService.getUserById(nonExistId));
+    }
+
+    @Test
+    public void testGetUserByUsernameReturnsNull() {
+        String nonExistUsername = "null";
+
+        assertThrows(ResourceNotFoundException.class, () -> userService.getUserByUsername(nonExistUsername));
+    }
+
+    @Test
+    public void testGetUserByEmailReturnsNull() {
+        String nonExistEmail = "null";
+
+        assertThrows(ResourceNotFoundException.class, () -> userService.getUserByEmail(nonExistEmail));
+    }
 
 }
 

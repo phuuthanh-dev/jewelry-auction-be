@@ -12,9 +12,7 @@ jobs:
   publish:
     name: Publish Auction Backend Docker Image
     runs-on: ubuntu-latest
-
     if: ${{ github.event.workflow_run.conclusion == 'success' }}
-
     permissions:
       contents: read
       packages: write
@@ -32,7 +30,7 @@ jobs:
 
       - name: 'Build project with Maven'
         run: |
-          mvn verify
+          mvn verify -DskipTests
 
       - name: Get version
         id: get_version
