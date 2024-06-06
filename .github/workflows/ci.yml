@@ -17,7 +17,7 @@ jobs:
           - "1433:1433"
         env:
           ACCEPT_EULA: Y
-          SA_PASSWORD: ${{ secrets.SQL_SA_PASSWORD }}
+          SA_PASSWORD: Thanhth@nh1
           MSSQL_PID: Express
 
     steps:
@@ -32,7 +32,7 @@ jobs:
 
       - name: Execute init.sql
         run: |
-          sqlcmd -S localhost -U sa -P ${{ secrets.SQL_SA_PASSWORD }} -i db/init.sql
+          sqlcmd -S localhost -U sa -P Thanhth@nh1 -i db/init.sql
 
       - name: Run Unit Tests
         run: mvn test

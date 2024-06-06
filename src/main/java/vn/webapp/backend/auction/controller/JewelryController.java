@@ -7,8 +7,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import vn.webapp.backend.auction.dto.SendJewelryFromUserRequest;
 import vn.webapp.backend.auction.model.Jewelry;
-import vn.webapp.backend.auction.model.User;
 import vn.webapp.backend.auction.service.JewelryService;
 
 import java.util.List;
@@ -104,5 +104,16 @@ public class JewelryController {
         Pageable pageable = PageRequest.of(page, size, direction, sortBy);
         return ResponseEntity.ok(jewelryService.getJewelriesInHandOver(pageable));
     }
+
+    @PostMapping("/jewelry-request")
+    public ResponseEntity<Jewelry> requestJewelry(@RequestBody SendJewelryFromUserRequest request) {
+        return ResponseEntity.ok(jewelryService.requestJewelry(request));
+    }
+
+    @GetMapping("/latest")
+    public ResponseEntity<Jewelry> lastJewelry() {
+        return ResponseEntity.ok(jewelryService.getLatestJewelry());
+    }
+
 
 }
