@@ -1,7 +1,7 @@
 package vn.webapp.backend.auction.enums;
 
 public enum JewelryState {
-    ACTIVE("Đang hiển thị"),
+    ACTIVE("Đã duyệt"),
     APPROVING("Đang chờ duyệt"),
     HIDDEN("Đã bị ẩn");
 

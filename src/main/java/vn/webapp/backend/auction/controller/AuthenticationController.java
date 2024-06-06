@@ -28,8 +28,14 @@ public class AuthenticationController {
             @RequestBody AuthenticationRequest request, HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) throws MessagingException {
 
         AuthenticationResponse authenticationResponse = authenticationService.authenticate(request, httpServletRequest, httpServletResponse);
-
         return ResponseEntity.ok().body(authenticationResponse);
+    }
+
+    @PostMapping("/change-password")
+    public ResponseEntity<AuthenticationResponse> changePassword(
+            @RequestBody ChangePasswordRequest request) {
+        ResponseEntity.ok(authenticationService.changePassword(request));
+        return ResponseEntity.ok().build();
     }
 
     @PostMapping("/activation")
@@ -51,5 +57,12 @@ public class AuthenticationController {
             HttpServletResponse response
     ) throws IOException {
         authenticationService.refreshToken(request, response);
+    }
+
+    @PostMapping("/forgot-password")
+    public ResponseEntity<AuthenticationResponse> forgotPassword(
+            @RequestBody ForgotPasswordRequest request) throws MessagingException {
+        authenticationService.forgotPassword(request);
+        return ResponseEntity.ok().build();
     }
 }

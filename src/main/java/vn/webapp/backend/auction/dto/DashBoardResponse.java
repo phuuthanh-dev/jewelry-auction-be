@@ -12,4 +12,5 @@ import lombok.NoArgsConstructor;
 public class DashBoardResponse {
     private Integer totalAuctions;
     private Integer totalUser;
+    private Integer totalJewelryActive;
 }

@@ -8,8 +8,7 @@ import org.springframework.stereotype.Service;
 public class EmailContent {
 
     public String setHtmlContent(String fullName, String buttonName, String url, String firstMessage,
-                                String secondMessage) {
-        String subject = "Activate your account at DGS";
+                                 String secondMessage) {
         String imageUrl = "https://raw.githubusercontent.com/phuuthanh2003/AuctionWebApp_BE/main/logo.png";
         String content = "<!DOCTYPE html>\n" +
                 "<html lang=\"en\">\n" +
@@ -74,11 +73,10 @@ public class EmailContent {
                 "        <div class=\"logo\">\n" +
                 "            <img src=\"" + imageUrl + "\" alt=\"Company Logo\" width=\"200\">\n" +
                 "        </div>\n" +
-                "        <h1>" + subject + "</h1>\n" +
                 "        <h3>Xin chào, " + fullName + "</h3>\n" +
                 "        <h4>" + firstMessage + "</h4>\n" +
                 "        <div>" + secondMessage + "</div>\n" +
-                "        <a href=\"" + url + "\" class=\"btn\">" + buttonName +"</a>\n" +
+                "        <a href=\"" + url + "\" class=\"btn\">" + buttonName + "</a>\n" +
                 "    </div>\n" +
                 "</body>\n" +
                 "</html>\n";
