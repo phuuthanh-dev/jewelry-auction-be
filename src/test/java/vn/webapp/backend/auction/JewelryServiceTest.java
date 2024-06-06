@@ -20,7 +20,7 @@ public class JewelryServiceTest extends AbstractTestNGSpringContextTests {
     private JewelryService jewelryService;
 
     @Test
-    public void testGetJewelryByIdReturnWell(){
+    public void testGetJewelryByIdReturnsWell(){
         // Expected
         Integer id = 1;
 
@@ -33,7 +33,7 @@ public class JewelryServiceTest extends AbstractTestNGSpringContextTests {
     }
 
     @Test
-    public void testGetJewelriesByUsernameReturnWell(){
+    public void testGetJewelriesByUsernameReturnsWell(){
         // Expected
         String username = "phuuthanh2003";
         // Act
@@ -48,7 +48,7 @@ public class JewelryServiceTest extends AbstractTestNGSpringContextTests {
     }
 
     @Test
-    public void TestGetJeweriesByCategoryIdReturnWell(){
+    public void TestGetJeweriesByCategoryIdReturnsWell(){
         // Expected
         Integer id = 1;
         // Act
@@ -63,7 +63,7 @@ public class JewelryServiceTest extends AbstractTestNGSpringContextTests {
     }
 
     @Test
-    public void testGetJewelriesByNameContainReturnWell(){
+    public void testGetJewelriesByNameContainReturnsWell(){
         // Expected
         String key = "Nhẫn";
         // Act
@@ -78,7 +78,7 @@ public class JewelryServiceTest extends AbstractTestNGSpringContextTests {
     }
 
     @Test
-    public void testGetJewelryByIdReturnNull(){
+    public void testGetJewelryByIdReturnsNull(){
         Integer nonExistId = 99;
 
         assertThrows(ResourceNotFoundException.class, () -> jewelryService.getJewelryById(nonExistId));
@@ -90,11 +90,11 @@ public class JewelryServiceTest extends AbstractTestNGSpringContextTests {
 //        assertThrows(ResourceNotFoundException.class, () -> jewelryService.getJewelriesByUsername(nonExistUsername));
 //    }
     @Test
-    public void TestGetJeweriesByCategoryIdReturnNulll(){
+    public void TestGetJeweriesByCategoryIdReturnsNulll(){
 
     }
     @Test
-    public void testGetJewelriesByNameContainReturnNull(){
+    public void testGetJewelriesByNameContainReturnsNull(){
 
     }
 
