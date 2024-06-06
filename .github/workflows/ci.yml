@@ -1,4 +1,4 @@
-name: Spring Boot CI
+name: Build Spring Boot With Maven
 
 on:
   push:
