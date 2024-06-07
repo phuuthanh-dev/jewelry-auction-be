@@ -33,6 +33,6 @@ COPY ./init.sql /usr/src/app/init.sql
 # Expose the default SQL Server port
 EXPOSE 1433
 
-# Run SQL Server and execute the init.sql script
-CMD /bin/bash -c "/opt/mssql/bin/sqlservr & sleep 30 && /opt/mssql-tools/bin/sqlcmd -S localhost -U sa -P $SA_PASSWORD -d master -i /usr/src/app/init.sql"
+# Run SQL Server
+CMD ["/opt/mssql/bin/sqlservr"]
 
