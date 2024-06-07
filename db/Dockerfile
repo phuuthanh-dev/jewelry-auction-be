@@ -27,7 +27,7 @@ ENV SA_PASSWORD=Thanhth@nh1
 WORKDIR /usr/src/app
 
 # Copy the init.sql script into the container
-COPY .db/init.sql .
+COPY ./db/init.sql .
 
 # Run SQL Server and execute the init.sql script during image build
 RUN /opt/mssql-tools/bin/sqlcmd -S localhost -U sa -P $SA_PASSWORD -d master -i init.sql
