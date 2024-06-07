@@ -93,9 +93,9 @@ public class RequestApporvalServiceImpl implements RequestApprovalService{
             throw new IllegalArgumentException("User with ID " + request.senderId() + " not found");
         }
 
-        Optional<RequestApproval> existRequestApproval = requestApprovalRepository.findById(request.requestId());
+        Optional<RequestApproval> existRequestApproval = requestApprovalRepository.findById(request.requestApprovalId());
         if (existRequestApproval.isEmpty()) {
-            throw new IllegalArgumentException("Jewelry with ID " + request.requestId() + " not found");
+            throw new IllegalArgumentException("Request with ID " + request.requestApprovalId() + " not found");
         }
         User sender = existSender.get();
         RequestApproval oldRequest = existRequestApproval.get();
@@ -107,6 +107,7 @@ public class RequestApporvalServiceImpl implements RequestApprovalService{
         newRequest.setSender(sender);
         newRequest.setDesiredPrice(oldRequest.getJewelry().getPrice());
         newRequest.setValuation(request.valuation());
+        newRequest.setStaff(sender);
         requestApprovalRepository.save(newRequest);
         return newRequest;
     }

@@ -4,7 +4,7 @@ import java.sql.Timestamp;
 
 public record StaffRequestApproval(
         Integer senderId,
-        Integer requestId,
+        Integer requestApprovalId,
         Double valuation,
         Timestamp requestTime
 ) {
