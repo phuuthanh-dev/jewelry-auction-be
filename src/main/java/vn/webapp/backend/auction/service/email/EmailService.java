@@ -45,7 +45,7 @@ public class EmailService {
         MimeMessage message = javaMailSender.createMimeMessage();
         MimeMessageHelper helper = new MimeMessageHelper(message, true);
 
-        String url = "http://localhost:3000/reset-password/" + token;
+        String url = "http://localhost:3000/reset-mat-khau/" + token;
 
         String html = emailContent.setHtmlContent(fullName, "Đặt lại mật khẩu", url,
                 "Bạn vừa yêu cầu đặt lại mật khẩu tại DGS",
