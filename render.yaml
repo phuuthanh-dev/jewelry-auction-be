@@ -1,24 +1,11 @@
 # render.yaml
-
 services:
   - type: web
-    name: auction-api
+    name: AuctionWebApp_BE
     runtime: docker
-    dockerfilePath: ./Dockerfile
-    envVars:
-      - key: SPRING_DATASOURCE_URL
-        value: "jdbc:sqlserver://auction-database:1433;encrypt=true;trustServerCertificate=true;databaseName=DB_AUCTION;"
-      - key: SPRING_DATASOURCE_USERNAME
-        value: "sa"
-      - key: SPRING_DATASOURCE_PASSWORD
-        value: "Thanhth@nh1"
-
-  - type: private
-    name: auction-database
-    runtime: docker
-    dockerfilePath: ./db/Dockerfile
-    envVars:
-      - key: SA_PASSWORD
-        value: "Thanhth@nh1"
-      - key: ACCEPT_EULA
-        value: "Y"
+    repo: https://github.com/phuuthanh2003/AuctionWebApp_BE
+    plan: free
+    region: oregon
+    dockerContext: .
+    dockerfilePath: ./docker-compose.yml
+version: "1"
