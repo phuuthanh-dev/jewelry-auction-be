@@ -1,16 +1,17 @@
 package vn.webapp.backend.auction.dto;
 
+import vn.webapp.backend.auction.enums.JewelryState;
+
 import java.util.List;
 
 public record SendJewelryFromUserRequest(
-        String name,
-        String price,
+        Integer userId,
+        Double price,
         String description,
         String material,
-        String weight,
+        Double weight,
         String brand,
-        List<String> images
-
+        String name
 
 ) {
 //    id: 0,

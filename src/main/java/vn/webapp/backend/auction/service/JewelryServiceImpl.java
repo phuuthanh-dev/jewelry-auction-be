@@ -5,10 +5,13 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import vn.webapp.backend.auction.dto.SendJewelryFromUserRequest;
 import vn.webapp.backend.auction.enums.JewelryState;
 import vn.webapp.backend.auction.exception.ResourceNotFoundException;
 import vn.webapp.backend.auction.model.Jewelry;
+import vn.webapp.backend.auction.model.User;
 import vn.webapp.backend.auction.repository.JewelryRepository;
+import vn.webapp.backend.auction.repository.UserRepository;
 
 import java.util.List;
 import java.util.Optional;
@@ -19,6 +22,7 @@ import java.util.Optional;
 public class JewelryServiceImpl implements JewelryService {
 
     private final JewelryRepository jewelryRepository;
+    private final UserRepository userRepository;
 
     @Override
     public List<Jewelry> getAll() {
@@ -34,6 +38,36 @@ public class JewelryServiceImpl implements JewelryService {
     @Override
     public Page<Jewelry> getJewelriesByUsername(String username, Pageable pageable) {
         return jewelryRepository.findByUserUsername(username, pageable);
+    }
+
+    @Override
+    public Jewelry requestJewelry(SendJewelryFromUserRequest request) {
+        Optional<User> optionalUser = userRepository.findById(request.userId());
+
+        if (optionalUser.isEmpty()) {
+            throw new IllegalArgumentException("User with ID " + request.userId() + " not found");
+        }
+
+        User user = optionalUser.get();
+
+        Jewelry jewelry = new Jewelry();
+        jewelry.setUser(user);
+        jewelry.setPrice(request.price());
+        jewelry.setDescription(request.description());
+        jewelry.setMaterial(request.material());
+        jewelry.setWeight(request.weight());
+        jewelry.setBrand(request.brand());
+        jewelry.setName(request.name());
+        jewelry.setState(JewelryState.APPROVING);
+
+        jewelryRepository.save(jewelry);
+
+        return jewelry;
+    }
+
+    @Override
+    public Jewelry getLatestJewelry() {
+        return jewelryRepository.findLatestJewelry().get(0);
     }
 
     @Override

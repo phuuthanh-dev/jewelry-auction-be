@@ -11,7 +11,6 @@ import vn.webapp.backend.auction.enums.AuctionState;
 import vn.webapp.backend.auction.model.Auction;
 import vn.webapp.backend.auction.service.AuctionService;
 
-import java.sql.Timestamp;
 import java.util.List;
 
 @RestController
