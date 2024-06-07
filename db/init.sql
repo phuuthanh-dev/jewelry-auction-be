@@ -116,7 +116,8 @@ VALUES (N'DOJI', N'Nhẫn đính hôn bằng kim cương.', N'Bạc', N'NHẪN �
         1),
        (N'DOJI', N'Nhẫn đính hôn bằng kim cương.', N'Bạc', N'NHẪN KIM CƯƠNG FDR0257', 41130000, 'ACTIVE', 20.1, 2, 1),
        (N'DOJI', N'Nhẫn đính hôn bằng kim cương.', N'Bạc', N'NHẪN KIM CƯƠNG DJR397-22', 37000000, 'ACTIVE', 10.0, 2,
-        1);
+        1),
+        (N'Fine Jewelry', N'Dây chuyền kim cương', N'Vàng',  N'Dây chuyền kim cương Y', 18000000, 'ACTIVE', 6.9, 1, 15);
 
 CREATE TABLE [dbo].[auction]
 (
