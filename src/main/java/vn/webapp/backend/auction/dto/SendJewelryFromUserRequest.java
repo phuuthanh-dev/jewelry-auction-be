@@ -11,6 +11,7 @@ public record SendJewelryFromUserRequest(
         String material,
         Double weight,
         String brand,
+        String category,
         String name
 
 ) {
