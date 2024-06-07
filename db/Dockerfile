@@ -17,7 +17,6 @@
 ## Khởi động sql server
 #CMD ["/opt/mssql/bin/sqlservr"]
 
-# Use a base image with SQL Server installed
 FROM mcr.microsoft.com/mssql/server:2019-latest
 
 # Set environment variables
@@ -25,17 +24,18 @@ ENV ACCEPT_EULA=Y
 ENV SA_PASSWORD=Thanhth@nh1
 
 # Create a directory for the SQL scripts
-RUN mkdir -p /usr/src/app
+WORKDIR /usr/src/app
 
 # Copy the init.sql script into the container
-COPY ./init.sql /usr/src/app/init.sql
+COPY init.sql .
 
 # Run SQL Server and execute the init.sql script during image build
-RUN /opt/mssql-tools/bin/sqlcmd -S localhost -U sa -P $SA_PASSWORD -d master -i /usr/src/app/init.sql
+RUN /opt/mssql-tools/bin/sqlcmd -S localhost -U sa -P $SA_PASSWORD -d master -i init.sql
 
 # Expose the default SQL Server port
 EXPOSE 1433
 
 # Run SQL Server
 CMD ["/opt/mssql/bin/sqlservr"]
+
 
