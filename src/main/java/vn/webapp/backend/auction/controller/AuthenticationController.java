@@ -4,14 +4,11 @@ import jakarta.mail.MessagingException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import vn.webapp.backend.auction.dto.*;
 import vn.webapp.backend.auction.dto.RegisterAccountRequest;
-import vn.webapp.backend.auction.service.AuthenticationService;
-import vn.webapp.backend.auction.service.JwtService;
+import vn.webapp.backend.auction.service.AuthenticationServiceImpl;
 
 import java.io.IOException;
 
@@ -21,7 +18,7 @@ import java.io.IOException;
 @CrossOrigin(origins = {"http://localhost:3000", "http://localhost:3001"})
 public class AuthenticationController {
 
-    private final AuthenticationService authenticationService;
+    private final AuthenticationServiceImpl authenticationService;
 
     @PostMapping("/authenticate")
     public ResponseEntity<AuthenticationResponse> authenticate(
@@ -65,4 +62,12 @@ public class AuthenticationController {
         authenticationService.forgotPassword(request);
         return ResponseEntity.ok().build();
     }
+
+    @PostMapping("/reset-password")
+    public ResponseEntity<AuthenticationResponse> resetPassword(
+            @RequestBody ResetPasswordRequest request) {
+        return ResponseEntity.ok(authenticationService.resetPassword(request));
+    }
+
+
 }
