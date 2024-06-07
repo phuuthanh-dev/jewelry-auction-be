@@ -88,15 +88,15 @@ public class JewelryServiceTest extends AbstractTestNGSpringContextTests {
 //    public void testGetJewelriesByUsernameReturnNull(){
 //        String nonExistUsername = "tam12345";
 //        assertThrows(ResourceNotFoundException.class, () -> jewelryService.getJewelriesByUsername(nonExistUsername));
+////    }
+//    @Test
+//    public void TestGetJeweriesByCategoryIdReturnsNulll(){
+//
 //    }
-    @Test
-    public void TestGetJeweriesByCategoryIdReturnsNulll(){
-
-    }
-    @Test
-    public void testGetJewelriesByNameContainReturnsNull(){
-
-    }
+//    @Test
+//    public void testGetJewelriesByNameContainReturnsNull(){
+//
+//    }
 
 }
 
