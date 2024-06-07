@@ -11,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -239,5 +240,19 @@ public class AuthenticationService {
         }
         emailService.sendResetPasswordEmail(request.email(), existingUser.getFullName(),
                 jwtService.generateToken(existingUser));
+    }
+
+    public AuthenticationResponse resetPassword(ResetPasswordRequest request) {
+        var username = jwtService.extractUsername(request.token());
+        var user = userRepository.findByUsername(username)
+                .orElseThrow();
+        if (user.getRole() == Role.MEMBER) {
+            user.setPassword(passwordEncoder.encode(request.password()));
+            userRepository.save(user);
+            var jwtToken = jwtService.generateToken(user);
+            return new AuthenticationResponse(jwtToken);
+        } else {
+            throw new UnauthorizedException("Không có quyền truy cập.");
+        }
     }
 }

@@ -12,11 +12,8 @@ jobs:
   publish:
     name: Publish Auction Backend Docker Image
     runs-on: ubuntu-latest
-<<<<<<< HEAD
 
-=======
     if: ${{ github.event.workflow_run.conclusion == 'success' }}
->>>>>>> b0b676e2a1da47d60214b9a2c78c79311e151ab5
     permissions:
       contents: read
       packages: write
