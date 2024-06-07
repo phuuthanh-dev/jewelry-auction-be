@@ -10,7 +10,6 @@
 #CMD ["java", "-jar", "/app/app.jar"]
 
 
-
 FROM maven:3.8.4-openjdk-17-slim AS build
 WORKDIR /app
 COPY . .
@@ -28,6 +27,11 @@ ENV ACCEPT_EULA=Y
 ENV SA_PASSWORD=Thanhth@nh1
 # Copy the SQL script into the container
 COPY ./db/init.sql /usr/src/app/init.sql
+# Set permissions for the SQL Server binary
+USER root
+RUN chown mssql /opt/mssql/bin/sqlservr \
+    && chmod +x /opt/mssql/bin/sqlservr
+USER mssql
 # Run SQL commands
 RUN /opt/mssql/bin/sqlservr & sleep 30 \
     && /opt/mssql-tools/bin/sqlcmd -S localhost -U sa -P $SA_PASSWORD -i /usr/src/app/init.sql \
