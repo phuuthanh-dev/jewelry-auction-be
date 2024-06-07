@@ -13,7 +13,7 @@ services:
       - key: SPRING_DATASOURCE_PASSWORD
         value: "Thanhth@nh1"
 
-  - type: private
+  - type: web
     name: auction-database
     runtime: docker
     dockerfilePath: ./db/Dockerfile

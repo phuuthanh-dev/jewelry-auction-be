@@ -12,7 +12,11 @@ jobs:
   publish:
     name: Publish Auction Backend Docker Image
     runs-on: ubuntu-latest
+<<<<<<< HEAD
 
+=======
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+>>>>>>> b0b676e2a1da47d60214b9a2c78c79311e151ab5
     permissions:
       contents: read
       packages: write
@@ -43,7 +47,7 @@ jobs:
         with:
           registry: ghcr.io
           username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
+          password: ${{ secrets.GHCR_PAT }}
 
       - name: 'Publish Auction Database Docker Image'
         working-directory: ${{ github.workspace }}/db
@@ -54,7 +58,7 @@ jobs:
 
 
       - name: 'Publish Auction Backend Docker Image'
-        working-directory: ${{ github.workspace }}/server
+        working-directory: ${{ github.workspace }}
         run: |
           docker build . -t ghcr.io/phuuthanh2003/auction-api:${{ steps.get_version.outputs.version }} -t ghcr.io/phuuthanh2003/auction-api:latest
           docker push ghcr.io/phuuthanh2003/auction-api:${{ steps.get_version.outputs.version }}
