@@ -22,3 +22,8 @@ services:
         value: "Thanhth@nh1"
       - key: ACCEPT_EULA
         value: "Y"
+    plan: starter  # Choose an appropriate plan to differentiate from the API service
+    healthCheckPath: /
+
+    # Ensuring init.sql is executed
+    startCommand: /bin/bash -c "/opt/mssql/bin/sqlservr & sleep 30 && /opt/mssql-tools/bin/sqlcmd -S localhost -U sa -P $SA_PASSWORD -d master -i /usr/src/app/init.sql"
