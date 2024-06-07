@@ -1,9 +1,9 @@
 # render.yaml
+
 services:
   - type: web
     name: auction-api
-    env: docker
-    plan: free
+    runtime: docker
     dockerfilePath: ./Dockerfile
     envVars:
       - key: SPRING_DATASOURCE_URL
@@ -12,14 +12,10 @@ services:
         value: "sa"
       - key: SPRING_DATASOURCE_PASSWORD
         value: "Thanhth@nh1"
-    databases:
-      - name: auction-database
 
-databases:
-  - name: auction-database
-    plan: free
-    databaseType: sqlserver
-    version: latest
+  - type: private
+    name: auction-database
+    runtime: docker
     dockerfilePath: ./db/Dockerfile
     envVars:
       - key: SA_PASSWORD
