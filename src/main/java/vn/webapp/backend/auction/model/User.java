@@ -8,6 +8,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import vn.webapp.backend.auction.enums.AccountState;
+import vn.webapp.backend.auction.enums.Role;
 
 import java.util.Collection;
 import java.util.List;
@@ -52,16 +53,20 @@ public class User implements UserDetails {
     @NotBlank(message = "The address is required")
     private String address;
 
-    @Column(name = "city", nullable = false, columnDefinition = "nvarchar(20)")
+    @Column(name = "city", nullable = false, columnDefinition = "nvarchar(50)")
     @NotBlank(message = "The city is required")
     private String city;
 
-    @Column(name = "province", nullable = false, columnDefinition = "nvarchar(20)")
-    @NotBlank(message = "The province is required")
-    private String province;
+    @Column(name = "district", nullable = false, columnDefinition = "nvarchar(50)")
+    @NotBlank(message = "The district is required")
+    private String district;
 
-    @Column(name = "year_of_birth", nullable = false, length = 30)
-    private int yob;
+    @Column(name = "ward", nullable = false, columnDefinition = "nvarchar(50)")
+    @NotBlank(message = "The ward is required")
+    private String ward;
+
+    @Column(name = "year_of_birth", nullable = false, length = 4)
+    private String yob;
 
     @Column(name = "avatar", columnDefinition = "varchar(MAX)")
     @Lob
@@ -75,14 +80,32 @@ public class User implements UserDetails {
     @Column(name ="state" , nullable = false, length = 10)
     private AccountState state;
 
-    @Column(name = "activation_code", nullable = false, length = 50)
-    private String activationCode;
-
     @ManyToOne
-    @JoinColumn(name = "role_id")
+    @JoinColumn(name = "bank_id")
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
+    private Bank bank;
+
+    @Column(name ="bank_account_number", nullable = false, length = 30)
+    private String bankAccountNumber;
+
+    @Column(name ="bank_account_name", nullable = false, length = 30)
+    private String bankAccountName;
+
+//    @ManyToOne
+//    @JoinColumn(name = "role_id")
+//    @EqualsAndHashCode.Exclude
+//    @ToString.Exclude
+//    private Role role;
+
+    @Enumerated(EnumType.STRING)
     private Role role;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    @EqualsAndHashCode.Exclude
+    @ToString.Exclude
+    @JsonIgnore
+    private List<Token> tokens;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     @EqualsAndHashCode.Exclude
@@ -90,21 +113,20 @@ public class User implements UserDetails {
     @JsonIgnore
     private List<Jewelry> jewelries;
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-    @EqualsAndHashCode.Exclude
-    @ToString.Exclude
-    @JsonIgnore
-    private List<RequestApproval> requestApprovals;
+//    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+//    @EqualsAndHashCode.Exclude
+//    @ToString.Exclude
+//    @JsonIgnore
+//    private List<RequestApproval> requestApprovals;
+
+    public String getFullName() {
+        return firstName + " " + lastName;
+    }
 
     @JsonIgnore
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of(new SimpleGrantedAuthority(role.getName()));
-    }
-
-    @Override
-    public String getUsername() {
-        return email;
+        return List.of(new SimpleGrantedAuthority(role.name()));
     }
 
     @Override

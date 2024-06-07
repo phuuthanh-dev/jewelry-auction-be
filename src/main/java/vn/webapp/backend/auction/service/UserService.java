@@ -1,48 +1,24 @@
 package vn.webapp.backend.auction.service;
 
-import jakarta.transaction.Transactional;
-import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
-import vn.webapp.backend.auction.exception.ResourceNotFoundException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import vn.webapp.backend.auction.dto.RegisterAccountRequest;
+import vn.webapp.backend.auction.enums.AccountState;
+import vn.webapp.backend.auction.enums.Role;
 import vn.webapp.backend.auction.model.User;
-import vn.webapp.backend.auction.repository.UserRepository;
 
 import java.util.List;
 
-@Transactional
-@Service
-@RequiredArgsConstructor
-public class UserService implements IUserService {
-//    private final PasswordEncoder passwordEncoder;
-    private final UserRepository userRepository;
-
-    @Override
-    public User getUserByUsername(String username) {
-        return userRepository.findByUsername(username)
-                .orElseThrow(() -> new ResourceNotFoundException("Người dùng tương ứng không tồn tại"));
-    }
-
-    @Override
-    public User getUserById(Integer id) {
-        return userRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Người dùng tương ứng không tồn tại"));
-    }
-
-    @Override
-    public User getUserByEmail(String email) {
-        return userRepository.findByEmail(email)
-                .orElseThrow(() -> new ResourceNotFoundException("Không tìm thấy tai khoan."));
-    }
-
-    @Override
-    public List<User> getAllStaff() {
-            return userRepository.findAllByRole("STAFF");
-    }
-
-
-
-    @Override
-    public List<User> getAll() {
-        return userRepository.findAll();
-    }
-}
+public interface UserService {
+    User getUserByUsername(String username);
+    User getUserById(Integer id);
+    User getUserByEmail(String email);
+    List<User> getAll();
+    List<User> getAllStaff();
+    User registerStaff(RegisterAccountRequest request);
+    void setAccountState(Integer id, String state);
+    User updateUser(User user);
+    Page<User> getMemberByFullNameContainingAndState(String fullName ,AccountState state, Pageable pageable);
+    Page<User> getStaffByFullNameContainingAndRoleAndState(String fullName, Role role, AccountState state , Pageable page);
+    User getLatestUserInAuctionHistoryByAuctionId(Integer auctionId);
+ }

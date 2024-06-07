@@ -1,13 +1,12 @@
 package vn.webapp.backend.auction.model;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
+import vn.webapp.backend.auction.enums.AuctionHistoryState;
 import vn.webapp.backend.auction.enums.AuctionState;
 
 import java.sql.Date;
+import java.sql.Timestamp;
 
 @Entity
 @Data
@@ -24,13 +23,21 @@ public class AuctionHistory {
     private double priceGiven;
 
     @Column(name = "time", nullable = false)
-    private Date time;
+    private Timestamp time;
+
+    @Column(name = "bid_code", nullable = false, length = 20)
+    private String bidCode;
+
+    @Enumerated(EnumType.STRING)
+    private AuctionHistoryState state;
 
     @ManyToOne(cascade = {
             CascadeType.PERSIST, CascadeType.DETACH,
             CascadeType.MERGE, CascadeType.REFRESH
     })
     @JoinColumn(name = "user_id")
+    @EqualsAndHashCode.Exclude
+    @ToString.Exclude
     private User user;
 
     @ManyToOne(cascade = {
@@ -38,5 +45,7 @@ public class AuctionHistory {
             CascadeType.MERGE, CascadeType.REFRESH
     })
     @JoinColumn(name = "auction_id")
+    @EqualsAndHashCode.Exclude
+    @ToString.Exclude
     private Auction auction;
 }
