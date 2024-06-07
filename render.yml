@@ -1,5 +1,4 @@
 # render.yaml
-
 services:
   - type: web
     name: auction-api
