@@ -13,5 +13,6 @@ RUN /opt/mssql/bin/sqlservr & sleep 30 \
     && /opt/mssql-tools/bin/sqlcmd -S localhost -U sa -P $SA_PASSWORD -i /usr/src/app/init.sql \
     && pkill sqlservr
 
+EXPOSE 1433
 # Khởi động sql server
 CMD ["/opt/mssql/bin/sqlservr"]
