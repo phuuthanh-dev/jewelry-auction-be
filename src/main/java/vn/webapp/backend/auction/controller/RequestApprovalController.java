@@ -7,6 +7,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import vn.webapp.backend.auction.dto.StaffRequestApproval;
 import vn.webapp.backend.auction.dto.UserRequestApproval;
 import vn.webapp.backend.auction.enums.Role;
 import vn.webapp.backend.auction.model.RequestApproval;
@@ -30,6 +31,12 @@ public class RequestApprovalController {
         return ResponseEntity.ok().build();
     }
 
+    @PutMapping("/confirm/{id}")
+    public ResponseEntity<RequestApproval> confirmRequest(@PathVariable Integer id, @RequestParam Integer responderId) {
+        requestApprovalService.confirmRequest(id, responderId);
+        return ResponseEntity.ok().build();
+    }
+
     @GetMapping("/sender/{role}")
     public ResponseEntity<Page<RequestApproval>> getRequestByRoleOfSender(
             @PathVariable Role role,
@@ -45,6 +52,12 @@ public class RequestApprovalController {
     @PostMapping("/send-from-user")
     public ResponseEntity<RequestApproval> newRequestJewelryFromUser(@RequestBody UserRequestApproval request) {
         return ResponseEntity.ok(requestApprovalService.requestFromUser(request));
+    }
+
+
+    @PostMapping("/send-from-staff")
+    public ResponseEntity<RequestApproval> newRequestJewelryFromStaff(@RequestBody StaffRequestApproval request) {
+        return ResponseEntity.ok(requestApprovalService.requestFromStaff(request));
     }
 
     @GetMapping("/user/{id}")

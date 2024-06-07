@@ -5,6 +5,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import vn.webapp.backend.auction.dto.StaffRequestApproval;
 import vn.webapp.backend.auction.dto.UserRequestApproval;
 import vn.webapp.backend.auction.enums.RequestApprovalState;
 import vn.webapp.backend.auction.enums.Role;
@@ -16,6 +17,8 @@ import vn.webapp.backend.auction.repository.JewelryRepository;
 import vn.webapp.backend.auction.repository.RequestApprovalRepository;
 import vn.webapp.backend.auction.repository.UserRepository;
 
+import java.sql.Timestamp;
+import java.time.Instant;
 import java.util.Optional;
 
 @Transactional
@@ -37,6 +40,21 @@ public class RequestApporvalServiceImpl implements RequestApprovalService{
         var existingRequest = requestApprovalRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Không tìm thấy yêu cầu này."));
         existingRequest.setState(RequestApprovalState.valueOf(state));
+        existingRequest.setConfirm(false);
+    }
+
+    @Override
+    public void confirmRequest(Integer id, Integer responderId) {
+        var existingRequest = requestApprovalRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Không tìm thấy yêu cầu này."));
+        var existUser = userRepository.findById(responderId)
+                .orElseThrow(() -> new ResourceNotFoundException("Không tìm thấy người dùng này."));
+        if(existUser.getRole().equals(Role.STAFF)) {
+            existingRequest.setStaff(existUser);
+        }
+        existingRequest.setConfirm(true);
+        existingRequest.setResponder(existUser);
+        existingRequest.setResponseTime(Timestamp.from(Instant.now()));
     }
 
     @Override
@@ -64,6 +82,31 @@ public class RequestApporvalServiceImpl implements RequestApprovalService{
         newRequest.setState(RequestApprovalState.ACTIVE);
         newRequest.setSender(sender);
         newRequest.setDesiredPrice(jewelry.getPrice());
+        requestApprovalRepository.save(newRequest);
+        return newRequest;
+    }
+
+    @Override
+    public RequestApproval requestFromStaff(StaffRequestApproval request) {
+        Optional<User> existSender = userRepository.findById(request.senderId());
+        if (existSender.isEmpty()) {
+            throw new IllegalArgumentException("User with ID " + request.senderId() + " not found");
+        }
+
+        Optional<RequestApproval> existRequestApproval = requestApprovalRepository.findById(request.requestId());
+        if (existRequestApproval.isEmpty()) {
+            throw new IllegalArgumentException("Jewelry with ID " + request.requestId() + " not found");
+        }
+        User sender = existSender.get();
+        RequestApproval oldRequest = existRequestApproval.get();
+        RequestApproval newRequest = new RequestApproval();
+        newRequest.setRequestTime(request.requestTime());
+        newRequest.setJewelry(oldRequest.getJewelry());
+        newRequest.setConfirm(false);
+        newRequest.setState(RequestApprovalState.ACTIVE);
+        newRequest.setSender(sender);
+        newRequest.setDesiredPrice(oldRequest.getJewelry().getPrice());
+        newRequest.setValuation(request.valuation());
         requestApprovalRepository.save(newRequest);
         return newRequest;
     }
