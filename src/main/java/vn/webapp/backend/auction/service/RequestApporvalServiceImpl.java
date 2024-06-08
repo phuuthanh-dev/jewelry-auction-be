@@ -37,9 +37,15 @@ public class RequestApporvalServiceImpl implements RequestApprovalService{
     }
 
     @Override
-    public void setRequestState(Integer id, String state) {
+    public void setRequestState(Integer id, Integer responderId, String state) {
         var existingRequest = requestApprovalRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Không tìm thấy yêu cầu này."));
+        var existUser = userRepository.findById(responderId)
+                .orElseThrow(() -> new ResourceNotFoundException("Không tìm thấy người dùng này."));
+        if(existUser.getRole().equals(Role.STAFF)) {
+            existingRequest.setStaff(existUser);
+        }
+        existingRequest.setResponder(existUser);
         existingRequest.setState(RequestApprovalState.valueOf(state));
         existingRequest.setConfirm(false);
         existingRequest.setResponseTime(Timestamp.from(Instant.now()));

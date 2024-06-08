@@ -6,12 +6,11 @@ import vn.webapp.backend.auction.dto.ManagerRequestApproval;
 import vn.webapp.backend.auction.dto.StaffRequestApproval;
 import vn.webapp.backend.auction.dto.UserRequestApproval;
 import vn.webapp.backend.auction.enums.Role;
-import vn.webapp.backend.auction.model.Auction;
 import vn.webapp.backend.auction.model.RequestApproval;
 
 public interface RequestApprovalService {
     RequestApproval getRequestById(Integer id);
-    void setRequestState(Integer id, String state);
+    void setRequestState(Integer id, Integer responderId, String state);
     void confirmRequest(Integer id, Integer responderId);
     Page<RequestApproval> getRequestBySenderRole(Role role, Pageable pageable);
     RequestApproval requestFromUser(UserRequestApproval request);

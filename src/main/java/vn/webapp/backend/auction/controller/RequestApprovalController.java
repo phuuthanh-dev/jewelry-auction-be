@@ -27,8 +27,8 @@ public class RequestApprovalController {
     }
 
     @PutMapping("/set-state/{id}")
-    public ResponseEntity<RequestApproval> setState(@PathVariable Integer id, @RequestParam String state) {
-        requestApprovalService.setRequestState(id, state);
+    public ResponseEntity<RequestApproval> setState(@PathVariable Integer id, @RequestParam Integer responderId, @RequestParam String state) {
+        requestApprovalService.setRequestState(id,responderId, state);
         return ResponseEntity.ok().build();
     }
 
