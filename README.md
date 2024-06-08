@@ -38,7 +38,7 @@ Run the server and browse to http://localhost:8080/swagger-ui/index.html
 <table>
   <tbody>
     <tr>
-      <td align="center" valign="top" width="20%"><a href="https://github.com/hardingadonis"><img src="https://avatars.githubusercontent.com/u/102614541?v=4" width="100px;" alt=""/><br /><sub><b>Phùng Hữu Thành</b></sub></a></td>
+      <td align="center" valign="top" width="20%"><a  href="https://github.com/hardingadonis"><img src="https://avatars.githubusercontent.com/u/102614541?v=4" width="100px;" alt=""/><br /><sub><b>Phùng Hữu Thành</b></sub></a></td>
       <td align="center" valign="top" width="20%"><a href="https://github.com/bakaqc"><img src="https://avatars.githubusercontent.com/u/139938101?v=4" width="100px;" alt=""/><br /><sub><b>Huy Hoang</b></sub></a></td>
       <td align="center" valign="top" width="20%"><a href="https://github.com/htnghia1423"><img src="https://avatars.githubusercontent.com/u/155858724?v=4" width="100px;" alt=""/><br /><sub><b>Tâm</b></sub></a></td>
       <td align="center" valign="top" width="20%"><a href="https://www.codefactor.io"><img src="https://avatars.githubusercontent.com/u/13309880?v=4" width="100px;" alt=""/><br /><sub><b>Automated code reviews</b></sub></a></td>
