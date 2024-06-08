@@ -17,4 +17,5 @@ public interface RequestApprovalService {
     RequestApproval requestFromStaff(StaffRequestApproval request);
     RequestApproval requestFromManager(ManagerRequestApproval request);
     Page<RequestApproval> getRequestApprovalByUserId(Integer id, Pageable pageable);
+    Page<RequestApproval> getRequestApprovalPassed(Pageable pageable);
 }

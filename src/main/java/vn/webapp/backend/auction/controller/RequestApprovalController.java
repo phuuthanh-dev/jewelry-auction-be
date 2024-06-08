@@ -77,4 +77,15 @@ public class RequestApprovalController {
         Pageable pageable = PageRequest.of(page, size, direction, sortBy);
         return ResponseEntity.ok(requestApprovalService.getRequestApprovalByUserId(id,pageable));
     }
+
+    @GetMapping("/request-passed")
+    public ResponseEntity<Page<RequestApproval>> getRequestPassed(
+            @RequestParam(defaultValue = "id") String sortBy,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "5") int size,
+            @RequestParam(defaultValue = "asc") String sortOrder) {
+        Sort.Direction direction = (sortOrder.equalsIgnoreCase("asc")) ? Sort.Direction.ASC : Sort.Direction.DESC;
+        Pageable pageable = PageRequest.of(page, size, direction, sortBy);
+        return ResponseEntity.ok(requestApprovalService.getRequestApprovalPassed(pageable));
+    }
 }
