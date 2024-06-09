@@ -9,7 +9,9 @@ import vn.webapp.backend.auction.dto.SendJewelryFromUserRequest;
 import vn.webapp.backend.auction.enums.JewelryState;
 import vn.webapp.backend.auction.exception.ResourceNotFoundException;
 import vn.webapp.backend.auction.model.Jewelry;
+import vn.webapp.backend.auction.model.JewelryCategory;
 import vn.webapp.backend.auction.model.User;
+import vn.webapp.backend.auction.repository.JewelryCategoryRepository;
 import vn.webapp.backend.auction.repository.JewelryRepository;
 import vn.webapp.backend.auction.repository.UserRepository;
 
@@ -23,6 +25,7 @@ public class JewelryServiceImpl implements JewelryService {
 
     private final JewelryRepository jewelryRepository;
     private final UserRepository userRepository;
+    private final JewelryCategoryRepository jewelryCategoryRepository;
 
     @Override
     public List<Jewelry> getAll() {
@@ -48,7 +51,14 @@ public class JewelryServiceImpl implements JewelryService {
             throw new IllegalArgumentException("User with ID " + request.userId() + " not found");
         }
 
+        Optional<JewelryCategory> optionalCategory = jewelryCategoryRepository.findByName(request.category());
+
+        if (optionalCategory.isEmpty()) {
+            throw new IllegalArgumentException("Category with ID " + request.category() + " not found");
+        }
+
         User user = optionalUser.get();
+        JewelryCategory category = optionalCategory.get();
 
         Jewelry jewelry = new Jewelry();
         jewelry.setUser(user);
@@ -56,6 +66,7 @@ public class JewelryServiceImpl implements JewelryService {
         jewelry.setDescription(request.description());
         jewelry.setMaterial(request.material());
         jewelry.setWeight(request.weight());
+        jewelry.setCategory(category);
         jewelry.setBrand(request.brand());
         jewelry.setName(request.name());
         jewelry.setState(JewelryState.APPROVING);

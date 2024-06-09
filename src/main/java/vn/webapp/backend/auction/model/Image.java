@@ -21,7 +21,7 @@ public class Image {
     @Column(name = "link")
     private String link;
 
-    @Column(name = "data", columnDefinition = "varchar(MAX)")
+    @Column(name = "data")
     @Lob
     private String data;
 
