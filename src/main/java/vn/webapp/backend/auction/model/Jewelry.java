@@ -20,26 +20,26 @@ public class Jewelry {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @Column(name = "name", nullable = false, columnDefinition = "nvarchar(50)")
+    @Column(name = "name", nullable = false)
     @NotBlank(message = "The price required")
     private String name;
 
     @Min(value = 1, message = "The price must be at least 1")
     private Double price;
 
-    @Column(name = "description", nullable = false, columnDefinition = "nvarchar(MAX)")
+    @Column(name = "description", nullable = false)
     private String description;
 
-    @Column(name = "material", nullable = false, columnDefinition = "nvarchar(20)")
+    @Column(name = "material", nullable = false)
     private String material;
 
-    @Column(name = "brand", nullable = false, columnDefinition = "nvarchar(20)")
+    @Column(name = "brand", nullable = false)
     private String brand;
 
     @Column(name = "weight", nullable = false)
     private Double weight;
 
-    @Column(name = "state", nullable = false, columnDefinition = "nvarchar(20)")
+    @Column(name = "state", nullable = false)
     @Enumerated(EnumType.STRING)
     private JewelryState state;
 

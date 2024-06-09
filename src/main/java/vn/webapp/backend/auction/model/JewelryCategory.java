@@ -18,7 +18,7 @@ public class JewelryCategory {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @Column(name = "name", nullable = false, columnDefinition = "nvarchar(50)")
+    @Column(name = "name", nullable = false)
     @NotBlank(message = "The category name is required")
     private String name;
 
