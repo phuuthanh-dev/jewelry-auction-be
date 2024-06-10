@@ -1,13 +1,9 @@
 package vn.webapp.backend.auction.controller;
 
-import jakarta.mail.MessagingException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import vn.webapp.backend.auction.dto.ActivateAccountRequest;
-import vn.webapp.backend.auction.dto.AuthenticationResponse;
-import vn.webapp.backend.auction.model.Jewelry;
 import vn.webapp.backend.auction.model.JewelryCategory;
 import vn.webapp.backend.auction.service.JewelryCategoryService;
 

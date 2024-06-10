@@ -3,10 +3,8 @@ package vn.webapp.backend.auction.controller;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import vn.webapp.backend.auction.enums.AuctionRegistrationState;
 import vn.webapp.backend.auction.model.AuctionRegistration;
 import vn.webapp.backend.auction.service.AuctionRegistrationService;
-import vn.webapp.backend.auction.service.UserService;
 
 import java.util.List;
 

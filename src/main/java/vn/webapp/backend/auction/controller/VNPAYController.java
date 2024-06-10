@@ -12,8 +12,8 @@ import vn.webapp.backend.auction.service.vnpay.ResponseObject;
 import java.io.IOException;
 
 @RestController
-@CrossOrigin(origins = "http://localhost:3000")
-@RequestMapping("api/v1/payment")
+@CrossOrigin(origins = {"http://localhost:3000", "https://fe-deploy-hazel.vercel.app"})
+@RequestMapping("/api/v1/payment")
 @RequiredArgsConstructor
 public class VNPAYController {
 
@@ -29,7 +29,7 @@ public class VNPAYController {
     @GetMapping("/vn-pay-callback")
     public void payCallbackHandler(HttpServletRequest request, @RequestParam("username") String username, @RequestParam("auctionId") Integer auctionId, HttpServletResponse response) throws IOException {
         String status = request.getParameter("vnp_ResponseCode");
-        String baseUrl = "http://localhost:3000/tai-san-dau-gia/";
+        String baseUrl = "https://fe-deploy-hazel.vercel.app/tai-san-dau-gia/";
         String redirectUrl = baseUrl + auctionId;
         if (!status.equals("00")) {
             redirectUrl += "?paymentStatus=failed";

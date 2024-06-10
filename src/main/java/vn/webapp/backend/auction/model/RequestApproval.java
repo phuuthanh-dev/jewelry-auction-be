@@ -2,7 +2,6 @@ package vn.webapp.backend.auction.model;
 
 import jakarta.persistence.*;
 import lombok.*;
-import vn.webapp.backend.auction.enums.AuctionHistoryState;
 import vn.webapp.backend.auction.enums.RequestApprovalState;
 
 import java.sql.Timestamp;
