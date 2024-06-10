@@ -12,8 +12,8 @@ import vn.webapp.backend.auction.service.vnpay.ResponseObject;
 import java.io.IOException;
 
 @RestController
-@CrossOrigin(origins = "http://localhost:3000")
-@RequestMapping("api/v1/payment")
+@CrossOrigin(origins = {"http://localhost:3000", "https://fe-deploy-hazel.vercel.app"})
+@RequestMapping("/api/v1/payment")
 @RequiredArgsConstructor
 public class VNPAYController {
 
