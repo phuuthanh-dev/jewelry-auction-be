@@ -31,4 +31,7 @@ public interface AuctionHistoryRepository extends JpaRepository<AuctionHistory, 
     @Query("SELECT ah FROM AuctionHistory ah WHERE ah.auction.id = :auctionId AND ah.state != 'HIDDEN' ORDER BY ah.time DESC")
     List<AuctionHistory> findLastActiveBidByAuctionId(@Param("auctionId") Integer auctionId);
 
+    @Query("SELECT ah FROM AuctionHistory ah WHERE ah.auction.id = :auctionId AND ah.state != 'HIDDEN' ORDER BY ah.priceGiven DESC")
+    List<AuctionHistory> findTopBidByAuctionId(@Param("auctionId") Integer auctionId);
+
 }
