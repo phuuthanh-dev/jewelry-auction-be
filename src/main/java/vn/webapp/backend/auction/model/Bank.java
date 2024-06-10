@@ -16,13 +16,13 @@ public class Bank {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @Column(name = "bank_name", unique = true, nullable = false, columnDefinition = "nvarchar(100)")
+    @Column(name = "bank_name", unique = true, nullable = false)
     private String bankName;
 
-    @Column(name = "trading_name", unique = true, nullable = false, columnDefinition = "nvarchar(20)")
+    @Column(name = "trading_name", unique = true, nullable = false)
     private String tradingName;
 
-    @Column(name = "logo", nullable = false, columnDefinition = "nvarchar(MAX)")
+    @Column(name = "logo", nullable = false)
     private String logo;
 
     @OneToMany(mappedBy = "bank")

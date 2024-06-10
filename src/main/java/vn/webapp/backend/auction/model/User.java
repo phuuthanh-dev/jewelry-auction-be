@@ -30,14 +30,14 @@ public class User implements UserDetails {
 
     @JsonIgnore
     @NotBlank
-    @Column(name = "password", columnDefinition = "nvarchar(100)")
+    @Column(name = "password")
     private String password;
 
-    @Column(name = "first_name", nullable = false, columnDefinition = "nvarchar(50)")
+    @Column(name = "first_name", nullable = false)
     @NotBlank(message = "The first name is required")
     private String firstName;
 
-    @Column(name = "last_name", nullable = false, columnDefinition = "nvarchar(50)")
+    @Column(name = "last_name", nullable = false)
     @NotBlank(message = "The last name is required")
     private String lastName;
 
@@ -49,26 +49,26 @@ public class User implements UserDetails {
     @NotBlank(message = "The phone is required")
     private String phone;
 
-    @Column(name = "address", nullable = false, columnDefinition = "nvarchar(50)")
+    @Column(name = "address", nullable = false)
     @NotBlank(message = "The address is required")
     private String address;
 
-    @Column(name = "city", nullable = false, columnDefinition = "nvarchar(50)")
+    @Column(name = "city", nullable = false)
     @NotBlank(message = "The city is required")
     private String city;
 
-    @Column(name = "district", nullable = false, columnDefinition = "nvarchar(50)")
+    @Column(name = "district", nullable = false)
     @NotBlank(message = "The district is required")
     private String district;
 
-    @Column(name = "ward", nullable = false, columnDefinition = "nvarchar(50)")
+    @Column(name = "ward", nullable = false)
     @NotBlank(message = "The ward is required")
     private String ward;
 
     @Column(name = "year_of_birth", nullable = false, length = 4)
     private String yob;
 
-    @Column(name = "avatar", columnDefinition = "varchar(MAX)")
+    @Column(name = "avatar")
     @Lob
     private String avatar;
 

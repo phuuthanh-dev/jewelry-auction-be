@@ -3,6 +3,7 @@ package vn.webapp.backend.auction;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.testng.AbstractTestNGSpringContextTests;
 import vn.webapp.backend.auction.exception.ResourceNotFoundException;
 import vn.webapp.backend.auction.model.User;
@@ -13,6 +14,7 @@ import static org.testng.Assert.*;
 
 
 @SpringBootTest
+@ActiveProfiles("test")
 public class UserServiceTest extends AbstractTestNGSpringContextTests {
 
     @Autowired

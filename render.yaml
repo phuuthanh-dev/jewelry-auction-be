@@ -1,0 +1,11 @@
+# render.yaml
+services:
+  - type: web
+    name: AuctionWebApp_BE
+    runtime: docker
+    repo: https://github.com/phuuthanh2003/AuctionWebApp_BE
+    plan: free
+    region: oregon
+    dockerContext: .
+    dockerfilePath: ./docker-compose.yml
+version: "1"

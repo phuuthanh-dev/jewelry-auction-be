@@ -17,7 +17,7 @@ import vn.webapp.backend.auction.service.UserService;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/user")
-@CrossOrigin(origins = {"http://localhost:3000", "http://localhost:3001", "http://localhost"})
+@CrossOrigin(origins = {"http://localhost:3000", "http://localhost:3001"})
 public class UserController {
 
     private final UserService userService;
