@@ -21,7 +21,7 @@ public class EmailService {
     @Value("${spring.mail.username}")
     private String emailUsername;
 
-    private final String BASE_URL_FRONTEND = "https://fe-deploy-hazel.vercel.app";
+    private final String BASE_URL_FRONTEND = "https://localhost:3000";
 
     @Async
     public void sendActivationEmail(String emailTo, String fullName, String token) throws MessagingException {
