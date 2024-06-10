@@ -21,17 +21,6 @@ public class JewelryController {
 
     private final JewelryService jewelryService;
 
-//    @GetMapping("/sorted-and-paged")
-//    public ResponseEntity<Page<Jewelry>> getAllJewelriesSortedAndPaged(
-//            @RequestParam(defaultValue = "id") String sortBy,
-//            @RequestParam(defaultValue = "0") int page,
-//            @RequestParam(defaultValue = "5") int size,
-//            @RequestParam(defaultValue = "asc") String sortOrder) {
-//        Sort.Direction direction = (sortOrder.equalsIgnoreCase("asc")) ? Sort.Direction.ASC : Sort.Direction.DESC;
-//        Pageable pageable = PageRequest.of(page, size, direction, sortBy);
-//        return ResponseEntity.ok(jewelryService.getAllJeweries(pageable));
-//    }
-
     @GetMapping("/sorted-and-paged")
     public ResponseEntity<Page<Jewelry>> getAllJewelriesSortedAndPaged(
             @RequestParam(defaultValue = "id") String sortBy,

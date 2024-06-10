@@ -8,8 +8,6 @@ import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import vn.webapp.backend.auction.dto.UserTransactionResponse;
-import vn.webapp.backend.auction.model.Auction;
-import vn.webapp.backend.auction.model.AuctionHistory;
 import vn.webapp.backend.auction.model.Transaction;
 import vn.webapp.backend.auction.service.TransactionService;
 

@@ -4,9 +4,6 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import vn.webapp.backend.auction.model.Transaction;
-
-import java.util.List;
 @Data
 @Builder
 @AllArgsConstructor

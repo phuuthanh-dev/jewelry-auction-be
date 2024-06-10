@@ -8,12 +8,9 @@ import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import vn.webapp.backend.auction.dto.BidRequest;
-import vn.webapp.backend.auction.enums.AuctionState;
-import vn.webapp.backend.auction.model.Auction;
 import vn.webapp.backend.auction.model.AuctionHistory;
 import vn.webapp.backend.auction.service.AuctionHistoryService;
 
-import java.sql.Date;
 import java.util.List;
 
 @RestController

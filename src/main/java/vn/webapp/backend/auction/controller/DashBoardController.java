@@ -8,7 +8,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import vn.webapp.backend.auction.dto.DashBoardResponse;
 import vn.webapp.backend.auction.service.DashBoardService;
-import vn.webapp.backend.auction.service.UserService;
 
 @RestController
 @RequestMapping("/api/v1/dashboard")
