@@ -35,7 +35,8 @@ public class VNPAYConfiguration {
         vnpParamsMap.put("vnp_TxnRef",  VNPayUtil.getRandomNumber(8));
         vnpParamsMap.put("vnp_OrderInfo", "Thanh toan don hang:" +  VNPayUtil.getRandomNumber(8));
         vnpParamsMap.put("vnp_OrderType", this.orderType);
-        vnpParamsMap.put("vnp_Locale", "vn");
+//        vnpParamsMap.put("vnp_Locale", "vn");
+        vnpParamsMap.put("vnp_Locale", "utc");
         vnpParamsMap.put("vnp_ReturnUrl", this.vnpReturnUrl + "?auctionId=" + auctionId + "&username=" + username);
         Calendar calendar = Calendar.getInstance(TimeZone.getTimeZone("Etc/GMT+7"));
         SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMddHHmmss");
