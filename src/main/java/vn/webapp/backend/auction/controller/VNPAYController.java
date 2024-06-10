@@ -31,7 +31,7 @@ public class VNPAYController {
     public void payCallbackHandler(HttpServletRequest request, @RequestParam("username") String username, @RequestParam("auctionId") Integer auctionId, HttpServletResponse response) throws IOException {
         String status = request.getParameter("vnp_ResponseCode");
 
-        String BASE_URL_FRONTEND = "https://fe-deploy-hazel.vercel.app";
+        String BASE_URL_FRONTEND = "http://localhost:3000";
 
         String baseUrl = BASE_URL_FRONTEND + "/tai-san-dau-gia/";
         String redirectUrl = baseUrl + auctionId;

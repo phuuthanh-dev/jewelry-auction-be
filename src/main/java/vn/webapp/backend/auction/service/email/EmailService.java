@@ -22,7 +22,7 @@ public class EmailService {
     private String emailUsername;
 
 
-    private final String BASE_URL_FRONTEND = "https://fe-deploy-hazel.vercel.app";
+    private final String BASE_URL_FRONTEND = "http://localhost:3000";
 
 
     @Async
