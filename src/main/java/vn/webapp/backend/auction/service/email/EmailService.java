@@ -21,12 +21,16 @@ public class EmailService {
     @Value("${spring.mail.username}")
     private String emailUsername;
 
+
+    @Value("${base.url.frontend}")
+    private String baseUrlFE;
+
     @Async
     public void sendActivationEmail(String emailTo, String fullName, String token) throws MessagingException {
         MimeMessage message = javaMailSender.createMimeMessage();
         MimeMessageHelper helper = new MimeMessageHelper(message, true);
 
-        String url = "http://localhost:3000/activation/" + token;
+        String url = baseUrlFE + "/activation/" + token;
 
         String html = emailContent.setHtmlContent(fullName, "Kích hoạt tài khoản", url,
                 "Cảm ơn bạn đã đăng ký tài khoản tại DGS.",
@@ -45,7 +49,7 @@ public class EmailService {
         MimeMessage message = javaMailSender.createMimeMessage();
         MimeMessageHelper helper = new MimeMessageHelper(message, true);
 
-        String url = "http://localhost:3000/reset-mat-khau/" + token;
+        String url = baseUrlFE + "/reset-mat-khau/" + token;
 
         String html = emailContent.setHtmlContent(fullName, "Đặt lại mật khẩu", url,
                 "Bạn vừa yêu cầu đặt lại mật khẩu tại DGS",
