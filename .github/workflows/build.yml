@@ -66,3 +66,4 @@ jobs:
         with:
           name: 1.0-SNAPSHOT.jar # Bản build được đánh version 1.0-SNAPSHOT
           path: staging
+
