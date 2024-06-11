@@ -66,3 +66,20 @@ jobs:
         with:
           name: 1.0-SNAPSHOT.jar # Bản build được đánh version 1.0-SNAPSHOT
           path: staging
+
+  deploy:
+    name: Deploy
+    needs: build
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Install Railway
+        run: npm i -g @railway/cli
+
+      - name: Deploy
+        run: railway up
+        env:
+          RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
