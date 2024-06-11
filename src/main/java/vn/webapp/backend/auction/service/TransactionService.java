@@ -17,5 +17,8 @@ public interface TransactionService {
     List<Transaction> getTransactionByType(String typename);
 
     void setTransactionState(Integer id, String state);
+
     Page<Transaction> getTransactionsByUsername (String username, Pageable pageable);
+
+    void createTransactionForWinner(Integer auctionId);
 }

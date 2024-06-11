@@ -87,7 +87,7 @@ public class AuctionHistoryServiceImpl implements AuctionHistoryService {
         auction = auctionRepository.findById(request.auctionId())
                 .orElseThrow(() -> new ResourceNotFoundException(ErrorMessages.AUCTION_NOT_FOUND));
 
-        if (request.priceGiven().compareTo(auction.getLastPrice()) > 0) {
+        if (auction.getLastPrice() == null || request.priceGiven().compareTo(auction.getLastPrice()) > 0) {
             auction.setLastPrice(request.priceGiven());
             auctionRepository.save(auction);
         } else {

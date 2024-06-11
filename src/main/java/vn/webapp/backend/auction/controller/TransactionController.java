@@ -54,4 +54,9 @@ public class TransactionController {
         return ResponseEntity.ok(transactionService.getTransactionsByUsername(username, pageable));
     }
 
+    @PostMapping("/create-transaction-for-winner/{auctionId}")
+    public ResponseEntity<Void> createTransactionForWinner(@PathVariable Integer auctionId) {
+        transactionService.createTransactionForWinner(auctionId);
+        return ResponseEntity.ok().build();
+    }
 }
