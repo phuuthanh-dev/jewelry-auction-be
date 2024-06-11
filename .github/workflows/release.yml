@@ -2,7 +2,7 @@ name: Release Auction REST API
 
 on:
   workflow_run:
-    workflows: [Build Spring Boot With Maven]
+    workflows: [ Build Spring Boot With Maven ]
     types:
       - completed
     branches:
