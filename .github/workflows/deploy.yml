@@ -10,8 +10,7 @@ on:
 
 jobs:
   deploy:
-    name: Deploy
-    needs: build
+    name: Deploy Spring Boot with Railway
     runs-on: ubuntu-latest
     if: ${{ github.event.workflow_run.conclusion == 'success' }}
     steps:
