@@ -21,10 +21,18 @@ public class AuthenticationController {
     private final AuthenticationServiceImpl authenticationService;
 
     @PostMapping("/authenticate")
-    public ResponseEntity<AuthenticationResponse> authenticate(
+    public ResponseEntity<AuthenticationResponse> authenticateGeneral(
             @RequestBody AuthenticationRequest request, HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) throws MessagingException {
 
-        AuthenticationResponse authenticationResponse = authenticationService.authenticate(request, httpServletRequest, httpServletResponse);
+        AuthenticationResponse authenticationResponse = authenticationService.authenticateGeneral(request, httpServletRequest, httpServletResponse);
+        return ResponseEntity.ok().body(authenticationResponse);
+    }
+
+    @PostMapping("/authenticate-admin-manager")
+    public ResponseEntity<AuthenticationResponse> authenticateAdminManager(
+            @RequestBody AuthenticationRequest request, HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) throws MessagingException {
+
+        AuthenticationResponse authenticationResponse = authenticationService.authenticateAdminManager(request, httpServletRequest, httpServletResponse);
         return ResponseEntity.ok().body(authenticationResponse);
     }
 

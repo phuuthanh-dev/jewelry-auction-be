@@ -1,8 +1,9 @@
 package vn.webapp.backend.auction.enums;
 
 public enum TransactionState {
-    SUCCEED("Thành công"),
-    FAILED("Không thành công");
+    SUCCEED("Thanh toán thành công"),
+    PENDING("Chưa thanh toán..."),
+    FAILED("Hủy thanh toán");
 
     private String vietnameseName;
 

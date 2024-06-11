@@ -31,7 +31,7 @@ public interface UserRepository extends JpaRepository<User, Integer> {
     @Query("SELECT ah.user " +
             "FROM AuctionHistory ah " +
             "WHERE ah.auction.id = :auctionId " +
-            "AND ah.time = (SELECT MAX(ah2.time) FROM AuctionHistory ah2 WHERE ah2.auction.id = :auctionId AND ah2.state=ACTIVE)")
+            "AND ah.time = (SELECT MAX(ah2.time) FROM AuctionHistory ah2 WHERE ah2.auction.id = :auctionId AND ah2.state='ACTIVE')")
     Optional<User> findLatestUserInAuctionHistoryByAuctionId(@Param("auctionId") Integer auctionId);
 
     @Query("SELECT COUNT(u) FROM User u")
