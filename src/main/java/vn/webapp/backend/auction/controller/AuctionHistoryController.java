@@ -8,12 +8,9 @@ import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import vn.webapp.backend.auction.dto.BidRequest;
-import vn.webapp.backend.auction.enums.AuctionState;
-import vn.webapp.backend.auction.model.Auction;
 import vn.webapp.backend.auction.model.AuctionHistory;
 import vn.webapp.backend.auction.service.AuctionHistoryService;
 
-import java.sql.Date;
 import java.util.List;
 
 @RestController
@@ -23,11 +20,6 @@ import java.util.List;
 public class AuctionHistoryController {
 
     private final AuctionHistoryService auctionHistoryService;
-
-//    @GetMapping("/get-by-auction/{id}")
-//    public ResponseEntity<List<AuctionHistory>> getAuctionHistoryByAuctionId(@PathVariable Integer id) {
-//        return ResponseEntity.ok(auctionHistoryService.getAuctionHistoryByAuctionId(id));
-//    }
 
     @GetMapping("/get-by-auction")
     public ResponseEntity<Page<AuctionHistory>> getAuctionHistoryByAuctionId(
@@ -65,13 +57,13 @@ public class AuctionHistoryController {
     }
 
     @PostMapping
-    public ResponseEntity<?> saveBidByUserAndAuction(@RequestBody BidRequest request) {
+    public ResponseEntity<Void> saveBidByUserAndAuction(@RequestBody BidRequest request) {
         auctionHistoryService.saveBidByUserAndAuction(request);
         return ResponseEntity.ok().build();
     }
 
     @DeleteMapping("/bids/{userId}/{auctionId}")
-    public ResponseEntity<?> deleteBidByUserAndAuction(@PathVariable Integer userId, @PathVariable Integer auctionId) {
+    public ResponseEntity<Void> deleteBidByUserAndAuction(@PathVariable Integer userId, @PathVariable Integer auctionId) {
         auctionHistoryService.deleteBidByUserAndAuction(userId, auctionId);
         return ResponseEntity.ok().build();
     }

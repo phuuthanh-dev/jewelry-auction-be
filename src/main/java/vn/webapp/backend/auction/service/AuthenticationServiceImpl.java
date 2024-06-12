@@ -42,7 +42,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     private final TokenRepository tokenRepository;
 
     @Override
-    public AuthenticationResponse authenticate(AuthenticationRequest request, HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) throws MessagingException {
+    public AuthenticationResponse authenticateGeneral(AuthenticationRequest request, HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) throws MessagingException {
         var user = userRepository.findByUsername(request.username())
                 .orElseGet(() -> userRepository.findByEmail(request.username())
                         .orElseThrow(() -> new ResourceNotFoundException(
@@ -78,6 +78,47 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         }
         return null;
     }
+
+    @Override
+    public AuthenticationResponse authenticateAdminManager(AuthenticationRequest request, HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse){
+        var user = userRepository.findByUsername(request.username())
+                .orElseGet(() -> userRepository.findByEmail(request.username())
+                        .orElseThrow(() -> new ResourceNotFoundException(
+                                "Người dùng với username hoặc email: " + request.username()
+                                        + " không tồn tại. Vui lòng đăng ký tài khoản mới.")));
+        if (user.getState() == AccountState.DISABLE) {
+            throw new AccountDisabledException("Tài khoản với username: " + request.username() + " đã bị vô hiệu hóa.");
+        } else if (user.getState() == AccountState.ACTIVE) {
+            authenticationManager.authenticate(
+                    new UsernamePasswordAuthenticationToken(
+                            request.username(),
+                            request.password()));
+
+            Role userRole = user.getRole();
+            boolean isAuthorized = userRole == Role.MANAGER || userRole == Role.ADMIN;
+
+            if (!isAuthorized) {
+                throw new UnauthorizedException("Người dùng với: " + request.username() + " không có quyền truy cập.");
+            }
+
+            String ipAddress = httpServletRequest.getRemoteAddr();
+            String deviceInfo = httpServletRequest.getHeader("User-Agent");
+
+            var jwtToken = jwtService.generateToken(user);
+            var refreshToken = jwtService.generateRefreshToken(user);
+
+            ResponseCookie refreshTokenCookie = jwtService.generateRefreshTokenCookie(refreshToken);
+            httpServletResponse.addHeader("Set-Cookie", refreshTokenCookie.toString());
+
+            revokeAllUserTokens(user);
+            saveUserToken(user, jwtToken, refreshToken, ipAddress, deviceInfo);
+            return AuthenticationResponse.builder()
+                    .accessToken(jwtToken)
+                    .build();
+        }
+        return null;
+    }
+
 
     private void saveUserToken(User user, String jwtToken, String refreshToken, String ipAddress, String deviceInfo) {
         var token = Token.builder()

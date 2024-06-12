@@ -7,7 +7,6 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import vn.webapp.backend.auction.enums.JewelryState;
 import vn.webapp.backend.auction.model.Jewelry;
-import vn.webapp.backend.auction.model.User;
 
 import java.util.List;
 import java.util.Optional;

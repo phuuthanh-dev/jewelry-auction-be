@@ -58,6 +58,6 @@ public class Transaction {
     private User user;
 
     @Enumerated(EnumType.STRING)
-    @Column(name ="payment_method", nullable = false, length = 20)
+    @Column(name ="payment_method", nullable = true, length = 20)
     private PaymentMethod paymentMethod;
 }

@@ -14,7 +14,7 @@ public class CorsConfiguration implements WebMvcConfigurer {
                         "http://localhost:3000",
                         "http://localhost:3001",
                         "https://fe-deploy-hazel.vercel.app",
-                        "https://deployauctionbe-production.up.railway.app"
+                        "https://auction-webapp-production.up.railway.app"
                 )
                 .allowedMethods("GET", "POST", "PUT", "DELETE")
                 .allowCredentials(true);

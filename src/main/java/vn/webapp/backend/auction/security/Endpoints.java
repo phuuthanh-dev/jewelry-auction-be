@@ -1,7 +1,6 @@
 package vn.webapp.backend.auction.security;
 
 public class Endpoints {
-    public static final String front_end_host = "http://localhost:3000";
 
     public static final String[] PUBLIC_GET_ENDPOINTS = {
             "/api/v1/jewelry/**", "/api/v1/jewelry-category/**", "/api/v1/auction/**",
@@ -17,7 +16,8 @@ public class Endpoints {
 
     public static final String[] PUBLIC_POST_ENDPOINTS = {
             "/api/v1/auth/**", "/api/v1/auction-history", "/api/v1/auth/logout","/api/v1/jewelry/jewelry-request","/api/v1/image/add-image",
-            "/api/v1/request-approval/send-from-user",  "/api/v1/request-approval/send-from-staff", "/api/v1/request-approval/send-from-manager"
+            "/api/v1/request-approval/send-from-user",  "/api/v1/request-approval/send-from-staff", "/api/v1/request-approval/send-from-manager",
+            "/api/v1/transaction/create-transaction-for-winner/**"
     };
 
     public static final String[] PUBLIC_PUT_ENDPOINTS = {

@@ -9,12 +9,16 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RestController;
 import vn.webapp.backend.auction.service.RealTimeService;
 
+import java.util.logging.Logger;
+
 @RestController
 @CrossOrigin(origins = "http://localhost:3000")
 @RequiredArgsConstructor
 public class RealTimeController {
 
     private final RealTimeService realTimeService;
+    Logger logger = Logger.getLogger(getClass().getName());
+
 
     @MessageMapping("/update-auction")
     @SendTo("/user/auction")
@@ -24,6 +28,6 @@ public class RealTimeController {
 
     @MessageExceptionHandler
     public void handleException(Exception ex) {
-        System.out.println("An error occurred: " + ex.getMessage());
+        logger.info("An error occurred: " + ex.getMessage());
     }
 }

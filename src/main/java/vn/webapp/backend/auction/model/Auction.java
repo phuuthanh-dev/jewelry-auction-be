@@ -8,13 +8,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import vn.webapp.backend.auction.enums.AuctionState;
 
-import java.sql.Date;
 import java.sql.Timestamp;
 import java.time.Duration;
-import java.time.Instant;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeParseException;
-import java.util.List;
 
 @Entity
 @Data

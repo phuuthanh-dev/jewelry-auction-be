@@ -15,14 +15,5 @@ public record SendJewelryFromUserRequest(
         String name
 
 ) {
-//    id: 0,
-//    name: '',
-//    price: '',
-//    description: '',
-//    material: '',
-//    brand: '',
-//    weight: '',
-//    images: '',
-//    user: ''
 
 }
