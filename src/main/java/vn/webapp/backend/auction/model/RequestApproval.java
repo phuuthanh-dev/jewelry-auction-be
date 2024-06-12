@@ -61,6 +61,7 @@ public class RequestApproval {
 
     @Column(name = "request_time", nullable = false)
     private Timestamp requestTime;
+
     @Column(name = "response_time")
     private Timestamp responseTime;
 
