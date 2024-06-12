@@ -22,7 +22,7 @@ public class Endpoints {
 
     public static final String[] PUBLIC_PUT_ENDPOINTS = {
             "/api/v1/auction/set-state/**", "/api/v1/user","/api/v1/request-approval/set-state/**",
-            "/api/v1/request-approval/confirm/**"
+            "/api/v1/request-approval/confirm/**", "/api/v1/request-approval/cancel-request"
     };
 
     public static final String[] MANAGER_GET_ENDPOINTS = {

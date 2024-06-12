@@ -2,6 +2,7 @@ package vn.webapp.backend.auction.service;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import vn.webapp.backend.auction.dto.CancelRequestApproval;
 import vn.webapp.backend.auction.dto.ManagerRequestApproval;
 import vn.webapp.backend.auction.dto.StaffRequestApproval;
 import vn.webapp.backend.auction.dto.UserRequestApproval;
@@ -12,6 +13,7 @@ public interface RequestApprovalService {
     RequestApproval getRequestById(Integer id);
     void setRequestState(Integer id, Integer responderId, String state);
     void confirmRequest(Integer id, Integer responderId);
+    void cancelRequest(CancelRequestApproval request);
     Page<RequestApproval> getRequestBySenderRole(Role role, Pageable pageable);
     RequestApproval requestFromUser(UserRequestApproval request);
     RequestApproval requestFromStaff(StaffRequestApproval request);

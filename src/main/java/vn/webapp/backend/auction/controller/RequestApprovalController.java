@@ -7,6 +7,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import vn.webapp.backend.auction.dto.CancelRequestApproval;
 import vn.webapp.backend.auction.dto.ManagerRequestApproval;
 import vn.webapp.backend.auction.dto.StaffRequestApproval;
 import vn.webapp.backend.auction.dto.UserRequestApproval;
@@ -29,6 +30,12 @@ public class RequestApprovalController {
     @PutMapping("/set-state/{id}")
     public ResponseEntity<RequestApproval> setState(@PathVariable Integer id, @RequestParam Integer responderId, @RequestParam String state) {
         requestApprovalService.setRequestState(id,responderId, state);
+        return ResponseEntity.ok().build();
+    }
+
+    @PutMapping("/cancel-request")
+    public ResponseEntity<RequestApproval> cancelRequest(@RequestBody CancelRequestApproval request) {
+        requestApprovalService.cancelRequest(request);
         return ResponseEntity.ok().build();
     }
 

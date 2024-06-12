@@ -5,6 +5,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import vn.webapp.backend.auction.dto.CancelRequestApproval;
 import vn.webapp.backend.auction.dto.ManagerRequestApproval;
 import vn.webapp.backend.auction.dto.StaffRequestApproval;
 import vn.webapp.backend.auction.dto.UserRequestApproval;
@@ -63,6 +64,13 @@ public class RequestApporvalServiceImpl implements RequestApprovalService{
         existingRequest.setConfirm(true);
         existingRequest.setResponder(existUser);
         existingRequest.setResponseTime(Timestamp.from(Instant.now()));
+    }
+
+    @Override
+    public void cancelRequest(CancelRequestApproval request) {
+        var existingRequest = requestApprovalRepository.findById(request.requestId())
+                .orElseThrow(() -> new ResourceNotFoundException("Không tìm thấy yêu cầu này."));
+        existingRequest.setNote(request.note());
     }
 
     @Override
