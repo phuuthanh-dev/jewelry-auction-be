@@ -37,14 +37,23 @@ public class VNPAYConfiguration {
         vnpParamsMap.put("vnp_OrderType", this.orderType);
         vnpParamsMap.put("vnp_Locale", "vn");
         vnpParamsMap.put("vnp_ReturnUrl", this.vnpReturnUrl + "?auctionId=" + auctionId + "&username=" + username);
-        Calendar calendar = Calendar.getInstance(TimeZone.getTimeZone("Etc/GMT+7"));
+
+        // Calendar calendar = Calendar.getInstance(TimeZone.getTimeZone("Etc/GMT+7"));
+        // SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMddHHmmss");
+
+        TimeZone timeZone = TimeZone.getTimeZone("Asia/Ho_Chi_Minh");
+        Calendar calendar = Calendar.getInstance(timeZone);
         SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMddHHmmss");
+        formatter.setTimeZone(timeZone);
+
         String vnpCreateDate = formatter.format(calendar.getTime());
         vnpParamsMap.put("vnp_CreateDate", vnpCreateDate);
         System.out.println("vnp_CreateDate: " + vnpCreateDate);
+
         calendar.add(Calendar.MINUTE, 15);
         String vnpExpireDate = formatter.format(calendar.getTime());
         System.out.println("vnp_ExpireDate: " + vnpExpireDate);
+
         vnpParamsMap.put("vnp_ExpireDate", vnpExpireDate);
         return vnpParamsMap;
     }
