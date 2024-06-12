@@ -26,7 +26,7 @@ public class Endpoints {
     };
 
     public static final String[] MANAGER_GET_ENDPOINTS = {
-            "/api/v1/user/staff/**"
+            "/api/v1/user/**"
     };
 
     public static final String[] MANAGER_PUT_ENDPOINTS = {

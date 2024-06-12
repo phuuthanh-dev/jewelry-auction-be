@@ -7,6 +7,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import vn.webapp.backend.auction.dto.AuctionRequest;
 import vn.webapp.backend.auction.enums.AuctionState;
 import vn.webapp.backend.auction.model.Auction;
 import vn.webapp.backend.auction.service.AuctionService;
@@ -14,7 +15,7 @@ import vn.webapp.backend.auction.service.AuctionService;
 import java.util.List;
 
 @RestController
-@CrossOrigin(origins = "http://localhost:3000")
+@CrossOrigin(origins =  {"http://localhost:3000", "http://localhost:3001"})
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/auction")
 public class AuctionController {
@@ -111,5 +112,10 @@ public class AuctionController {
         Sort.Direction direction = (sortOrder.equalsIgnoreCase("asc")) ? Sort.Direction.ASC : Sort.Direction.DESC;
         Pageable pageable = PageRequest.of(page, size, direction, sortBy);
         return ResponseEntity.ok(auctionService.getByStaffID(id, pageable));
+    }
+
+    @PostMapping("/create-new")
+    public ResponseEntity<Auction> createNewAuction(@RequestBody AuctionRequest request) {
+        return ResponseEntity.ok(auctionService.createNewAuction(request));
     }
 }
