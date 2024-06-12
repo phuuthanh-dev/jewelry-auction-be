@@ -9,9 +9,10 @@ import vn.webapp.backend.auction.model.User;
 import java.io.IOException;
 
 public interface AuthenticationService {
-    public AuthenticationResponse authenticate
+    public AuthenticationResponse authenticateGeneral
             (AuthenticationRequest request, HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) throws MessagingException;
-
+    AuthenticationResponse authenticateAdminManager
+            (AuthenticationRequest request, HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse);
 
     public void activateAccount(ActivateAccountRequest request) throws MessagingException;
 

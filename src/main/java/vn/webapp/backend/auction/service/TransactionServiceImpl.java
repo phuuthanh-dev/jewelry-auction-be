@@ -7,10 +7,14 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import vn.webapp.backend.auction.dto.UserTransactionResponse;
 import vn.webapp.backend.auction.enums.TransactionState;
+import vn.webapp.backend.auction.enums.TransactionType;
 import vn.webapp.backend.auction.exception.ResourceNotFoundException;
+import vn.webapp.backend.auction.model.ErrorMessages;
 import vn.webapp.backend.auction.model.Transaction;
 import vn.webapp.backend.auction.repository.AuctionHistoryRepository;
+import vn.webapp.backend.auction.repository.AuctionRepository;
 import vn.webapp.backend.auction.repository.TransactionRepository;
+import vn.webapp.backend.auction.repository.UserRepository;
 
 import java.util.List;
 @Transactional
@@ -20,6 +24,9 @@ public class TransactionServiceImpl implements TransactionService {
 
     private final TransactionRepository transactionRepository;
     private final AuctionHistoryRepository auctionHistoryRepository;
+    private final AuctionRepository auctionRepository;
+    private final UserRepository userRepository;
+
     @Override
     public List<Transaction> getAll() {
         return transactionRepository.findAll();
@@ -64,5 +71,26 @@ public class TransactionServiceImpl implements TransactionService {
         var existingAuction = transactionRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Không tìm thấy phiên giao dịch."));
         existingAuction.setState(TransactionState.valueOf(state));
+    }
+
+    @Override
+    public void createTransactionForWinner(Integer auctionId) {
+        var auction = auctionRepository.findById(auctionId)
+                .orElseThrow(() -> new ResourceNotFoundException(ErrorMessages.AUCTION_NOT_FOUND));
+
+        var user = userRepository.findLatestUserInAuctionHistoryByAuctionId(auction.getId())
+                .orElseThrow(() -> new ResourceNotFoundException(ErrorMessages.USER_WINNER_NOT_FOUND));
+
+        Transaction transaction = Transaction.builder()
+                .user(user)
+                .auction(auction)
+                .state(TransactionState.PENDING)
+                .totalPrice(auction.getLastPrice())
+                .feesIncurred(0.0)
+                .createDate(auction.getEndDate())
+                .type(TransactionType.PAYMENT_TO_WINNER)
+                .build();
+
+        transactionRepository.save(transaction);
     }
 }

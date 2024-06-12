@@ -10,7 +10,7 @@ import vn.webapp.backend.auction.enums.AuctionHistoryState;
 import vn.webapp.backend.auction.enums.AuctionRegistrationState;
 import vn.webapp.backend.auction.exception.ResourceNotFoundException;
 import vn.webapp.backend.auction.model.AuctionHistory;
-import vn.webapp.backend.auction.model.AuctionRegistration;
+import vn.webapp.backend.auction.model.ErrorMessages;
 import vn.webapp.backend.auction.repository.AuctionHistoryRepository;
 import vn.webapp.backend.auction.repository.AuctionRegistrationRepository;
 import vn.webapp.backend.auction.repository.AuctionRepository;
@@ -35,14 +35,14 @@ public class AuctionHistoryServiceImpl implements AuctionHistoryService {
     @Override
     public Page<AuctionHistory> getAuctionHistoryByAuctionId(Pageable pageable, Integer auctionId) {
         var existingAuction = auctionRepository.findById(auctionId)
-                .orElseThrow(() -> new ResourceNotFoundException("Không tìm thấy phiên đấu giá."));
+                .orElseThrow(() -> new ResourceNotFoundException(ErrorMessages.AUCTION_NOT_FOUND));
         return auctionHistoryRepository.findByAuctionId(pageable, existingAuction.getId());
     }
 
     @Override
     public Page<AuctionHistory> getAuctionHistoryByUsername(Pageable pageable, String username) {
         var existingUser = userRepository.findByUsername(username)
-                .orElseThrow(() -> new ResourceNotFoundException("Không tìm thấy người dùng."));
+                .orElseThrow(() -> new ResourceNotFoundException(ErrorMessages.USER_NOT_FOUND));
         return auctionHistoryRepository.findByUsername(pageable, existingUser.getUsername());
     }
 
@@ -65,11 +65,12 @@ public class AuctionHistoryServiceImpl implements AuctionHistoryService {
     }
 
     @Override
+    @Transactional
     public void saveBidByUserAndAuction(BidRequest request) {
         var existingUser = userRepository.findByUsername(request.username())
-                .orElseThrow(() -> new ResourceNotFoundException("Không tìm thấy người dùng."));
+                .orElseThrow(() -> new ResourceNotFoundException(ErrorMessages.USER_NOT_FOUND));
         var auction = auctionRepository.findById(request.auctionId())
-                .orElseThrow(() -> new ResourceNotFoundException("Không tìm thấy phiên đấu giá."));
+                .orElseThrow(() -> new ResourceNotFoundException(ErrorMessages.AUCTION_NOT_FOUND));
 
         var auctionHistory = AuctionHistory.builder()
                 .user(existingUser)
@@ -80,19 +81,26 @@ public class AuctionHistoryServiceImpl implements AuctionHistoryService {
                 .time(request.bidTime())
                 .build();
 
-        auction.setLastPrice(request.priceGiven());
-
         auctionHistoryRepository.save(auctionHistory);
+
+        // Refresh the auction's last price
+        auction = auctionRepository.findById(request.auctionId())
+                .orElseThrow(() -> new ResourceNotFoundException(ErrorMessages.AUCTION_NOT_FOUND));
+
+        if (auction.getLastPrice() == null || request.priceGiven().compareTo(auction.getLastPrice()) > 0) {
+            auction.setLastPrice(request.priceGiven());
+            auctionRepository.save(auction);
+        } else {
+            throw new IllegalArgumentException("Giá đấu không hợp lệ.");
+        }
     }
 
     @Override
     public void deleteBidByUserAndAuction(Integer userId, Integer auctionId) {
-        var existingUser = userRepository.findById(userId)
-                .orElseThrow(() -> new ResourceNotFoundException("Không tìm thấy người dùng."));
         var auction = auctionRepository.findById(auctionId)
-                .orElseThrow(() -> new ResourceNotFoundException("Không tìm thấy phiên đấu giá."));
+                .orElseThrow(() -> new ResourceNotFoundException(ErrorMessages.AUCTION_NOT_FOUND));
         var auctionRegistration = auctionRegistrationRepository.findByAuctionIdAndUserIdValid(userId, auctionId)
-                .orElseThrow(() -> new ResourceNotFoundException("Người dùng chưa đăng kí phiên đấu giá."));
+                .orElseThrow(() -> new ResourceNotFoundException(ErrorMessages.USER_NOT_FOUND));
 
         // KICK KHỎI PHIÊN ĐẤU GIÁ
         auctionRegistration.setAuctionRegistrationState(AuctionRegistrationState.KICKED_OUT);

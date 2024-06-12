@@ -3,8 +3,10 @@ package vn.webapp.backend.auction.controller;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+import vn.webapp.backend.auction.config.FrontendConfig;
 import vn.webapp.backend.auction.dto.PaymentResponse;
 import vn.webapp.backend.auction.service.*;
 import vn.webapp.backend.auction.service.vnpay.ResponseObject;
@@ -17,6 +19,7 @@ import java.io.IOException;
 @RequiredArgsConstructor
 public class VNPAYController {
 
+    private final FrontendConfig frontendConfig;
     private final PaymentService paymentService;
     private final AuctionRegistrationService auctionRegistrationService;
     private final TransactionService transactionService;
@@ -29,7 +32,8 @@ public class VNPAYController {
     @GetMapping("/vn-pay-callback")
     public void payCallbackHandler(HttpServletRequest request, @RequestParam("username") String username, @RequestParam("auctionId") Integer auctionId, HttpServletResponse response) throws IOException {
         String status = request.getParameter("vnp_ResponseCode");
-        String baseUrl = "https://fe-deploy-hazel.vercel.app/tai-san-dau-gia/";
+
+        String baseUrl = frontendConfig.getBaseUrl() + "/tai-san-dau-gia/";
         String redirectUrl = baseUrl + auctionId;
         if (!status.equals("00")) {
             redirectUrl += "?paymentStatus=failed";

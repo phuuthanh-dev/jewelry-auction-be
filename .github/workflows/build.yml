@@ -1,4 +1,4 @@
-name: Build Spring Boot With Maven
+name: Build Spring Boot Project
 
 on:
   push:
@@ -66,3 +66,4 @@ jobs:
         with:
           name: 1.0-SNAPSHOT.jar # Bản build được đánh version 1.0-SNAPSHOT
           path: staging
+
