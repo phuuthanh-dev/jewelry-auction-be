@@ -37,88 +37,78 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     private final EmailService emailService;
     private final BankRepository bankRepository;
     private final JwtService jwtService;
+    private final UserService userService;
     private final AuthenticationManager authenticationManager;
     private final PasswordEncoder passwordEncoder;
     private final TokenRepository tokenRepository;
+    private static final String USER_AGENT_HEADER = "User-Agent";
 
     @Override
     public AuthenticationResponse authenticateGeneral(AuthenticationRequest request, HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) throws MessagingException {
-        var user = userRepository.findByUsername(request.username())
-                .orElseGet(() -> userRepository.findByEmail(request.username())
-                        .orElseThrow(() -> new ResourceNotFoundException(
-                                "Người dùng với username hoặc email: " + request.username()
-                                        + " không tồn tại. Vui lòng đăng ký tài khoản mới.")));
+        var user = userService.findUserByUsernameOrEmail(request.username());
+        checkUserStateForGeneral(user, request.username());
+
+        authenticateUser(request.username(), request.password());
+        return generateAuthenticationResponse(user, httpServletRequest, httpServletResponse);
+    }
+
+    @Override
+    public AuthenticationResponse authenticateAdminManager(AuthenticationRequest request, HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) {
+        var user = userService.findUserByUsernameOrEmail(request.username());
+        checkUserStateForAdminManager(user, request.username());
+
+        authenticateUser(request.username(), request.password());
+        checkUserRole(user, request.username());
+
+        return generateAuthenticationResponse(user, httpServletRequest, httpServletResponse);
+    }
+
+    private void checkUserStateForGeneral(User user, String username) throws MessagingException {
         if (user.getState() == AccountState.INACTIVE) {
             emailService.sendActivationEmail(user.getEmail(), user.getFullName(),
                     jwtService.generateToken(user));
             throw new AccountInactiveException("Tài khoản chưa kích hoạt, vui lòng kiểm tra email để kích hoạt tài khoản.");
         } else if (user.getState() == AccountState.DISABLE) {
-            throw new AccountDisabledException("Tài khoản với username: " + request.username() + " đã bị vô hiệu hóa.");
-        } else if (user.getState() == AccountState.ACTIVE) {
-
-            authenticationManager.authenticate(
-                    new UsernamePasswordAuthenticationToken(
-                            request.username(),
-                            request.password()));
-
-            String ipAddress = httpServletRequest.getRemoteAddr();
-            String deviceInfo = httpServletRequest.getHeader("User-Agent");
-
-            var jwtToken = jwtService.generateToken(user);
-            var refreshToken = jwtService.generateRefreshToken(user);
-
-            ResponseCookie refreshTokenCookie = jwtService.generateRefreshTokenCookie(refreshToken);
-            httpServletResponse.addHeader("Set-Cookie", refreshTokenCookie.toString());
-
-            revokeAllUserTokens(user);
-            saveUserToken(user, jwtToken, refreshToken, ipAddress, deviceInfo);
-            return AuthenticationResponse.builder()
-                    .accessToken(jwtToken)
-                    .build();
+            throw new AccountDisabledException("Tài khoản với username: " + username + " đã bị vô hiệu hóa.");
         }
-        return null;
     }
 
-    @Override
-    public AuthenticationResponse authenticateAdminManager(AuthenticationRequest request, HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse){
-        var user = userRepository.findByUsername(request.username())
-                .orElseGet(() -> userRepository.findByEmail(request.username())
-                        .orElseThrow(() -> new ResourceNotFoundException(
-                                "Người dùng với username hoặc email: " + request.username()
-                                        + " không tồn tại. Vui lòng đăng ký tài khoản mới.")));
+    private void checkUserRole(User user, String username) {
+        Role userRole = user.getRole();
+        boolean isAuthorized = userRole == Role.MANAGER || userRole == Role.ADMIN;
+        if (!isAuthorized) {
+            throw new UnauthorizedException("Người dùng với: " + username + " không có quyền truy cập.");
+        }
+    }
+
+    private void checkUserStateForAdminManager(User user, String username) {
         if (user.getState() == AccountState.DISABLE) {
-            throw new AccountDisabledException("Tài khoản với username: " + request.username() + " đã bị vô hiệu hóa.");
-        } else if (user.getState() == AccountState.ACTIVE) {
-            authenticationManager.authenticate(
-                    new UsernamePasswordAuthenticationToken(
-                            request.username(),
-                            request.password()));
-
-            Role userRole = user.getRole();
-            boolean isAuthorized = userRole == Role.MANAGER || userRole == Role.ADMIN;
-
-            if (!isAuthorized) {
-                throw new UnauthorizedException("Người dùng với: " + request.username() + " không có quyền truy cập.");
-            }
-
-            String ipAddress = httpServletRequest.getRemoteAddr();
-            String deviceInfo = httpServletRequest.getHeader("User-Agent");
-
-            var jwtToken = jwtService.generateToken(user);
-            var refreshToken = jwtService.generateRefreshToken(user);
-
-            ResponseCookie refreshTokenCookie = jwtService.generateRefreshTokenCookie(refreshToken);
-            httpServletResponse.addHeader("Set-Cookie", refreshTokenCookie.toString());
-
-            revokeAllUserTokens(user);
-            saveUserToken(user, jwtToken, refreshToken, ipAddress, deviceInfo);
-            return AuthenticationResponse.builder()
-                    .accessToken(jwtToken)
-                    .build();
+            throw new AccountDisabledException("Tài khoản với username: " + username + " đã bị vô hiệu hóa.");
         }
-        return null;
     }
 
+    private void authenticateUser(String username, String password) {
+        authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(username, password));
+    }
+
+    private AuthenticationResponse generateAuthenticationResponse(User user, HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) {
+        String ipAddress = httpServletRequest.getRemoteAddr();
+        String deviceInfo = httpServletRequest.getHeader(USER_AGENT_HEADER);
+
+        var jwtToken = jwtService.generateToken(user);
+        var refreshToken = jwtService.generateRefreshToken(user);
+
+        ResponseCookie refreshTokenCookie = jwtService.generateRefreshTokenCookie(refreshToken);
+        httpServletResponse.addHeader("Set-Cookie", refreshTokenCookie.toString());
+
+        revokeAllUserTokens(user);
+        saveUserToken(user, jwtToken, refreshToken, ipAddress, deviceInfo);
+
+        return AuthenticationResponse.builder()
+                .accessToken(jwtToken)
+                .build();
+    }
 
     private void saveUserToken(User user, String jwtToken, String refreshToken, String ipAddress, String deviceInfo) {
         var token = Token.builder()
@@ -160,7 +150,9 @@ public class AuthenticationServiceImpl implements AuthenticationService {
                 .ifPresent(user -> {
                     throw new UserAlreadyExistsException("Người dùng với email: " + request.email() + " đã tồn tại.");
                 });
-        Bank bank = bankRepository.findById(request.bankId()).get();
+        Bank bank = bankRepository.findById(request.bankId())
+                .orElseThrow(() -> new ResourceNotFoundException("Bank with ID: " + request.bankId() + " not found."));
+
         var user = User.builder()
                 .firstName(request.firstName())
                 .lastName(request.lastName())
@@ -186,7 +178,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         var refreshToken = jwtService.generateRefreshToken(user);
 
         String ipAddress = httpServletRequest.getRemoteAddr();
-        String deviceInfo = httpServletRequest.getHeader("User-Agent");
+        String deviceInfo = httpServletRequest.getHeader(USER_AGENT_HEADER);
 
         saveUserToken(savedUser, jwtToken, refreshToken, ipAddress, deviceInfo);
         emailService.sendActivationEmail(request.email(), user.getFullName(), jwtToken);
@@ -228,7 +220,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
                         revokeAllUserTokens(user);
 
                         String ipAddress = request.getRemoteAddr();
-                        String deviceInfo = request.getHeader("User-Agent");
+                        String deviceInfo = request.getHeader(USER_AGENT_HEADER);
 
                         saveUserToken(user, accessToken, newRefreshToken, ipAddress, deviceInfo);
 
@@ -257,8 +249,6 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     public AuthenticationResponse changePassword(ChangePasswordRequest request) {
         var user = userRepository.findByUsername(jwtService.extractUsername(request.token()))
                 .orElseThrow();
-//        var user = userRepository.findByUsername(request.username())
-//                .orElseThrow();
         if (!passwordEncoder.matches(request.oldPassword(), user.getPassword())) {
             throw new OldPasswordMismatchException("Mật khẩu cũ không đúng.");
         }
