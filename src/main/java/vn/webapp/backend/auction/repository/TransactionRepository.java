@@ -12,8 +12,8 @@ import java.util.List;
 public interface TransactionRepository extends JpaRepository<Transaction, Integer> {
     @Query("SELECT t FROM Transaction t WHERE t.user.username = :username")
     Page<Transaction> findTransactionsByUsername(@Param("username") String username, Pageable pageable);
-    @Query("SELECT t FROM Transaction t WHERE t.type = :typename")
-    List<Transaction> findTransactionByType(@Param("typename") String typename);
+    @Query("SELECT t FROM Transaction t WHERE t.type = :typename AND t.state=:state")
+    Page<Transaction> findTransactionByTypeAndState(@Param("typename") String typename, @Param("state") String state, Pageable pageable);
     @Query("SELECT COUNT(t) FROM Transaction t WHERE t.type = 'REGISTRATION' AND t.user.username = :username")
     Integer getCountTransactionsRegistrationByUsername(@Param("username") String username);
     @Query("SELECT SUM(t.totalPrice) FROM Transaction t WHERE t.type = 'PAYMENT_TO_BUYER' AND t.user.username = :username")

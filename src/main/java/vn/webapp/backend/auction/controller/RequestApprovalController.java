@@ -7,6 +7,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import vn.webapp.backend.auction.dto.CancelRequestApproval;
 import vn.webapp.backend.auction.dto.ManagerRequestApproval;
 import vn.webapp.backend.auction.dto.StaffRequestApproval;
 import vn.webapp.backend.auction.dto.UserRequestApproval;
@@ -27,8 +28,14 @@ public class RequestApprovalController {
     }
 
     @PutMapping("/set-state/{id}")
-    public ResponseEntity<RequestApproval> setState(@PathVariable Integer id, @RequestParam String state) {
-        requestApprovalService.setRequestState(id, state);
+    public ResponseEntity<RequestApproval> setState(@PathVariable Integer id, @RequestParam Integer responderId, @RequestParam String state) {
+        requestApprovalService.setRequestState(id,responderId, state);
+        return ResponseEntity.ok().build();
+    }
+
+    @PutMapping("/cancel-request")
+    public ResponseEntity<RequestApproval> cancelRequest(@RequestBody CancelRequestApproval request) {
+        requestApprovalService.cancelRequest(request);
         return ResponseEntity.ok().build();
     }
 
@@ -76,5 +83,16 @@ public class RequestApprovalController {
         Sort.Direction direction = (sortOrder.equalsIgnoreCase("asc")) ? Sort.Direction.ASC : Sort.Direction.DESC;
         Pageable pageable = PageRequest.of(page, size, direction, sortBy);
         return ResponseEntity.ok(requestApprovalService.getRequestApprovalByUserId(id,pageable));
+    }
+
+    @GetMapping("/request-passed")
+    public ResponseEntity<Page<RequestApproval>> getRequestPassed(
+            @RequestParam(defaultValue = "id") String sortBy,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "5") int size,
+            @RequestParam(defaultValue = "asc") String sortOrder) {
+        Sort.Direction direction = (sortOrder.equalsIgnoreCase("asc")) ? Sort.Direction.ASC : Sort.Direction.DESC;
+        Pageable pageable = PageRequest.of(page, size, direction, sortBy);
+        return ResponseEntity.ok(requestApprovalService.getRequestApprovalPassed(pageable));
     }
 }
