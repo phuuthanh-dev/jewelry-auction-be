@@ -8,13 +8,15 @@ import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import vn.webapp.backend.auction.dto.UserTransactionResponse;
+import vn.webapp.backend.auction.enums.TransactionState;
+import vn.webapp.backend.auction.enums.TransactionType;
 import vn.webapp.backend.auction.model.Transaction;
 import vn.webapp.backend.auction.service.TransactionService;
 
 import java.util.List;
 
 @RestController
-@CrossOrigin(origins = "http://localhost:3000")
+@CrossOrigin(origins = {"http://localhost:3000", "http://localhost:3001"})
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/transaction")
 public class TransactionController {
@@ -52,6 +54,19 @@ public class TransactionController {
         Sort.Direction direction = (sortOrder.equalsIgnoreCase("desc")) ? Sort.Direction.DESC : Sort.Direction.ASC;
         Pageable pageable = PageRequest.of(page, size, direction, sortBy);
         return ResponseEntity.ok(transactionService.getTransactionsByUsername(username, pageable));
+    }
+
+    @GetMapping("/get-by-type")
+    public ResponseEntity<Page<Transaction>> getTransactionByType(
+            @RequestParam(defaultValue = "createDate") String sortBy,
+            @RequestParam(defaultValue = "PAYMENT_TO_WINNER") String type,
+            @RequestParam(defaultValue = "5") int size,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "PENDING") String state,
+            @RequestParam(defaultValue = "desc") String sortOrder) {
+        Sort.Direction direction = (sortOrder.equalsIgnoreCase("desc")) ? Sort.Direction.DESC : Sort.Direction.ASC;
+        Pageable pageable = PageRequest.of(page, size, direction, sortBy);
+        return ResponseEntity.ok(transactionService.getTransactionByTypeAndState(type, state, pageable));
     }
 
     @PostMapping("/create-transaction-for-winner/{auctionId}")
