@@ -10,7 +10,8 @@ public class Endpoints {
             "/api/v1/payment/vn-pay-callback/**", "/api/v1/auction-registration/**",
             "/api/v1/transaction/**", "/api/v1/auth/logout", "api/v1/bank",
             "/api/v1/auction-history/get-when-auction-finished/**",
-            "/api/v1/user/get-winner-auction/**", "/api/v1/request-approval/**"
+            "/api/v1/user/get-winner-auction/**", "/api/v1/request-approval/**",
+            "/api/v1/transaction/get-by-type"
 
     };
 

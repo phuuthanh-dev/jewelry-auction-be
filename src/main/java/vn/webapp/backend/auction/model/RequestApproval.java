@@ -70,6 +70,6 @@ public class RequestApproval {
     @Column(name = "is_confirm")
     private boolean isConfirm;
 
-    @Column(name = "note", columnDefinition = "nvarchar(max)")
+    @Column(name = "note")
     private String note;
 }
