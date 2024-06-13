@@ -12,6 +12,7 @@ import vn.webapp.backend.auction.enums.AuctionState;
 import vn.webapp.backend.auction.enums.JewelryState;
 import vn.webapp.backend.auction.exception.ResourceNotFoundException;
 import vn.webapp.backend.auction.model.Auction;
+import vn.webapp.backend.auction.model.ErrorMessages;
 import vn.webapp.backend.auction.model.Jewelry;
 import vn.webapp.backend.auction.model.User;
 import vn.webapp.backend.auction.repository.AuctionRepository;
@@ -42,7 +43,7 @@ public class AuctionServiceImpl implements AuctionService{
     @Override
     public Auction getAuctionById(Integer id) {
         return auctionRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Phiên đấu giá này không tồn tại"));
+                .orElseThrow(() -> new ResourceNotFoundException(ErrorMessages.AUCTION_NOT_FOUND));
     }
 
     @Override
@@ -124,7 +125,7 @@ public class AuctionServiceImpl implements AuctionService{
     @Override
     public void setAuctionState(Integer id, String state) {
         var existingAuction = auctionRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Không tìm thấy phiên đấu giá."));
+                .orElseThrow(() -> new ResourceNotFoundException(ErrorMessages.AUCTION_NOT_FOUND));
         existingAuction.setState(AuctionState.valueOf(state));
     }
 
@@ -132,23 +133,6 @@ public class AuctionServiceImpl implements AuctionService{
     public List<Auction> getAuctionByState(AuctionState state) {
         return auctionRepository.findByState(state);
     }
-
-//    @Override
-//    public List<Auction> findTodayAuctions() {
-//        // Lấy ngày hiện tại
-//        LocalDate today = LocalDate.now();
-//
-//        // Tính toán đầu và cuối ngày hiện tại
-//        LocalDateTime startOfDay = today.atStartOfDay();
-//        LocalDateTime endOfDay = today.atTime(LocalTime.MAX);
-//
-//        // Chuyển đổi LocalDateTime sang Timestamp
-//        Timestamp startTimestamp = Timestamp.valueOf(startOfDay);
-//        Timestamp endTimestamp = Timestamp.valueOf(endOfDay);
-//
-//        // Gọi phương thức repository
-//        return auctionRepository.findAuctionSortByBetweenStartdayAndEndday(startTimestamp, endTimestamp);
-//    }
 
     @Override
     public Page<Auction> getAuctionsByStates(List<AuctionState> states, Pageable pageable) {

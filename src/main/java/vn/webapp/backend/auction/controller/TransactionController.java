@@ -11,6 +11,7 @@ import vn.webapp.backend.auction.dto.UserTransactionResponse;
 import vn.webapp.backend.auction.enums.TransactionState;
 import vn.webapp.backend.auction.enums.TransactionType;
 import vn.webapp.backend.auction.model.Transaction;
+import vn.webapp.backend.auction.model.User;
 import vn.webapp.backend.auction.service.TransactionService;
 
 import java.util.List;
@@ -70,8 +71,7 @@ public class TransactionController {
     }
 
     @PostMapping("/create-transaction-for-winner/{auctionId}")
-    public ResponseEntity<Void> createTransactionForWinner(@PathVariable Integer auctionId) {
-        transactionService.createTransactionForWinner(auctionId);
-        return ResponseEntity.ok().build();
+    public ResponseEntity<User> createTransactionForWinner(@PathVariable Integer auctionId) {
+        return ResponseEntity.ok(transactionService.createTransactionForWinner(auctionId));
     }
 }

@@ -11,6 +11,7 @@ import vn.webapp.backend.auction.enums.TransactionType;
 import vn.webapp.backend.auction.exception.ResourceNotFoundException;
 import vn.webapp.backend.auction.model.ErrorMessages;
 import vn.webapp.backend.auction.model.Transaction;
+import vn.webapp.backend.auction.model.User;
 import vn.webapp.backend.auction.repository.AuctionHistoryRepository;
 import vn.webapp.backend.auction.repository.AuctionRepository;
 import vn.webapp.backend.auction.repository.TransactionRepository;
@@ -35,7 +36,7 @@ public class TransactionServiceImpl implements TransactionService {
     @Override
     public Transaction getTransactionById(Integer id) {
         return transactionRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Giao dịch này không tồn tại"));
+                .orElseThrow(() -> new ResourceNotFoundException(ErrorMessages.TRANSACTION_NOT_FOUND));
     }
 
     @Override
@@ -69,20 +70,20 @@ public class TransactionServiceImpl implements TransactionService {
     @Override
     public void setTransactionState(Integer id, String state) {
         var existingAuction = transactionRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Không tìm thấy phiên giao dịch."));
+                .orElseThrow(() -> new ResourceNotFoundException(ErrorMessages.AUCTION_NOT_FOUND));
         existingAuction.setState(TransactionState.valueOf(state));
     }
 
     @Override
-    public void createTransactionForWinner(Integer auctionId) {
+    public User createTransactionForWinner(Integer auctionId) {
         var auction = auctionRepository.findById(auctionId)
                 .orElseThrow(() -> new ResourceNotFoundException(ErrorMessages.AUCTION_NOT_FOUND));
 
-        var user = userRepository.findLatestUserInAuctionHistoryByAuctionId(auction.getId())
+        var userWin = userRepository.findLatestUserInAuctionHistoryByAuctionId(auction.getId())
                 .orElseThrow(() -> new ResourceNotFoundException(ErrorMessages.USER_WINNER_NOT_FOUND));
 
         Transaction transaction = Transaction.builder()
-                .user(user)
+                .user(userWin)
                 .auction(auction)
                 .state(TransactionState.PENDING)
                 .totalPrice(auction.getLastPrice())
@@ -92,5 +93,7 @@ public class TransactionServiceImpl implements TransactionService {
                 .build();
 
         transactionRepository.save(transaction);
+
+        return userWin;
     }
 }
