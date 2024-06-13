@@ -180,3 +180,27 @@ CREATE TABLE [dbo].[token]
     [token_type]    [varchar](255)          NULL,
     [user_id]       [int]                   NULL
 )
+
+CREATE TABLE [dbo].[image]
+(
+    [id] [int] IDENTITY(1,1) NOT NULL,
+    [data] [varchar](max) NULL,
+    [icon] [bit] NULL,
+    [link] [varchar](255) NULL,
+    [jewelry_id] [int] NULL
+)
+
+INSERT INTO [dbo].[image] ([data] , [icon], [link], [jewelry_id])
+    VALUES
+('https://raw.githubusercontent.com/phuuthanh2003/FE_Deploy/main/public/assets/images/product/small-size/1.jpg',
+ true, '', 1),
+('https://raw.githubusercontent.com/phuuthanh2003/FE_Deploy/main/public/assets/images/product/small-size/2.jpg',
+ false, '', 1),
+('https://raw.githubusercontent.com/phuuthanh2003/FE_Deploy/main/public/assets/images/product/small-size/2-1.jpg',
+ true, '', 2),
+('https://raw.githubusercontent.com/phuuthanh2003/FE_Deploy/main/public/assets/images/product/small-size/2-2.jpg',
+ false, '', 2),
+('https://raw.githubusercontent.com/phuuthanh2003/FE_Deploy/main/public/assets/images/product/small-size/6-1.jpg',
+ true, '', 3),
+('https://raw.githubusercontent.com/phuuthanh2003/FE_Deploy/main/public/assets/images/product/small-size/9-1.jpg',
+ true, '', 4);

@@ -18,7 +18,7 @@ public class ImageServiceTest extends AbstractTestNGSpringContextTests{
     private ImageService imageService;
 
     @Test
-    public void testGetImagesByJewelryIdReturnsWell(){
+    void testGetImagesByJewelryIdReturnsWell(){
         // Expected
         Integer id = 1;
 
@@ -35,7 +35,7 @@ public class ImageServiceTest extends AbstractTestNGSpringContextTests{
     }
 
     @Test
-    public void testGetImagesByJewelryIdReturnsNull(){
+    void testGetImagesByJewelryIdReturnsNull(){
         // Expected
         Integer nonExistId = 99;
 
@@ -48,7 +48,7 @@ public class ImageServiceTest extends AbstractTestNGSpringContextTests{
     }
 
     @Test
-    public void testGetImageByIconAndJewelryIdReturnsWell(){
+    void testGetImageByIconAndJewelryIdReturnsWell(){
         // Expected
         Integer id = 1;
 
