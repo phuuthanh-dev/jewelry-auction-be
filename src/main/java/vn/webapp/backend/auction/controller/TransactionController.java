@@ -56,13 +56,13 @@ public class TransactionController {
         return ResponseEntity.ok(transactionService.getTransactionsByUsername(username, pageable));
     }
 
-    @GetMapping("/get-by-type")
-    public ResponseEntity<Page<Transaction>> getTransactionByType(
+    @GetMapping("/get-by-type-state")
+    public ResponseEntity<Page<Transaction>> getTransactionByTypeAndState(
             @RequestParam(defaultValue = "createDate") String sortBy,
-            @RequestParam(defaultValue = "PAYMENT_TO_WINNER") String type,
+            @RequestParam(defaultValue = "PAYMENT_TO_WINNER") TransactionType type,
             @RequestParam(defaultValue = "5") int size,
             @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "PENDING") String state,
+            @RequestParam(defaultValue = "SUCCEED") TransactionState state,
             @RequestParam(defaultValue = "desc") String sortOrder) {
         Sort.Direction direction = (sortOrder.equalsIgnoreCase("desc")) ? Sort.Direction.DESC : Sort.Direction.ASC;
         Pageable pageable = PageRequest.of(page, size, direction, sortBy);
