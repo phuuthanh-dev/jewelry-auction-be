@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import vn.webapp.backend.auction.dto.SendJewelryFromUserRequest;
 import vn.webapp.backend.auction.enums.JewelryState;
 import vn.webapp.backend.auction.exception.ResourceNotFoundException;
+import vn.webapp.backend.auction.model.ErrorMessages;
 import vn.webapp.backend.auction.model.Jewelry;
 import vn.webapp.backend.auction.model.JewelryCategory;
 import vn.webapp.backend.auction.model.User;
@@ -35,7 +36,7 @@ public class JewelryServiceImpl implements JewelryService {
     @Override
     public Jewelry getJewelryById(Integer id) {
         return jewelryRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Sản phẩm hiện không tồn tại"));
+                .orElseThrow(() -> new ResourceNotFoundException(ErrorMessages.JEWELRY_NOT_FOUND));
     }
 
     @Override
@@ -93,7 +94,7 @@ public class JewelryServiceImpl implements JewelryService {
     @Override
     public void deleteJewelry(Integer id) {
         var existingJewelry = jewelryRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Không tìm thấy trang sức để xóa"));
+                .orElseThrow(() -> new ResourceNotFoundException(ErrorMessages.JEWELRY_NOT_FOUND));
         existingJewelry.setState(JewelryState.HIDDEN);
     }
 

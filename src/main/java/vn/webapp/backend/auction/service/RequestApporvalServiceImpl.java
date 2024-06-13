@@ -12,6 +12,7 @@ import vn.webapp.backend.auction.dto.UserRequestApproval;
 import vn.webapp.backend.auction.enums.RequestApprovalState;
 import vn.webapp.backend.auction.enums.Role;
 import vn.webapp.backend.auction.exception.ResourceNotFoundException;
+import vn.webapp.backend.auction.model.ErrorMessages;
 import vn.webapp.backend.auction.model.Jewelry;
 import vn.webapp.backend.auction.model.RequestApproval;
 import vn.webapp.backend.auction.model.User;
@@ -34,15 +35,15 @@ public class RequestApporvalServiceImpl implements RequestApprovalService{
     @Override
     public RequestApproval getRequestById(Integer id) {
         return requestApprovalRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Yêu cầu không tồn tại"));
+                .orElseThrow(() -> new ResourceNotFoundException(ErrorMessages.REQUEST_APPROVAL_NOT_FOUND));
     }
 
     @Override
     public void setRequestState(Integer id, Integer responderId, String state) {
         var existingRequest = requestApprovalRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Không tìm thấy yêu cầu này."));
+                .orElseThrow(() -> new ResourceNotFoundException(ErrorMessages.REQUEST_APPROVAL_NOT_FOUND));
         var existUser = userRepository.findById(responderId)
-                .orElseThrow(() -> new ResourceNotFoundException("Không tìm thấy người dùng này."));
+                .orElseThrow(() -> new ResourceNotFoundException(ErrorMessages.USER_NOT_FOUND));
         if(existUser.getRole().equals(Role.STAFF)) {
             existingRequest.setStaff(existUser);
         }
@@ -55,9 +56,9 @@ public class RequestApporvalServiceImpl implements RequestApprovalService{
     @Override
     public void confirmRequest(Integer id, Integer responderId) {
         var existingRequest = requestApprovalRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Không tìm thấy yêu cầu này."));
+                .orElseThrow(() -> new ResourceNotFoundException(ErrorMessages.REQUEST_APPROVAL_NOT_FOUND));
         var existUser = userRepository.findById(responderId)
-                .orElseThrow(() -> new ResourceNotFoundException("Không tìm thấy người dùng này."));
+                .orElseThrow(() -> new ResourceNotFoundException(ErrorMessages.USER_NOT_FOUND));
         if(existUser.getRole().equals(Role.STAFF)) {
             existingRequest.setStaff(existUser);
         }
@@ -69,7 +70,7 @@ public class RequestApporvalServiceImpl implements RequestApprovalService{
     @Override
     public void cancelRequest(CancelRequestApproval request) {
         var existingRequest = requestApprovalRepository.findById(request.requestId())
-                .orElseThrow(() -> new ResourceNotFoundException("Không tìm thấy yêu cầu này."));
+                .orElseThrow(() -> new ResourceNotFoundException(ErrorMessages.REQUEST_APPROVAL_NOT_FOUND));
         existingRequest.setNote(request.note());
     }
 
