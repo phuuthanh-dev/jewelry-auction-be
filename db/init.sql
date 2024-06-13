@@ -198,3 +198,57 @@ CREATE TABLE [dbo].[image]
 ('https://raw.githubusercontent.com/phuuthanh2003/FE_Deploy/main/public/assets/images/product/small-size/2-2.jpg', 0, '', 2),
 ('https://raw.githubusercontent.com/phuuthanh2003/FE_Deploy/main/public/assets/images/product/small-size/6-1.jpg', 1, '', 3),
 ('https://raw.githubusercontent.com/phuuthanh2003/FE_Deploy/main/public/assets/images/product/small-size/9-1.jpg', 1, '', 4);
+
+CREATE TABLE [dbo].[transaction](
+    [id] [int] IDENTITY(1,1) NOT NULL,
+    [create_date] [datetime2](6) NOT NULL,
+    [fees_incurred] [float] NOT NULL,
+    [payment_method] [varchar](20) NULL,
+    [payment_time] [datetime2](6) NULL,
+    [transaction_state] [varchar](255) NOT NULL,
+    [total_price] [float] NOT NULL,
+    [transaction_type] [varchar](255) NOT NULL,
+    [auction_id] [int] NULL,
+    [user_id] [int] NULL
+    )
+
+    INSERT INTO [dbo].[transaction] ([create_date], [fees_incurred], [payment_method], [payment_time], [transaction_state], [total_price], [transaction_type], [auction_id], [user_id])
+    VALUES
+('2024-05-01 17:30:00', 100000, 'CASH', '2024-05-01 17:30:00', 'SUCCEED', 1000000, 'REGISTRATION', 1, 1),
+('2024-05-12 19:30:00', 200000, 'CASH', '2024-05-12 19:30:00', 'SUCCEED', 2000000, 'REGISTRATION', 2, 1);
+
+
+
+CREATE TABLE [dbo].[auction_registration]
+(
+    [id] [int] IDENTITY(1,1) NOT NULL,
+    [auction_registration_state] [varchar](255) NOT NULL,
+    [registration_date] [datetime2](6) NOT NULL,
+    [registration_fee] [float] NOT NULL,
+    [auction_id] [int] NULL,
+    [transaction_id] [int] NULL,
+    [user_id] [int] NULL
+)
+
+INSERT INTO [dbo].[auction_registration] ([auction_registration_state], [registration_date], [registration_fee], [auction_id], [transaction_id], [user_id])
+VALUES
+('VALID', '2024-05-01 17:30:00', 1000000, 1, 1, 1),
+('VALID', '2024-05-12 19:30:00', 2000000, 2, 1, 1);
+
+CREATE TABLE [dbo].[request_approval](
+    [id] [int] IDENTITY(1,1) NOT NULL,
+    [desired_price] [float] NOT NULL,
+    [is_confirm] [bit] NULL,
+    [note] [nvarchar](255) NULL,
+    [request_time] [datetime2](6) NOT NULL,
+    [response_time] [datetime2](6) NULL,
+    [state] [varchar](255) NULL,
+    [valuation] [float] NULL,
+    [jewelry_id] [int] NULL,
+    [user_id_respond] [int] NULL,
+    [user_id_send] [int] NULL,
+    [staff_id] [int] NULL)
+
+INSERT INTO [dbo].[request_approval] ([desired_price], [is_confirm], [note], [request_time], [response_time], [state], [valuation], [jewelry_id], [user_id_respond], [user_id_send], [staff_id])
+VALUES
+(1000000, 1, 'Nhẫn kim cương', '2024-05-01 17:30:00', '2024-05-01 17:30:00', 'ACTIVE', 1000000, 1, 1, 2, 1),
