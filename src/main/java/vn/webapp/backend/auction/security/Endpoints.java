@@ -16,7 +16,8 @@ public class Endpoints {
     };
 
     public static final String[] PUBLIC_POST_ENDPOINTS = {
-            "/api/v1/auth/**", "/api/v1/auction-history", "/api/v1/auth/logout"
+            "/api/v1/auth/**", "/api/v1/auction-history", "/api/v1/auth/logout","/api/v1/jewelry/jewelry-request","/api/v1/image/add-image",
+            "/api/v1/request-approval//send-from-user"
     };
 
     public static final String[] PUBLIC_PUT_ENDPOINTS = {

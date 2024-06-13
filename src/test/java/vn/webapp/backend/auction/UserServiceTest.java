@@ -75,3 +75,4 @@ public class UserServiceTest extends AbstractTestNGSpringContextTests {
     }
 
 }
+

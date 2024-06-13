@@ -54,7 +54,7 @@ public class RequestApproval {
     @ToString.Exclude
     private Jewelry jewelry;
 
-    @Column(name = "valuation", nullable = false)
+    @Column(name = "valuation")
     private double valuation;
 
     @Column(name = "desired_price", nullable = false)

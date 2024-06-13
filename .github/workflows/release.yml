@@ -2,7 +2,7 @@ name: Release Auction REST API
 
 on:
   workflow_run:
-    workflows: [Spring Boot CI]
+    workflows: [Build Spring Boot With Maven]
     types:
       - completed
     branches:
@@ -33,3 +33,6 @@ jobs:
           name: 'Auction REST API - v${{ steps.get_version.outputs.version }}'
           tag_name: ${{ steps.get_version.outputs.version }}
           generate_release_notes: true
+
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
