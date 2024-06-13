@@ -10,6 +10,7 @@ import vn.webapp.backend.auction.model.User;
 import java.util.List;
 
 public interface UserService {
+    User findUserByUsernameOrEmail(String username);
     User getUserByUsername(String username);
     User getUserById(Integer id);
     User getUserByEmail(String email);
