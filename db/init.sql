@@ -190,17 +190,11 @@ CREATE TABLE [dbo].[image]
     [jewelry_id] [int] NULL
 )
 
-INSERT INTO [dbo].[image] ([data] , [icon], [link], [jewelry_id])
+    INSERT INTO [dbo].[image] ([data], [icon], [link], [jewelry_id])
     VALUES
-('https://raw.githubusercontent.com/phuuthanh2003/FE_Deploy/main/public/assets/images/product/small-size/1.jpg',
- true, '', 1),
-('https://raw.githubusercontent.com/phuuthanh2003/FE_Deploy/main/public/assets/images/product/small-size/2.jpg',
- false, '', 1),
-('https://raw.githubusercontent.com/phuuthanh2003/FE_Deploy/main/public/assets/images/product/small-size/2-1.jpg',
- true, '', 2),
-('https://raw.githubusercontent.com/phuuthanh2003/FE_Deploy/main/public/assets/images/product/small-size/2-2.jpg',
- false, '', 2),
-('https://raw.githubusercontent.com/phuuthanh2003/FE_Deploy/main/public/assets/images/product/small-size/6-1.jpg',
- true, '', 3),
-('https://raw.githubusercontent.com/phuuthanh2003/FE_Deploy/main/public/assets/images/product/small-size/9-1.jpg',
- true, '', 4);
+('https://raw.githubusercontent.com/phuuthanh2003/FE_Deploy/main/public/assets/images/product/small-size/1.jpg', 1, '', 1),
+('https://raw.githubusercontent.com/phuuthanh2003/FE_Deploy/main/public/assets/images/product/small-size/2.jpg', 0, '', 1),
+('https://raw.githubusercontent.com/phuuthanh2003/FE_Deploy/main/public/assets/images/product/small-size/2-1.jpg', 1, '', 2),
+('https://raw.githubusercontent.com/phuuthanh2003/FE_Deploy/main/public/assets/images/product/small-size/2-2.jpg', 0, '', 2),
+('https://raw.githubusercontent.com/phuuthanh2003/FE_Deploy/main/public/assets/images/product/small-size/6-1.jpg', 1, '', 3),
+('https://raw.githubusercontent.com/phuuthanh2003/FE_Deploy/main/public/assets/images/product/small-size/9-1.jpg', 1, '', 4);
