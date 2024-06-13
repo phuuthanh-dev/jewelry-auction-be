@@ -218,6 +218,7 @@ VALUES
 ('2024-05-12 19:30:00', 200000, 'BANKING', '2024-05-12 19:30:00', 'SUCCEED', 2000000, 'REGISTRATION', 2, 1);
 
 
+
 CREATE TABLE [dbo].[auction_registration]
 (
     [id] [int] IDENTITY(1,1) NOT NULL,
