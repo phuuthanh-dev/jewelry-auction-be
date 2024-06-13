@@ -92,11 +92,6 @@ public class User implements UserDetails {
     @Column(name ="bank_account_name", nullable = false, length = 30)
     private String bankAccountName;
 
-//    @ManyToOne
-//    @JoinColumn(name = "role_id")
-//    @EqualsAndHashCode.Exclude
-//    @ToString.Exclude
-//    private Role role;
 
     @Enumerated(EnumType.STRING)
     private Role role;
@@ -112,12 +107,6 @@ public class User implements UserDetails {
     @ToString.Exclude
     @JsonIgnore
     private List<Jewelry> jewelries;
-
-//    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-//    @EqualsAndHashCode.Exclude
-//    @ToString.Exclude
-//    @JsonIgnore
-//    private List<RequestApproval> requestApprovals;
 
     public String getFullName() {
         return firstName + " " + lastName;

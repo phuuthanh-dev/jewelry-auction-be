@@ -61,6 +61,7 @@ public class RequestApproval {
 
     @Column(name = "request_time", nullable = false)
     private Timestamp requestTime;
+
     @Column(name = "response_time")
     private Timestamp responseTime;
 
@@ -69,4 +70,7 @@ public class RequestApproval {
 
     @Column(name = "is_confirm")
     private boolean isConfirm;
+
+    @Column(name = "note")
+    private String note;
 }

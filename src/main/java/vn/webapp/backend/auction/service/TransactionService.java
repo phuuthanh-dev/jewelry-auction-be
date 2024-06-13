@@ -14,11 +14,11 @@ public interface TransactionService {
 
     UserTransactionResponse getTransactionsDashboardByUsername(String username);
 
-    List<Transaction> getTransactionByType(String typename);
-
     void setTransactionState(Integer id, String state);
 
     Page<Transaction> getTransactionsByUsername (String username, Pageable pageable);
 
     void createTransactionForWinner(Integer auctionId);
+
+    Page<Transaction> getTransactionByTypeAndState (String typename, String state, Pageable pageable);
 }

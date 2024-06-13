@@ -2,6 +2,7 @@ package vn.webapp.backend.auction.service;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import vn.webapp.backend.auction.dto.AuctionRequest;
 import vn.webapp.backend.auction.enums.AuctionState;
 import vn.webapp.backend.auction.model.Auction;
 
@@ -21,5 +22,6 @@ public interface AuctionService {
     List<Auction> findAuctionSortByBetweenStartdayAndEndday(String startDay, String endDay);
     Page<Auction> getByStaffID(Integer id, Pageable pageable);
     List<Auction> getAuctionByJewelryId(Integer id);
+    Auction createNewAuction(AuctionRequest request);
 
 }
