@@ -120,4 +120,9 @@ public class AuctionHistoryServiceImpl implements AuctionHistoryService {
             auction.setLastPrice(null);
         }
     }
+
+    @Override
+    public Page<AuctionHistory> getAuctionHistoryByAuctionIdAndUserId( Integer auctionId, Integer userId, AuctionHistoryState state, Pageable pageable) {
+        return auctionHistoryRepository.findByAuctionIdAndUserId(auctionId, userId, state, pageable);
+    }
 }
