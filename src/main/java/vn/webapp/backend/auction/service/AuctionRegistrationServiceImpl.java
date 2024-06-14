@@ -10,10 +10,7 @@ import vn.webapp.backend.auction.enums.PaymentMethod;
 import vn.webapp.backend.auction.enums.TransactionState;
 import vn.webapp.backend.auction.enums.TransactionType;
 import vn.webapp.backend.auction.exception.ResourceNotFoundException;
-import vn.webapp.backend.auction.model.Auction;
-import vn.webapp.backend.auction.model.AuctionRegistration;
-import vn.webapp.backend.auction.model.Transaction;
-import vn.webapp.backend.auction.model.User;
+import vn.webapp.backend.auction.model.*;
 import vn.webapp.backend.auction.repository.AuctionRegistrationRepository;
 import vn.webapp.backend.auction.repository.AuctionRepository;
 import vn.webapp.backend.auction.repository.TransactionRepository;
@@ -36,8 +33,8 @@ public class AuctionRegistrationServiceImpl implements AuctionRegistrationServic
 
     @Override
     public void registerUserForAuction(String username, Integer auctionId) {
-        User user = userRepository.findByUsername(username).orElseThrow(() -> new ResourceNotFoundException("User not found"));
-        Auction auction = auctionRepository.findById(auctionId).orElseThrow(() -> new ResourceNotFoundException("Auction not found"));
+        User user = userRepository.findByUsername(username).orElseThrow(() -> new ResourceNotFoundException(ErrorMessages.USER_NOT_FOUND));
+        Auction auction = auctionRepository.findById(auctionId).orElseThrow(() -> new ResourceNotFoundException(ErrorMessages.AUCTION_NOT_FOUND));
 
         double registrationFee = auction.getParticipationFee() + auction.getDeposit();
 
@@ -70,7 +67,7 @@ public class AuctionRegistrationServiceImpl implements AuctionRegistrationServic
 
     @Override
     public List<AuctionRegistration> findByAuctionIdAndValid(Integer auctionId) {
-        var auction = auctionRepository.findById(auctionId).orElseThrow(() -> new ResourceNotFoundException("Auction not found"));
+        var auction = auctionRepository.findById(auctionId).orElseThrow(() -> new ResourceNotFoundException(ErrorMessages.AUCTION_NOT_FOUND));
         return auctionRegistrationRepository.findByAuctionIdAndValid(auction.getId(), AuctionRegistrationState.VALID);
     }
 

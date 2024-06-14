@@ -11,6 +11,7 @@ import vn.webapp.backend.auction.enums.AccountState;
 import vn.webapp.backend.auction.enums.Role;
 import vn.webapp.backend.auction.exception.ResourceNotFoundException;
 import vn.webapp.backend.auction.exception.UserAlreadyExistsException;
+import vn.webapp.backend.auction.model.ErrorMessages;
 import vn.webapp.backend.auction.model.User;
 import vn.webapp.backend.auction.repository.AuctionRegistrationRepository;
 import vn.webapp.backend.auction.repository.UserRepository;
@@ -28,19 +29,27 @@ public class UserServiceImpl implements UserService {
     @Override
     public User getUserByUsername(String username) {
         return userRepository.findByUsername(username)
-                .orElseThrow(() -> new ResourceNotFoundException("Người dùng tương ứng không tồn tại"));
+                .orElseThrow(() -> new ResourceNotFoundException(ErrorMessages.USER_NOT_FOUND));
+    }
+
+    @Override
+    public User findUserByUsernameOrEmail(String username) {
+        return userRepository.findByUsername(username)
+                .orElseGet(() -> userRepository.findByEmail(username)
+                        .orElseThrow(() -> new ResourceNotFoundException(
+                                "Người dùng với username hoặc email: " + username + " không tồn tại. Vui lòng đăng ký tài khoản mới.")));
     }
 
     @Override
     public User getUserById(Integer id) {
         return userRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Người dùng tương ứng không tồn tại"));
+                .orElseThrow(() -> new ResourceNotFoundException(ErrorMessages.USER_NOT_FOUND));
     }
 
     @Override
     public User getUserByEmail(String email) {
         return userRepository.findByEmail(email)
-                .orElseThrow(() -> new ResourceNotFoundException("Không tìm thấy tài khoản."));
+                .orElseThrow(() -> new ResourceNotFoundException(ErrorMessages.USER_NOT_FOUND));
     }
 
     @Override
@@ -56,14 +65,15 @@ public class UserServiceImpl implements UserService {
     @Override
     public void setAccountState(Integer id, String state) {
         var existingUser = userRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Không tìm thấy tài khoản."));
+                .orElseThrow(() -> new ResourceNotFoundException(ErrorMessages.USER_NOT_FOUND));
         existingUser.setState(AccountState.valueOf(state));
     }
 
     @Override
     public User updateUser(User user) {
         var existingUser = userRepository.findById(user.getId())
-                .orElseThrow(() -> new ResourceNotFoundException("Không tìm thấy user tương ứng"));
+                .orElseThrow(() -> new ResourceNotFoundException(ErrorMessages.USER_NOT_FOUND));
+
         existingUser.setAddress(user.getAddress());
         existingUser.setFirstName(user.getFirstName());
         existingUser.setLastName(user.getLastName());
@@ -117,18 +127,18 @@ public class UserServiceImpl implements UserService {
     @Override
     public User getLatestUserInAuctionHistoryByAuctionId(Integer auctionId) {
         return userRepository.findLatestUserInAuctionHistoryByAuctionId(auctionId)
-                .orElseThrow(() -> new ResourceNotFoundException("Người dùng tương ứng không tồn tại"));
+                .orElseThrow(() -> new ResourceNotFoundException(ErrorMessages.USER_NOT_FOUND));
     }
 
     @Override
     public User registerStaff(RegisterAccountRequest request) {
         userRepository.findByUsername(request.username())
                 .ifPresent(existingUser -> {
-                    throw new UserAlreadyExistsException("Người dùng đã tồn tại.");
+                    throw new UserAlreadyExistsException(ErrorMessages.USER_ALREADY_EXIST);
                 });
         userRepository.findByEmail(request.email())
                 .ifPresent(existingUser -> {
-                    throw new UserAlreadyExistsException("Người dùng đã tồn tại.");
+                    throw new UserAlreadyExistsException(ErrorMessages.USER_ALREADY_EXIST);
                 });
         var user = User.builder()
                 .firstName(request.firstName())
