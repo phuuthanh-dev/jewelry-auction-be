@@ -59,7 +59,7 @@ public class TransactionServiceImpl implements TransactionService {
     }
 
     @Override
-    public Page<Transaction> getTransactionByTypeAndState(String typename, String state, Pageable pageable) {
+    public Page<Transaction> getTransactionByTypeAndState(TransactionType typename, TransactionState state, Pageable pageable) {
         Page<Transaction> transactionsList = transactionRepository.findTransactionByTypeAndState(typename, state, pageable);
         if (transactionsList.isEmpty()) {
             throw new ResourceNotFoundException("Type'" + typename + "' does not have any transaction items.");

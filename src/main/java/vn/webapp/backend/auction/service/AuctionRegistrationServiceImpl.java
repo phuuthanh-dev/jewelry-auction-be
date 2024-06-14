@@ -2,6 +2,8 @@ package vn.webapp.backend.auction.service;
 
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import vn.webapp.backend.auction.enums.AuctionRegistrationState;
 import vn.webapp.backend.auction.enums.PaymentMethod;
@@ -67,6 +69,11 @@ public class AuctionRegistrationServiceImpl implements AuctionRegistrationServic
     public List<AuctionRegistration> findByAuctionIdAndValid(Integer auctionId) {
         var auction = auctionRepository.findById(auctionId).orElseThrow(() -> new ResourceNotFoundException(ErrorMessages.AUCTION_NOT_FOUND));
         return auctionRegistrationRepository.findByAuctionIdAndValid(auction.getId(), AuctionRegistrationState.VALID);
+    }
+
+    @Override
+    public Page<AuctionRegistration> findByUserIdAndValid(Integer userId, Pageable pageable) {
+        return  auctionRegistrationRepository.findByUserIdAndValid(userId,pageable);
     }
 
 }
