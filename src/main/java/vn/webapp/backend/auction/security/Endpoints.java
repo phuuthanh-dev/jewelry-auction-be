@@ -27,7 +27,7 @@ public class Endpoints {
     };
 
     public static final String[] MANAGER_GET_ENDPOINTS = {
-            "/api/v1/user/**"
+//            "/api/v1/user/**"
     };
 
     public static final String[] MANAGER_PUT_ENDPOINTS = {
@@ -42,8 +42,12 @@ public class Endpoints {
             "/api/v1/jewelry/**", "/api/v1/jewelry-category/**", "/api/v1/auction/**"
     };
 
-    public static final String[] ADMIN_GET_ENDPOINTS = {
+    public static final String[] MANAGER_ADMIN_GET_ENDPOINTS = {
             "/api/v1/user/**"
+    };
+
+    public static final String[] ADMIN_GET_ENDPOINTS = {
+//            "/api/v1/user/**"
     };
 
     public static final String[] ADMIN_POST_ENDPOINTS = {

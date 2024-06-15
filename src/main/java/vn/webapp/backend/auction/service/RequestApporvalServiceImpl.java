@@ -9,6 +9,7 @@ import vn.webapp.backend.auction.dto.CancelRequestApproval;
 import vn.webapp.backend.auction.dto.ManagerRequestApproval;
 import vn.webapp.backend.auction.dto.StaffRequestApproval;
 import vn.webapp.backend.auction.dto.UserRequestApproval;
+import vn.webapp.backend.auction.enums.JewelryState;
 import vn.webapp.backend.auction.enums.RequestApprovalState;
 import vn.webapp.backend.auction.enums.Role;
 import vn.webapp.backend.auction.exception.ResourceNotFoundException;
@@ -71,6 +72,9 @@ public class RequestApporvalServiceImpl implements RequestApprovalService{
     public void cancelRequest(CancelRequestApproval request) {
         var existingRequest = requestApprovalRepository.findById(request.requestId())
                 .orElseThrow(() -> new ResourceNotFoundException(ErrorMessages.REQUEST_APPROVAL_NOT_FOUND));
+        Jewelry jewelry = existingRequest.getJewelry();
+        jewelry.setState(JewelryState.HIDDEN);
+        existingRequest.setJewelry(jewelry);
         existingRequest.setNote(request.note());
     }
 
