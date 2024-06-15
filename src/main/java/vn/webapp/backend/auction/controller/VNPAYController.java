@@ -39,27 +39,41 @@ public class VNPAYController {
             @RequestParam("transactionId") Integer transactionId
     ) throws IOException {
         String status = request.getParameter("vnp_ResponseCode");
-        String baseUrl = "";
         String redirectUrl = "";
+
         if (transactionId == 0) {
-            baseUrl = frontendConfig.getBaseUrl() + "/tai-san-dau-gia/";
-            redirectUrl = baseUrl + auctionId;
-            if (!status.equals("00")) {
-                redirectUrl += "?paymentStatus=failed";
-            } else {
-                auctionRegistrationService.registerUserForAuction(username, auctionId);
-                redirectUrl += "?paymentStatus=success";
-            }
+            redirectUrl = handleAuctionPaymentCallback(username, auctionId, status);
         } else {
-            redirectUrl = frontendConfig.getBaseUrl() + "/thong-tin-ca-nhan/";
-            if (!status.equals("00")) {
-                redirectUrl += "?paymentStatus=failed";
-            } else {
-                transactionService.setTransactionState(transactionId, "SUCCEED");
-                redirectUrl += "?paymentStatus=success";
-            }
+            redirectUrl = handleTransactionPaymentCallback(transactionId, status);
         }
         response.sendRedirect(redirectUrl);
+    }
+
+    private String handleAuctionPaymentCallback(String username, Integer auctionId, String status) {
+        String baseUrl = frontendConfig.getBaseUrl() + "/tai-san-dau-gia/";
+        String redirectUrl = baseUrl + auctionId;
+
+        if (!status.equals("00")) {
+            redirectUrl += "?paymentStatus=failed";
+        } else {
+            auctionRegistrationService.registerUserForAuction(username, auctionId);
+            redirectUrl += "?paymentStatus=success";
+        }
+
+        return redirectUrl;
+    }
+
+    private String handleTransactionPaymentCallback(Integer transactionId, String status) {
+        String redirectUrl = frontendConfig.getBaseUrl() + "/thong-tin-ca-nhan/";
+
+        if (!status.equals("00")) {
+            redirectUrl += "?paymentStatus=failed";
+        } else {
+            transactionService.setTransactionState(transactionId, "SUCCEED");
+            redirectUrl += "?paymentStatus=success";
+        }
+
+        return redirectUrl;
     }
 
 //    @GetMapping("pay-bill")

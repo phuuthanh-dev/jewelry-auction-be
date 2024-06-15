@@ -40,7 +40,7 @@ public class AuctionRegistrationServiceImpl implements AuctionRegistrationServic
 
         Transaction transaction = Transaction.builder()
                 .createDate(Timestamp.valueOf(LocalDateTime.now(ZoneId.of("Asia/Ho_Chi_Minh"))))
-                .payment_time(Timestamp.valueOf(LocalDateTime.now(ZoneId.of("Asia/Ho_Chi_Minh"))))
+                .paymentTime(Timestamp.valueOf(LocalDateTime.now(ZoneId.of("Asia/Ho_Chi_Minh"))))
                 .totalPrice(registrationFee)
                 .feesIncurred(0.0)
                 .state(TransactionState.SUCCEED)
