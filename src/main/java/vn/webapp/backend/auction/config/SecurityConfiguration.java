@@ -58,7 +58,7 @@ public class SecurityConfiguration {
                                 .requestMatchers(HttpMethod.PUT, Endpoints.MANAGER_PUT_ENDPOINTS).hasAuthority(Role.MANAGER.name())
                                 .requestMatchers(HttpMethod.DELETE, Endpoints.MANAGER_DELETE_ENDPOINTS).hasAuthority(Role.MANAGER.name())
 
-                                .requestMatchers("/api/v1/user/**").hasAnyAuthority(Role.MANAGER.name(), Role.ADMIN.name())
+                                .requestMatchers(HttpMethod.GET, Endpoints.MANAGER_ADMIN_GET_ENDPOINTS).hasAnyAuthority(Role.MANAGER.name(),Role.ADMIN.name())
 
                                 .requestMatchers(HttpMethod.GET, Endpoints.ADMIN_GET_ENDPOINTS).hasAuthority(Role.ADMIN.name())
                                 .requestMatchers(HttpMethod.POST, Endpoints.ADMIN_POST_ENDPOINTS).hasAuthority(Role.ADMIN.name())
