@@ -42,22 +42,28 @@ public class SecurityConfiguration {
     @Bean
     @CrossOrigin
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+
         http
-                .cors(Customizer.withDefaults())
                 .authorizeHttpRequests(
                         configurer -> configurer
                                 .requestMatchers(WHITE_LIST_URL).permitAll()
                                 .requestMatchers("/ws/**").permitAll()
+                                .requestMatchers("/api/v1/auth/**").permitAll()
                                 .requestMatchers(HttpMethod.GET, Endpoints.PUBLIC_GET_ENDPOINTS).permitAll()
                                 .requestMatchers(HttpMethod.POST, Endpoints.PUBLIC_POST_ENDPOINTS).permitAll()
                                 .requestMatchers(HttpMethod.PUT, Endpoints.PUBLIC_PUT_ENDPOINTS).permitAll()
+
                                 .requestMatchers(HttpMethod.GET, Endpoints.MANAGER_GET_ENDPOINTS).hasAuthority(Role.MANAGER.name())
                                 .requestMatchers(HttpMethod.POST, Endpoints.MANAGER_POST_ENDPOINTS).hasAuthority(Role.MANAGER.name())
                                 .requestMatchers(HttpMethod.PUT, Endpoints.MANAGER_PUT_ENDPOINTS).hasAuthority(Role.MANAGER.name())
                                 .requestMatchers(HttpMethod.DELETE, Endpoints.MANAGER_DELETE_ENDPOINTS).hasAuthority(Role.MANAGER.name())
+
+                                .requestMatchers("/api/v1/user/**").hasAnyAuthority(Role.MANAGER.name(), Role.ADMIN.name())
+
                                 .requestMatchers(HttpMethod.GET, Endpoints.ADMIN_GET_ENDPOINTS).hasAuthority(Role.ADMIN.name())
                                 .requestMatchers(HttpMethod.POST, Endpoints.ADMIN_POST_ENDPOINTS).hasAuthority(Role.ADMIN.name())
                                 .requestMatchers(HttpMethod.PUT, Endpoints.ADMIN_PUT_ENDPOINTS).hasAuthority(Role.ADMIN.name())
+
                                 .anyRequest().authenticated()
                 )
                 .csrf(csrf -> csrf.disable())
@@ -71,7 +77,7 @@ public class SecurityConfiguration {
                                 .logoutSuccessHandler((request, response, authentication) -> SecurityContextHolder.clearContext())
                 ).exceptionHandling(exceptionHandling -> exceptionHandling
                         .authenticationEntryPoint((request, response, authException) -> response.sendError(HttpServletResponse.SC_UNAUTHORIZED))
-                );;
+                );
         return http.build();
     }
 }
