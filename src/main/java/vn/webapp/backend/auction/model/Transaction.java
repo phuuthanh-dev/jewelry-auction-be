@@ -28,7 +28,7 @@ public class Transaction {
     private Timestamp createDate;
 
     @Column(name = "payment_time")
-    private Timestamp paymenTime;
+    private Timestamp paymentTime;
 
     @Column(name = "total_price", nullable = false)
     @Min(value = 1, message = "The total price must be at least 1")

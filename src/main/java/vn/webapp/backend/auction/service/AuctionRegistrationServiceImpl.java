@@ -39,7 +39,8 @@ public class AuctionRegistrationServiceImpl implements AuctionRegistrationServic
         double registrationFee = auction.getParticipationFee() + auction.getDeposit();
 
         Transaction transaction = Transaction.builder()
-                .createDate(Timestamp.valueOf(LocalDateTime.now(ZoneId.of("UTC"))))
+                .createDate(Timestamp.valueOf(LocalDateTime.now(ZoneId.of("Asia/Ho_Chi_Minh"))))
+                .paymentTime(Timestamp.valueOf(LocalDateTime.now(ZoneId.of("Asia/Ho_Chi_Minh"))))
                 .totalPrice(registrationFee)
                 .feesIncurred(0.0)
                 .state(TransactionState.SUCCEED)

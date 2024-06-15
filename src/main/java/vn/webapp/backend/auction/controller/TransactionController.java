@@ -39,12 +39,6 @@ public class TransactionController {
         return ResponseEntity.ok(transactionService.getTransactionsDashboardByUsername(username));
     }
 
-    @PutMapping("/set-state/{id}")
-    public ResponseEntity<Transaction> setState(@PathVariable Integer id, @RequestParam String state) {
-        transactionService.setTransactionState(id, state);
-        return ResponseEntity.ok().build();
-    }
-
     @GetMapping("/get-by-username")
     public ResponseEntity<Page<Transaction>> getAuctionHistoryByUsername(
             @RequestParam(defaultValue = "createDate") String sortBy,
