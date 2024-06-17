@@ -9,7 +9,7 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
-import vn.webapp.backend.auction.config.FrontendConfig;
+import vn.webapp.backend.auction.config.FrontendConfiguration;
 
 @Service
 @RequiredArgsConstructor
@@ -22,14 +22,14 @@ public class EmailService {
     @Value("${spring.mail.username}")
     private String emailUsername;
 
-    private final FrontendConfig frontendConfig;
+    private final FrontendConfiguration frontendConfiguration;
 
     @Async
     public void sendActivationEmail(String emailTo, String fullName, String token) throws MessagingException {
         MimeMessage message = javaMailSender.createMimeMessage();
         MimeMessageHelper helper = new MimeMessageHelper(message, true);
 
-        String url = frontendConfig.getBaseUrl() + "/activation/" + token;
+        String url = frontendConfiguration.getBaseUrl() + "/activation/" + token;
 
         String html = emailContent.setHtmlContent(fullName, "Kích hoạt tài khoản", url,
                 "Cảm ơn bạn đã đăng ký tài khoản tại DGS.",
@@ -48,7 +48,7 @@ public class EmailService {
         MimeMessage message = javaMailSender.createMimeMessage();
         MimeMessageHelper helper = new MimeMessageHelper(message, true);
 
-        String url = frontendConfig.getBaseUrl() + "/reset-mat-khau/" + token;
+        String url = frontendConfiguration.getBaseUrl() + "/reset-mat-khau/" + token;
 
         String html = emailContent.setHtmlContent(fullName, "Đặt lại mật khẩu", url,
                 "Bạn vừa yêu cầu đặt lại mật khẩu tại DGS",
