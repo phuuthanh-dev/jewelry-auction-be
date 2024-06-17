@@ -9,6 +9,7 @@ import vn.webapp.backend.auction.enums.TransactionState;
 import vn.webapp.backend.auction.enums.TransactionType;
 import vn.webapp.backend.auction.model.Transaction;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 public interface TransactionRepository extends JpaRepository<Transaction, Integer> {
@@ -20,6 +21,25 @@ public interface TransactionRepository extends JpaRepository<Transaction, Intege
 
     @Query("SELECT COUNT(t) FROM Transaction t WHERE t.type = 'REGISTRATION' AND t.user.username = :username")
     Integer getCountTransactionsRegistrationByUsername(@Param("username") String username);
+
+    @Query("SELECT SUM(t.totalPrice * 0.08) FROM Transaction t WHERE t.type = 'PAYMENT_TO_WINNER' AND t.state = 'SUCCEED'")
+    Double getTotalCommissionRevenue();
+
+    @Query("SELECT COALESCE(SUM(t.totalPrice * 0.08), 0) " +
+            "FROM Transaction t " +
+            "WHERE t.type = 'PAYMENT_TO_WINNER' " +
+            "AND t.state = 'SUCCEED' " +
+            "AND YEAR(t.paymentTime) = :year " +
+            "AND MONTH(t.paymentTime) = :month")
+    Double getTotalRevenueByMonthAndYear(@Param("month") Integer month, @Param("year") Integer year);
+
+    @Query("SELECT COALESCE(SUM(t.totalPrice * 0.08), 0) " +
+            "FROM Transaction t " +
+            "WHERE t.type = 'PAYMENT_TO_WINNER' " +
+            "AND t.state = 'SUCCEED' " +
+            "AND t.paymentTime >= :startOfDay " +
+            "AND t.paymentTime < :startOfNextDay")
+    Double getTotalRevenueToday(@Param("startOfDay") LocalDateTime startOfDay, @Param("startOfNextDay") LocalDateTime startOfNextDay);
 
     @Query("SELECT SUM(t.totalPrice) FROM Transaction t WHERE t.type = 'PAYMENT_TO_WINNER' AND t.user.username = :username")
     Double getTotalPriceJewelryWonByUsername(@Param("username") String username);
