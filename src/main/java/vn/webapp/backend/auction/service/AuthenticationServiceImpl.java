@@ -26,7 +26,9 @@ import vn.webapp.backend.auction.repository.UserRepository;
 import vn.webapp.backend.auction.service.email.EmailService;
 
 import java.io.IOException;
+import java.sql.Timestamp;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 
 
 @Service
@@ -168,6 +170,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
                 .yob(request.yob())
                 .role(request.role())
                 .CCCD(request.CCCD())
+                .registerDate(Timestamp.valueOf(LocalDateTime.now(ZoneId.of("Asia/Ho_Chi_Minh"))))
                 .state(AccountState.INACTIVE)
                 .bankAccountName(request.bankAccountName())
                 .bankAccountNumber(request.bankAccountNumber())

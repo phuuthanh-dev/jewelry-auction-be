@@ -22,10 +22,17 @@ public class DashBoardService {
         Integer totalUser = userRepository.getTotalUser();
         Integer totalAuction = auctionRepository.countAllAuctions();
         Integer totalJewelryActive = jewelryRepository.countAllJewelriesActive();
+        Integer totalAuctionFailed = auctionRepository.countAllAuctionsFailed();
+        Integer totalAuctionSuccess = auctionRepository.countAllAuctionsSuccessful();
+
+        double percentAuctionFailed = (double) totalAuctionFailed / totalAuction * 100;
+        double percentAuctionSuccess = (double) totalAuctionSuccess / totalAuction * 100;
 
         return DashBoardResponse.builder()
                 .totalUser(totalUser)
                 .totalJewelryActive(totalJewelryActive)
-                .totalAuctions(totalAuction).build();
+                .totalAuctions(totalAuction)
+                .percentAuctionFailed(percentAuctionFailed)
+                .percentAuctionSuccess(percentAuctionSuccess).build();
     }
 }

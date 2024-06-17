@@ -80,18 +80,19 @@ CREATE TABLE [dbo].[user]
     [username]            [varchar](50)        NOT NULL,
     [ward]                [nvarchar](50)       NOT NULL,
     [year_of_birth]       [varchar](4)         NOT NULL,
-    [bank_id]             [int]                NULL
+    [bank_id]             [int]                NULL,
+    [register_date]       [datetime2](6)       NULL
     )
 
 -- Insert data into the user table
     INSERT INTO [dbo].[user]
 ([cccd], [address], [avatar], [city], [email], [first_name], [last_name], [password], [phone], [district], [ward],
-    [state], [username], [year_of_birth], [role], [bank_id], [bank_account_number], [bank_account_name])
+    [state], [username], [year_of_birth], [role], [bank_id], [bank_account_number], [bank_account_name], [register_date])
     VALUES ('011234567890', N'1 Lý Thường Kiệt',
             'https://scontent.fsgn2-7.fna.fbcdn.net/v/t39.30808-6/438275285_1101091104487039_4035794765477072253_n.jpg?_nc_cat=108&ccb=1-7&_nc_sid=5f2048&_nc_ohc=7MHTOamLKXgQ7kNvgGdad4i&_nc_ht=scontent.fsgn2-7.fna&oh=00_AYDZ0L0Y3_1M_tK5YBX-b1PhjuTPFeLod8Jz1UhW3t_Gkg&oe=6665416E',
             N'Lâm Đồng', 'phuuthanh2003@gmail.com', N'Phùng', N'Thành',
             '$2a$12$j/1n5Pjv4JgzG76ZG0hyH.MD6ftohJNbjuZjRHQFt31Ta/jViwKQ2', '0912345670', N'Hà Nội', N'Hoang', 'ACTIVE',
-            'phuuthanh2003', 1985, 'ADMIN', 7, '1030293193991', 'PHUNG HUU THANH');
+            'phuuthanh2003', 1985, 'ADMIN', 7, '1030293193991', 'PHUNG HUU THANH', '2024-05-01 17:30:00'),;
 
 
 CREATE TABLE [dbo].[jewelry]
@@ -141,8 +142,8 @@ CREATE TABLE [dbo].[auction]
     [start_date], [state], [jewelry_id], [staff_id])
     VALUES (10000000, N'NHẪN ĐÍNH HÔN KIM CƯƠNG ENR3111W', 44500000, '2023-05-19 14:00:00', 70500000,
             N'Đấu giá nhẫn kim cương ENR3111W', 500000, 1000000, '2023-05-19 10:00:00', 'FINISHED', 1, 1),
-(10000000, N'NHẪN CƯỚI KIM CƯƠNG IWR163', 5000000, '2024-05-25 21:00:00', NULL,
- N'Đấu giá NHẪN CƯỚI KIM CƯƠNG IWR163', 100000, 2000000, '2024-05-25 22:00:00', 'ONGOING', 2, 1);
+            (10000000, N'NHẪN CƯỚI KIM CƯƠNG IWR163', 5000000, '2024-05-25 21:00:00', NULL,
+            N'Đấu giá NHẪN CƯỚI KIM CƯƠNG IWR163', 100000, 2000000, '2024-05-25 22:00:00', 'ONGOING', 2, 1);
 
 
 CREATE TABLE [dbo].[auction_history]

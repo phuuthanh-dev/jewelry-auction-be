@@ -7,7 +7,7 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 @ConfigurationProperties(prefix = "frontend")
 @Data
-public class FrontendConfig {
+public class FrontendConfiguration {
     private String baseUrl;
 }
 
