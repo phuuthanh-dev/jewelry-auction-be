@@ -92,7 +92,7 @@ CREATE TABLE [dbo].[user]
             'https://scontent.fsgn2-7.fna.fbcdn.net/v/t39.30808-6/438275285_1101091104487039_4035794765477072253_n.jpg?_nc_cat=108&ccb=1-7&_nc_sid=5f2048&_nc_ohc=7MHTOamLKXgQ7kNvgGdad4i&_nc_ht=scontent.fsgn2-7.fna&oh=00_AYDZ0L0Y3_1M_tK5YBX-b1PhjuTPFeLod8Jz1UhW3t_Gkg&oe=6665416E',
             N'Lâm Đồng', 'phuuthanh2003@gmail.com', N'Phùng', N'Thành',
             '$2a$12$j/1n5Pjv4JgzG76ZG0hyH.MD6ftohJNbjuZjRHQFt31Ta/jViwKQ2', '0912345670', N'Hà Nội', N'Hoang', 'ACTIVE',
-            'phuuthanh2003', 1985, 'ADMIN', 7, '1030293193991', 'PHUNG HUU THANH', '2024-05-01 17:30:00'),;
+            'phuuthanh2003', 1985, 'ADMIN', 7, '1030293193991', 'PHUNG HUU THANH', '2024-05-01 17:30:00');
 
 
 CREATE TABLE [dbo].[jewelry]
