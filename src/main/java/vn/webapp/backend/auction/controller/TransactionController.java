@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import vn.webapp.backend.auction.dto.UserTransactionResponse;
 import vn.webapp.backend.auction.enums.TransactionState;
 import vn.webapp.backend.auction.enums.TransactionType;
+import vn.webapp.backend.auction.model.Auction;
 import vn.webapp.backend.auction.model.Transaction;
 import vn.webapp.backend.auction.model.User;
 import vn.webapp.backend.auction.service.TransactionService;
@@ -67,5 +68,11 @@ public class TransactionController {
     @PostMapping("/create-transaction-for-winner/{auctionId}")
     public ResponseEntity<User> createTransactionForWinner(@PathVariable Integer auctionId) {
         return ResponseEntity.ok(transactionService.createTransactionForWinner(auctionId));
+    }
+
+    @PutMapping("/set-state/{id}")
+    public ResponseEntity<Transaction> setState(@PathVariable Integer id, @RequestParam String state) {
+        transactionService.setTransactionState(id, state);
+        return ResponseEntity.ok().build();
     }
 }
