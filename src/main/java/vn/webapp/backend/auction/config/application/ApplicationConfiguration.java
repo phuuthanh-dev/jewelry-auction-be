@@ -1,4 +1,4 @@
-package vn.webapp.backend.auction.config;
+package vn.webapp.backend.auction.config.application;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;

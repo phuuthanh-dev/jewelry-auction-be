@@ -1,4 +1,4 @@
-package vn.webapp.backend.auction.config;
+package vn.webapp.backend.auction.config.security;
 
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;

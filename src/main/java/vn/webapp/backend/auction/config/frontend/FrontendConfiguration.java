@@ -1,4 +1,4 @@
-package vn.webapp.backend.auction.config;
+package vn.webapp.backend.auction.config.frontend;
 
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;

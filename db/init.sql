@@ -134,16 +134,17 @@ CREATE TABLE [dbo].[auction]
     [start_date]        [datetime2](6)       NOT NULL,
     [state]             [varchar](255)       NULL,
     [jewelry_id]        [int]                NULL,
-    [staff_id]          [int]                NULL
-    )
+    [staff_id]          [int]                NULL,
+    [create_date]       [datetime2](6)       NULL
+)
 
     INSERT INTO [dbo].[auction]
 ([deposit], [description], [first_price], [end_date], [last_price], [name], [participation_fee], [price_step],
-    [start_date], [state], [jewelry_id], [staff_id])
+    [start_date], [state], [jewelry_id], [staff_id], [create_date])
     VALUES (10000000, N'NHẪN ĐÍNH HÔN KIM CƯƠNG ENR3111W', 44500000, '2023-05-19 14:00:00', 70500000,
-            N'Đấu giá nhẫn kim cương ENR3111W', 500000, 1000000, '2023-05-19 10:00:00', 'FINISHED', 1, 1),
+            N'Đấu giá nhẫn kim cương ENR3111W', 500000, 1000000, '2023-05-19 10:00:00', 'FINISHED', 1, 1, '2023-05-19 01:00:00'),
             (10000000, N'NHẪN CƯỚI KIM CƯƠNG IWR163', 5000000, '2024-05-25 21:00:00', NULL,
-            N'Đấu giá NHẪN CƯỚI KIM CƯƠNG IWR163', 100000, 2000000, '2024-05-25 22:00:00', 'ONGOING', 2, 1);
+            N'Đấu giá NHẪN CƯỚI KIM CƯƠNG IWR163', 100000, 2000000, '2024-05-25 22:00:00', 'ONGOING', 2, 1, '2024-05-25 20:00:00');
 
 
 CREATE TABLE [dbo].[auction_history]

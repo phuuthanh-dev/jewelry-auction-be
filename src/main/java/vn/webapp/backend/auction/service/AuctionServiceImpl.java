@@ -23,6 +23,7 @@ import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.time.ZoneId;
 import java.util.List;
 import java.util.Optional;
 
@@ -103,6 +104,7 @@ public class AuctionServiceImpl implements AuctionService{
         auction.setParticipationFee(request.participationFee());
         auction.setDeposit(request.deposit());
         auction.setPriceStep(request.priceStep());
+        auction.setCreateDate(Timestamp.valueOf(LocalDateTime.now(ZoneId.of("Asia/Ho_Chi_Minh"))));
         auction.setStartDate(request.startDate());
         auction.setEndDate(request.endDate());
         auction.setJewelry(jewelry);

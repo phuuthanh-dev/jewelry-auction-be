@@ -3,7 +3,7 @@ package vn.webapp.backend.auction.service;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import vn.webapp.backend.auction.config.VNPAYConfiguration;
+import vn.webapp.backend.auction.config.vnpay.VNPAYConfiguration;
 import vn.webapp.backend.auction.dto.PaymentResponse;
 import vn.webapp.backend.auction.service.vnpay.VNPayUtil;
 
