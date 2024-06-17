@@ -44,6 +44,9 @@ public class Auction {
     @Column(name = "priceStep", nullable = false)
     private double priceStep;
 
+    @Column(name = "create_date", nullable = true)
+    private Timestamp createDate;
+
     @Column(name = "start_date", nullable = false)
     private Timestamp startDate;
 
