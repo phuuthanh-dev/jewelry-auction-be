@@ -34,7 +34,8 @@ public final class Endpoints {
     };
 
     public static final String[] MANAGER_PUT_ENDPOINTS = {
-            "/api/v1/jewelry/**", "/api/v1/jewelry-category/**", "/api/v1/auction/**"
+            "/api/v1/jewelry/**", "/api/v1/jewelry-category/**", "/api/v1/auction/**",
+            "/api/v1/transaction/**"
     };
 
     public static final String[] MANAGER_POST_ENDPOINTS = {
