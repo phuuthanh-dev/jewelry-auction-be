@@ -4,7 +4,7 @@ import lombok.Getter;
 
 @Getter
 public enum PaymentMethod {
-    COD("Tiền mặt"),
+    PAY_AT_COUNTER("Thanh toán tại quầy"),
     BANKING("Chuyển khoản");
 
     private String displayName;
