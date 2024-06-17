@@ -49,8 +49,6 @@ public class UserController {
         return ResponseEntity.ok(userService.getMemberByFullNameContainingAndState(fullName, state, pageable));
     }
 
-
-
     @GetMapping("/staff")
     public ResponseEntity<Page<User>> getStaff(
             @RequestParam(required = false) String fullName,

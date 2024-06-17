@@ -1,4 +1,4 @@
-package vn.webapp.backend.auction.config;
+package vn.webapp.backend.auction.config.vnpay;
 import lombok.Getter;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
@@ -26,7 +26,7 @@ public class VNPAYConfiguration {
     @Value("${payment.vnPay.orderType}")
     private String orderType;
 
-    public Map<String, String> getVNPayConfig(String auctionId, String username) {
+    public Map<String, String> getVNPayConfig(String auctionId, String username, Integer transactionId) {
         Map<String, String> vnpParamsMap = new HashMap<>();
         vnpParamsMap.put("vnp_Version", this.vnpVersion);
         vnpParamsMap.put("vnp_Command", this.vnpCommand);
@@ -36,7 +36,7 @@ public class VNPAYConfiguration {
         vnpParamsMap.put("vnp_OrderInfo", "Thanh toan don hang:" +  VNPayUtil.getRandomNumber(8));
         vnpParamsMap.put("vnp_OrderType", this.orderType);
         vnpParamsMap.put("vnp_Locale", "vn");
-        vnpParamsMap.put("vnp_ReturnUrl", this.vnpReturnUrl + "?auctionId=" + auctionId + "&username=" + username);
+        vnpParamsMap.put("vnp_ReturnUrl", this.vnpReturnUrl + "?auctionId=" + auctionId + "&username=" + username + "&transactionId=" + transactionId);
 
         TimeZone timeZone = TimeZone.getTimeZone("Asia/Ho_Chi_Minh");
         Calendar calendar = Calendar.getInstance(timeZone);

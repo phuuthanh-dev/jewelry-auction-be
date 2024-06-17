@@ -2,11 +2,15 @@ package vn.webapp.backend.auction.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import vn.webapp.backend.auction.dto.BidResponse;
+import vn.webapp.backend.auction.model.Auction;
 import vn.webapp.backend.auction.model.AuctionHistory;
+import vn.webapp.backend.auction.model.ErrorMessages;
 import vn.webapp.backend.auction.repository.AuctionHistoryRepository;
 import vn.webapp.backend.auction.repository.AuctionRepository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -14,7 +18,14 @@ public class RealTimeService {
 
     private final AuctionRepository auctionRepository;
 
-    public Double getLastPriceTogether(Integer id) {
-        return auctionRepository.findById(id).get().getLastPrice();
+    public BidResponse getLastPriceTogether(Integer id) {
+        Optional<Auction> auctionOptional = auctionRepository.findById(id);
+
+        if (auctionOptional.isEmpty()) {
+            throw new IllegalArgumentException(ErrorMessages.AUCTION_NOT_FOUND);
+        }
+
+        Auction auction = auctionOptional.get();
+        return new BidResponse(auction.getLastPrice(), auction.getId());
     }
 }

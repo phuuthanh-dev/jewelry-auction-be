@@ -36,4 +36,8 @@ public interface UserRepository extends JpaRepository<User, Integer> {
 
     @Query("SELECT COUNT(u) FROM User u")
     Integer getTotalUser();
+
+    @Query("SELECT COUNT(u) FROM User u WHERE MONTH(u.registerDate) = :month AND YEAR(u.registerDate) = :year")
+    Integer getTotalUserByMonthAndYear(@Param("month") Integer month, @Param("year") Integer year);
+
 }

@@ -16,6 +16,9 @@ import vn.webapp.backend.auction.model.User;
 import vn.webapp.backend.auction.repository.AuctionRegistrationRepository;
 import vn.webapp.backend.auction.repository.UserRepository;
 
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.List;
 
 @Transactional
@@ -152,6 +155,7 @@ public class UserServiceImpl implements UserService {
                 .ward(request.ward())
                 .city(request.city())
                 .yob(request.yob())
+                .registerDate(Timestamp.valueOf(LocalDateTime.now(ZoneId.of("Asia/Ho_Chi_Minh"))))
                 .phone(request.phone())
                 .address(request.address())
                 .CCCD(request.CCCD())

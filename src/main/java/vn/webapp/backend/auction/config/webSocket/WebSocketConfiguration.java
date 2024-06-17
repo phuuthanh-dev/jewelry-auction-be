@@ -1,4 +1,4 @@
-package vn.webapp.backend.auction.config;
+package vn.webapp.backend.auction.config.webSocket;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.messaging.simp.config.MessageBrokerRegistry;

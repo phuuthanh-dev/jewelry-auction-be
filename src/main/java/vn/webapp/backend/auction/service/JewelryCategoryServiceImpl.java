@@ -3,6 +3,7 @@ package vn.webapp.backend.auction.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import vn.webapp.backend.auction.exception.ResourceNotFoundException;
+import vn.webapp.backend.auction.model.ErrorMessages;
 import vn.webapp.backend.auction.model.JewelryCategory;
 import vn.webapp.backend.auction.repository.JewelryCategoryRepository;
 
@@ -22,7 +23,7 @@ public class JewelryCategoryServiceImpl implements JewelryCategoryService {
     @Override
     public JewelryCategory getById(int id) {
         return jewelryCategoryRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Danh mục sản phẩm hiện không tồn tại"));
+                .orElseThrow(() -> new ResourceNotFoundException(ErrorMessages.JEWELRY_CATEGORY_NOT_FOUND));
     }
 
     @Override
@@ -34,7 +35,7 @@ public class JewelryCategoryServiceImpl implements JewelryCategoryService {
     @Override
     public void deleteJewelryCategory(Integer id) {
             var existingBookCategory = jewelryCategoryRepository.findById(id)
-                    .orElseThrow(() -> new ResourceNotFoundException("Không tìm thấy danh mục trang sức để xóa"));
+                    .orElseThrow(() -> new ResourceNotFoundException(ErrorMessages.JEWELRY_CATEGORY_NOT_FOUND));
             existingBookCategory.getJewelries()
                     .forEach((book) -> book.setCategory(null));
         jewelryCategoryRepository.deleteById(id);

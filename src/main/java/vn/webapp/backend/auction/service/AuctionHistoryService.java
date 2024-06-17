@@ -3,6 +3,7 @@ package vn.webapp.backend.auction.service;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import vn.webapp.backend.auction.dto.BidRequest;
+import vn.webapp.backend.auction.enums.AuctionHistoryState;
 import vn.webapp.backend.auction.model.AuctionHistory;
 
 import java.sql.Date;
@@ -15,4 +16,5 @@ public interface AuctionHistoryService {
     List<AuctionHistory> getAuctionHistoryByAuctionIdWhenFinished(Integer id);
     void saveBidByUserAndAuction(BidRequest request);
     void deleteBidByUserAndAuction(Integer userId, Integer auctionId);
+    Page<AuctionHistory> getAuctionHistoryByAuctionIdAndUserId(Integer auctionId, Integer userId, AuctionHistoryState state, Pageable pageable);
 }

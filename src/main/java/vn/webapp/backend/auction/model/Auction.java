@@ -44,14 +44,14 @@ public class Auction {
     @Column(name = "priceStep", nullable = false)
     private double priceStep;
 
+    @Column(name = "create_date", nullable = true)
+    private Timestamp createDate;
+
     @Column(name = "start_date", nullable = false)
     private Timestamp startDate;
 
     @Column(name = "end_date", nullable = false)
     private Timestamp endDate;
-
-//    @Column(name = "countdown_time", nullable = false)
-//    private Timestamp countdownTime;
 
     @Transient
     private long countdownDuration;

@@ -10,6 +10,7 @@ import vn.webapp.backend.auction.model.Auction;
 
 import java.sql.Timestamp;
 import java.util.List;
+import java.util.Map;
 
 public interface AuctionRepository extends JpaRepository<Auction, Integer> {
 
@@ -20,15 +21,6 @@ public interface AuctionRepository extends JpaRepository<Auction, Integer> {
     List<Auction> findAuctionByNameContaining(@Param("auctionName") String auctionName);
 
     List<Auction> findTop3ByStateInOrderByFirstPriceDesc(List<AuctionState> states);
-
-//        Page<Auction> findByState(AuctionState auctionState, Pageable pageable, Integer categoryId);
-//    @Query("SELECT a FROM Auction a WHERE (a.state = :auctionState) " +
-//            "AND (:categoryId = 0 OR a.jewelry.category.id = :categoryId)")
-//    Page<Auction> findByStateAndCategory(
-//            @Param("auctionState") AuctionState auctionState,
-//            Pageable pageable,
-//            @Param("categoryId") Integer categoryId
-//    );
 
     @Query("SELECT a FROM Auction a WHERE a.state = :auctionState")
     List<Auction> findByState(@Param("auctionState") AuctionState auctionState);
@@ -54,5 +46,16 @@ public interface AuctionRepository extends JpaRepository<Auction, Integer> {
     @Query("SELECT COUNT(a) FROM Auction a")
     Integer countAllAuctions();
 
+    @Query("SELECT COUNT(a) FROM Auction a WHERE a.state = 'FINISHED' " +
+            "AND a.id NOT IN (SELECT ah.auction.id FROM AuctionHistory ah)")
+    Integer countAllAuctionsFailed();
+
+    @Query("SELECT COUNT(a) FROM Auction a WHERE a.state = 'FINISHED' " +
+            "AND a.id IN (SELECT ah.auction.id FROM AuctionHistory ah)")
+    Integer countAllAuctionsSuccessful();
+
+    @Query("SELECT COUNT(a) FROM Auction a " +
+            "WHERE MONTH(a.createDate) = :month AND YEAR(a.createDate) = :year")
+    Integer countAuctionsByMonthAndYear(@Param("month") Integer month, @Param("year") Integer year);
 
 }

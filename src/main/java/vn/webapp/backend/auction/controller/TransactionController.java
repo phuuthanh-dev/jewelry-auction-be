@@ -11,6 +11,7 @@ import vn.webapp.backend.auction.dto.UserTransactionResponse;
 import vn.webapp.backend.auction.enums.TransactionState;
 import vn.webapp.backend.auction.enums.TransactionType;
 import vn.webapp.backend.auction.model.Transaction;
+import vn.webapp.backend.auction.model.User;
 import vn.webapp.backend.auction.service.TransactionService;
 
 import java.util.List;
@@ -38,12 +39,6 @@ public class TransactionController {
         return ResponseEntity.ok(transactionService.getTransactionsDashboardByUsername(username));
     }
 
-    @PutMapping("/set-state/{id}")
-    public ResponseEntity<Transaction> setState(@PathVariable Integer id, @RequestParam String state) {
-        transactionService.setTransactionState(id, state);
-        return ResponseEntity.ok().build();
-    }
-
     @GetMapping("/get-by-username")
     public ResponseEntity<Page<Transaction>> getAuctionHistoryByUsername(
             @RequestParam(defaultValue = "createDate") String sortBy,
@@ -56,13 +51,13 @@ public class TransactionController {
         return ResponseEntity.ok(transactionService.getTransactionsByUsername(username, pageable));
     }
 
-    @GetMapping("/get-by-type")
-    public ResponseEntity<Page<Transaction>> getTransactionByType(
+    @GetMapping("/get-by-type-state")
+    public ResponseEntity<Page<Transaction>> getTransactionByTypeAndState(
             @RequestParam(defaultValue = "createDate") String sortBy,
-            @RequestParam(defaultValue = "PAYMENT_TO_WINNER") String type,
+            @RequestParam(defaultValue = "PAYMENT_TO_WINNER") TransactionType type,
             @RequestParam(defaultValue = "5") int size,
             @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "PENDING") String state,
+            @RequestParam(defaultValue = "SUCCEED") TransactionState state,
             @RequestParam(defaultValue = "desc") String sortOrder) {
         Sort.Direction direction = (sortOrder.equalsIgnoreCase("desc")) ? Sort.Direction.DESC : Sort.Direction.ASC;
         Pageable pageable = PageRequest.of(page, size, direction, sortBy);
@@ -70,8 +65,7 @@ public class TransactionController {
     }
 
     @PostMapping("/create-transaction-for-winner/{auctionId}")
-    public ResponseEntity<Void> createTransactionForWinner(@PathVariable Integer auctionId) {
-        transactionService.createTransactionForWinner(auctionId);
-        return ResponseEntity.ok().build();
+    public ResponseEntity<User> createTransactionForWinner(@PathVariable Integer auctionId) {
+        return ResponseEntity.ok(transactionService.createTransactionForWinner(auctionId));
     }
 }

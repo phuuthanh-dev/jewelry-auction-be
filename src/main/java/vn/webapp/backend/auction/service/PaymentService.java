@@ -3,7 +3,7 @@ package vn.webapp.backend.auction.service;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import vn.webapp.backend.auction.config.VNPAYConfiguration;
+import vn.webapp.backend.auction.config.vnpay.VNPAYConfiguration;
 import vn.webapp.backend.auction.dto.PaymentResponse;
 import vn.webapp.backend.auction.service.vnpay.VNPayUtil;
 
@@ -19,7 +19,15 @@ public class PaymentService {
         String bankCode = request.getParameter("bankCode");
         String auctionId = request.getParameter("auctionId");
         String username = request.getParameter("username");
-        Map<String, String> vnpParamsMap = vnPayConfig.getVNPayConfig(auctionId, username);
+        String transactionId = request.getParameter("transactionId");
+        Map<String, String> vnpParamsMap;
+
+        if (transactionId != null) {
+            int id = Integer.parseInt(transactionId);
+            vnpParamsMap = vnPayConfig.getVNPayConfig(auctionId, username, id);
+        } else {
+            vnpParamsMap = vnPayConfig.getVNPayConfig(auctionId, username, 0);
+        }
         vnpParamsMap.put("vnp_Amount", String.valueOf(amount));
         if (bankCode != null && !bankCode.isEmpty()) {
             vnpParamsMap.put("vnp_BankCode", bankCode);
