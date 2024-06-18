@@ -24,4 +24,6 @@ public interface TransactionService {
     User createTransactionForWinner(Integer auctionId);
 
     Page<Transaction> getTransactionByTypeAndState (TransactionType typename, TransactionState state, Pageable pageable);
+
+
 }
