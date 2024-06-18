@@ -25,16 +25,17 @@ public final class Endpoints {
 
     public static final String[] PUBLIC_PUT_ENDPOINTS = {
             "/api/v1/auction/set-state/**", "/api/v1/user","/api/v1/request-approval/set-state/**",
-            "/api/v1/request-approval/confirm/**", "/api/v1/request-approval/cancel-request"
+            "/api/v1/request-approval/confirm/**", "/api/v1/request-approval/cancel-request",
+            "/api/v1/transaction/set-method/**"
     };
 
     public static final String[] MANAGER_GET_ENDPOINTS = {
-
+            "/api/v1/transaction/get-handover"
     };
 
     public static final String[] MANAGER_PUT_ENDPOINTS = {
             "/api/v1/jewelry/**", "/api/v1/jewelry-category/**", "/api/v1/auction/**",
-            "/api/v1/transaction/**"
+            "/api/v1/transaction/set-state/**"
     };
 
     public static final String[] MANAGER_POST_ENDPOINTS = {

@@ -8,6 +8,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import vn.webapp.backend.auction.dto.UserTransactionResponse;
+import vn.webapp.backend.auction.enums.PaymentMethod;
 import vn.webapp.backend.auction.enums.TransactionState;
 import vn.webapp.backend.auction.enums.TransactionType;
 import vn.webapp.backend.auction.model.Auction;
@@ -65,6 +66,18 @@ public class TransactionController {
         return ResponseEntity.ok(transactionService.getTransactionByTypeAndState(type, state, pageable));
     }
 
+    @GetMapping("/get-handover")
+    public ResponseEntity<Page<Transaction>> getTransactionHandOver(
+            @RequestParam(defaultValue = "createDate") String sortBy,
+            @RequestParam(defaultValue = "PAYMENT_TO_WINNER") TransactionType type,
+            @RequestParam(defaultValue = "5") int size,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "desc") String sortOrder) {
+        Sort.Direction direction = (sortOrder.equalsIgnoreCase("desc")) ? Sort.Direction.DESC : Sort.Direction.ASC;
+        Pageable pageable = PageRequest.of(page, size, direction, sortBy);
+        return ResponseEntity.ok(transactionService.getTransactionHandover(type, pageable));
+    }
+
     @PostMapping("/create-transaction-for-winner/{auctionId}")
     public ResponseEntity<User> createTransactionForWinner(@PathVariable Integer auctionId) {
         return ResponseEntity.ok(transactionService.createTransactionForWinner(auctionId));
@@ -73,6 +86,12 @@ public class TransactionController {
     @PutMapping("/set-state/{id}")
     public ResponseEntity<Transaction> setState(@PathVariable Integer id, @RequestParam String state) {
         transactionService.setTransactionState(id, state);
+        return ResponseEntity.ok().build();
+    }
+
+    @PutMapping("/set-method/{id}")
+    public ResponseEntity<Transaction> setMethod(@PathVariable Integer id, @RequestParam String method) {
+        transactionService.setTransactionMethod(id, method);
         return ResponseEntity.ok().build();
     }
 }
