@@ -17,8 +17,9 @@ public class DashBoardController {
     @GetMapping
     public ResponseEntity<DashBoardResponse> getDashBoardTotal(
             @RequestParam("yearGetRegisterAccount") Integer yearGetRegisterAccount,
-            @RequestParam("yearGetAuction") Integer yearGetAuction
+            @RequestParam("yearGetAuction") Integer yearGetAuction,
+            @RequestParam("yearGetRevenue") Integer yearGetRevenue
     ) {
-        return ResponseEntity.ok(dashBoardService.getInformation(yearGetRegisterAccount, yearGetAuction));
+        return ResponseEntity.ok(dashBoardService.getInformation(yearGetRegisterAccount, yearGetAuction, yearGetRevenue));
     }
 }
