@@ -27,5 +27,7 @@ public interface TransactionService {
 
     Page<Transaction> getTransactionByTypeAndState (TransactionType typename, TransactionState state, Pageable pageable);
 
+    Page<Transaction> getTransactionHandover (TransactionType typename, Pageable pageable);
+
 
 }

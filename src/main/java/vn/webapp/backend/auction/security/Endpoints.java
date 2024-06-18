@@ -31,7 +31,7 @@ public final class Endpoints {
     };
 
     public static final String[] MANAGER_GET_ENDPOINTS = {
-
+            "/api/v1/transaction/get-handover"
     };
 
     public static final String[] MANAGER_PUT_ENDPOINTS = {

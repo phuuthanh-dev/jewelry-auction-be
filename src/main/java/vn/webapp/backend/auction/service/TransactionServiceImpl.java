@@ -69,6 +69,11 @@ public class TransactionServiceImpl implements TransactionService {
     }
 
     @Override
+    public Page<Transaction> getTransactionHandover(TransactionType typename, Pageable pageable) {
+        return transactionRepository.findTransactionHandover(typename, pageable);
+    }
+
+    @Override
     public void setTransactionState(Integer id, String state) {
         var existingAuction = transactionRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException(ErrorMessages.AUCTION_NOT_FOUND));

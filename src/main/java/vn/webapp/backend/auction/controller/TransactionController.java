@@ -66,6 +66,18 @@ public class TransactionController {
         return ResponseEntity.ok(transactionService.getTransactionByTypeAndState(type, state, pageable));
     }
 
+    @GetMapping("/get-handover")
+    public ResponseEntity<Page<Transaction>> getTransactionHandOver(
+            @RequestParam(defaultValue = "createDate") String sortBy,
+            @RequestParam(defaultValue = "PAYMENT_TO_WINNER") TransactionType type,
+            @RequestParam(defaultValue = "5") int size,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "desc") String sortOrder) {
+        Sort.Direction direction = (sortOrder.equalsIgnoreCase("desc")) ? Sort.Direction.DESC : Sort.Direction.ASC;
+        Pageable pageable = PageRequest.of(page, size, direction, sortBy);
+        return ResponseEntity.ok(transactionService.getTransactionHandover(type, pageable));
+    }
+
     @PostMapping("/create-transaction-for-winner/{auctionId}")
     public ResponseEntity<User> createTransactionForWinner(@PathVariable Integer auctionId) {
         return ResponseEntity.ok(transactionService.createTransactionForWinner(auctionId));
