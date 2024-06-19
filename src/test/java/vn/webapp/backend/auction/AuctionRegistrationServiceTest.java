@@ -1,15 +1,9 @@
 package vn.webapp.backend.auction;
 
-import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.testng.AbstractTestNGSpringContextTests;
-import vn.webapp.backend.auction.model.AuctionRegistration;
-import vn.webapp.backend.auction.service.AuctionRegistrationService;
-
-import java.util.List;
-
-import static org.testng.Assert.*;
+import vn.webapp.backend.auction.service.auction_registration.AuctionRegistrationService;
 
 @SpringBootTest
 public class AuctionRegistrationServiceTest extends AbstractTestNGSpringContextTests{

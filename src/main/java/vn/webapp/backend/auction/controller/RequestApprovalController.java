@@ -13,7 +13,7 @@ import vn.webapp.backend.auction.dto.StaffRequestApproval;
 import vn.webapp.backend.auction.dto.UserRequestApproval;
 import vn.webapp.backend.auction.enums.Role;
 import vn.webapp.backend.auction.model.RequestApproval;
-import vn.webapp.backend.auction.service.RequestApprovalService;
+import vn.webapp.backend.auction.service.request_approval.RequestApprovalService;
 
 @RestController
 @CrossOrigin(origins = "http://localhost:3000")

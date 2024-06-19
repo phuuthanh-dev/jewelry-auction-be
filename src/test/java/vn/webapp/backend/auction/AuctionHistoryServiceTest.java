@@ -1,17 +1,9 @@
 package vn.webapp.backend.auction;
 
-import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.testng.AbstractTestNGSpringContextTests;
-import vn.webapp.backend.auction.model.AuctionHistory;
-import vn.webapp.backend.auction.service.AuctionHistoryService;
-
-import java.sql.Timestamp;
-import java.time.LocalDate;
-import java.util.List;
-
-import static org.testng.Assert.*;
+import vn.webapp.backend.auction.service.bid.AuctionHistoryService;
 
 @SpringBootTest
 public class AuctionHistoryServiceTest extends AbstractTestNGSpringContextTests{

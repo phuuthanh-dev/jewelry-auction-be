@@ -7,7 +7,7 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.testng.AbstractTestNGSpringContextTests;
 import vn.webapp.backend.auction.exception.ResourceNotFoundException;
 import vn.webapp.backend.auction.model.User;
-import vn.webapp.backend.auction.service.UserService;
+import vn.webapp.backend.auction.service.user.UserService;
 
 import static org.testng.Assert.*;
 

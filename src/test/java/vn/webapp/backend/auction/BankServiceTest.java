@@ -7,7 +7,7 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.testng.AbstractTestNGSpringContextTests;
 import static org.testng.Assert.*;
 import vn.webapp.backend.auction.model.Bank;
-import vn.webapp.backend.auction.service.BankService;
+import vn.webapp.backend.auction.service.bank.BankService;
 
 import java.util.List;
 

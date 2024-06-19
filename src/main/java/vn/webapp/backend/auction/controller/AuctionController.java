@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import vn.webapp.backend.auction.dto.AuctionRequest;
 import vn.webapp.backend.auction.enums.AuctionState;
 import vn.webapp.backend.auction.model.Auction;
-import vn.webapp.backend.auction.service.AuctionService;
+import vn.webapp.backend.auction.service.auction.AuctionService;
 
 import java.util.List;
 

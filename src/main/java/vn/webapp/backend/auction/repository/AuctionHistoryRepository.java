@@ -17,7 +17,7 @@ public interface AuctionHistoryRepository extends JpaRepository<AuctionHistory, 
     @Query("SELECT ah FROM AuctionHistory ah WHERE ah.user.username = :username")
     Page<AuctionHistory> findByUsername(Pageable pageable, @Param("username") String username);
 
-    @Query(value = "SELECT * FROM auction_history ah WHERE CAST(ah.time AS DATE) = :date", nativeQuery = true)
+    @Query(value = "SELECT ah FROM auction_history ah WHERE CAST(ah.time AS DATE) = :date", nativeQuery = true)
     List<AuctionHistory> findByDate(@Param("date") String date);
 
     @Query("SELECT ah FROM AuctionHistory ah WHERE ah.auction.id = :id")

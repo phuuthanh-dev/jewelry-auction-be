@@ -1,6 +1,5 @@
 package vn.webapp.backend.auction;
 
-import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -9,7 +8,7 @@ import org.springframework.test.context.testng.AbstractTestNGSpringContextTests;
 import vn.webapp.backend.auction.enums.AuctionState;
 import vn.webapp.backend.auction.exception.ResourceNotFoundException;
 import vn.webapp.backend.auction.model.Auction;
-import vn.webapp.backend.auction.service.AuctionService;
+import vn.webapp.backend.auction.service.auction.AuctionService;
 
 import java.sql.Timestamp;
 import java.time.LocalDate;

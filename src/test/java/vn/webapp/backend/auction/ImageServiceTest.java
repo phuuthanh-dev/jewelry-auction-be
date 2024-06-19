@@ -5,7 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.testng.AbstractTestNGSpringContextTests;
 import vn.webapp.backend.auction.model.Image;
-import vn.webapp.backend.auction.service.ImageService;
+import vn.webapp.backend.auction.service.image.ImageService;
 
 import java.util.List;
 
