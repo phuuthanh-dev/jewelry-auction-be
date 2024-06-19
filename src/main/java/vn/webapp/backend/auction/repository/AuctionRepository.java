@@ -46,6 +46,9 @@ public interface AuctionRepository extends JpaRepository<Auction, Integer> {
     @Query("SELECT COUNT(a) FROM Auction a")
     Integer countAllAuctions();
 
+    @Query("SELECT COUNT(a) FROM Auction a WHERE a.state = 'FINISHED'")
+    Integer countAllAuctionsFinished();
+
     @Query("SELECT COUNT(a) FROM Auction a WHERE a.state = 'FINISHED' " +
             "AND a.id NOT IN (SELECT ah.auction.id FROM AuctionHistory ah)")
     Integer countAllAuctionsFailed();

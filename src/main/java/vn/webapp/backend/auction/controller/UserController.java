@@ -8,10 +8,13 @@ import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import vn.webapp.backend.auction.dto.RegisterAccountRequest;
+import vn.webapp.backend.auction.dto.UserSpentDTO;
 import vn.webapp.backend.auction.enums.AccountState;
 import vn.webapp.backend.auction.enums.Role;
 import vn.webapp.backend.auction.model.User;
 import vn.webapp.backend.auction.service.user.UserService;
+
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -83,5 +86,10 @@ public class UserController {
     @GetMapping("/get-winner-auction/{auctionId}")
     public ResponseEntity<User> getLatestUserInAuctionHistoryByAuctionId(@PathVariable Integer auctionId) {
         return ResponseEntity.ok(userService.getLatestUserInAuctionHistoryByAuctionId(auctionId));
+    }
+
+    @GetMapping("/get-top-spent-user")
+    public ResponseEntity<List<UserSpentDTO>> getTopUser() {
+        return ResponseEntity.ok(userService.getMostSpentUser());
     }
 }
