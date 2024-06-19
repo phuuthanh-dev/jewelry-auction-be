@@ -8,7 +8,9 @@ import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import vn.webapp.backend.auction.dto.SendJewelryFromUserRequest;
+import vn.webapp.backend.auction.enums.JewelryState;
 import vn.webapp.backend.auction.model.Jewelry;
+import vn.webapp.backend.auction.model.Transaction;
 import vn.webapp.backend.auction.service.jewelry.JewelryService;
 
 import java.util.List;
@@ -83,6 +85,19 @@ public class JewelryController {
         return ResponseEntity.ok(jewelryService.getJewelriesInWaitList(pageable));
     }
 
+    @GetMapping("/is-holding")
+    public ResponseEntity<Page<Jewelry>> getJewelryByHolding(
+            @RequestParam JewelryState state,
+            @RequestParam Boolean isHolding,
+            @RequestParam(defaultValue = "id") String sortBy,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "5") int size,
+            @RequestParam(defaultValue = "asc") String sortOrder) {
+        Sort.Direction direction = (sortOrder.equalsIgnoreCase("asc")) ? Sort.Direction.ASC : Sort.Direction.DESC;
+        Pageable pageable = PageRequest.of(page, size, direction, sortBy);
+        return ResponseEntity.ok(jewelryService.getJewelryByStateAndIsHolding(state,isHolding,pageable));
+    }
+
     @GetMapping("/in-handover-list")
     public ResponseEntity<Page<Jewelry>> getJewelryInHandOver(
             @RequestParam(defaultValue = "id") String sortBy,
@@ -104,5 +119,11 @@ public class JewelryController {
         return ResponseEntity.ok(jewelryService.getLatestJewelry());
     }
 
+
+    @PutMapping("/set-holding/{id}")
+    public ResponseEntity<Jewelry> setHolding(@PathVariable Integer id) {
+        jewelryService.setHolding(id);
+        return ResponseEntity.ok().build();
+    }
 
 }

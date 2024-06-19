@@ -48,6 +48,9 @@ public class RequestApporvalServiceImpl implements RequestApprovalService{
         if(existUser.getRole().equals(Role.STAFF)) {
             existingRequest.setStaff(existUser);
         }
+        if(existUser.getRole().equals(Role.MEMBER)) {
+            existingRequest.getJewelry().setState(JewelryState.HIDDEN);
+        }
         existingRequest.setResponder(existUser);
         existingRequest.setState(RequestApprovalState.valueOf(state));
         existingRequest.setConfirm(false);
@@ -55,17 +58,22 @@ public class RequestApporvalServiceImpl implements RequestApprovalService{
     }
 
     @Override
-    public void confirmRequest(Integer id, Integer responderId) {
-        var existingRequest = requestApprovalRepository.findById(id)
+    public void confirmRequest(Integer requestId, Integer responderId) {
+        var request = requestApprovalRepository.findById(requestId)
                 .orElseThrow(() -> new ResourceNotFoundException(ErrorMessages.REQUEST_APPROVAL_NOT_FOUND));
-        var existUser = userRepository.findById(responderId)
+
+        var responder = userRepository.findById(responderId)
                 .orElseThrow(() -> new ResourceNotFoundException(ErrorMessages.USER_NOT_FOUND));
-        if(existUser.getRole().equals(Role.STAFF)) {
-            existingRequest.setStaff(existUser);
+
+        if (responder.getRole().equals(Role.STAFF)) {
+            request.setStaff(responder);
+        } else if (responder.getRole().equals(Role.MEMBER)) {
+            request.getJewelry().setState(JewelryState.ACTIVE);
         }
-        existingRequest.setConfirm(true);
-        existingRequest.setResponder(existUser);
-        existingRequest.setResponseTime(Timestamp.from(Instant.now()));
+
+        request.setConfirm(true);
+        request.setResponder(responder);
+        request.setResponseTime(Timestamp.from(Instant.now()));
     }
 
     @Override
@@ -168,5 +176,10 @@ public class RequestApporvalServiceImpl implements RequestApprovalService{
     @Override
     public Page<RequestApproval> getRequestApprovalPassed( Pageable pageable) {
         return requestApprovalRepository.findRequestApprovalPassed(pageable);
+    }
+
+    @Override
+    public Page<RequestApproval> getRequestNeedConfirmByMember(Integer memberId, Pageable pageable) {
+        return requestApprovalRepository.findRequestNeedConfirmByMember(memberId,pageable);
     }
 }

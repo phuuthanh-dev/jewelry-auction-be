@@ -93,7 +93,7 @@ public class AuctionServiceImpl implements AuctionService{
         }
         User staff = existStaff.get();
         Jewelry jewelry = existJewelry.get();
-        jewelry.setState(JewelryState.ACTIVE);
+        jewelry.setState(JewelryState.AUCTION);
         Auction auction = new Auction();
 
         auction.setName(request.name());
