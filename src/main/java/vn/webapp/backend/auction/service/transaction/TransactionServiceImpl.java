@@ -6,6 +6,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import vn.webapp.backend.auction.dto.UserTransactionResponse;
+import vn.webapp.backend.auction.enums.AuctionState;
 import vn.webapp.backend.auction.enums.PaymentMethod;
 import vn.webapp.backend.auction.enums.TransactionState;
 import vn.webapp.backend.auction.enums.TransactionType;
@@ -13,6 +14,7 @@ import vn.webapp.backend.auction.exception.ResourceNotFoundException;
 import vn.webapp.backend.auction.model.*;
 import vn.webapp.backend.auction.repository.*;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -40,8 +42,8 @@ public class TransactionServiceImpl implements TransactionService {
 
     @Override
     public UserTransactionResponse getTransactionsDashboardByUsername(String username) {
-        Integer numberRegistration =  transactionRepository.getCountTransactionsRegistrationByUsername(username);
-        Double totalPriceJewelryWonByUsername =  transactionRepository.getTotalPriceJewelryWonByUsername(username);
+        Integer numberRegistration = transactionRepository.getCountTransactionsRegistrationByUsername(username);
+        Double totalPriceJewelryWonByUsername = transactionRepository.getTotalPriceJewelryWonByUsername(username);
         Integer totalJewelryWon = transactionRepository.getTotalJewelryWon(username);
         Integer totalBid = auctionHistoryRepository.getTotalBidByUsername(username);
         return UserTransactionResponse.builder()
@@ -53,7 +55,7 @@ public class TransactionServiceImpl implements TransactionService {
     }
 
     @Override
-    public Page<Transaction> getTransactionsByUsername (String username, Pageable pageable) {
+    public Page<Transaction> getTransactionsByUsername(String username, Pageable pageable) {
         return transactionRepository.findTransactionsByUsername(username, pageable);
     }
 
@@ -118,20 +120,26 @@ public class TransactionServiceImpl implements TransactionService {
     }
 
     @Override
-    public void createTransactionForWinnerIfNotExists(Integer userId) {
-        List<AuctionRegistration> existingAuctionRegistration = auctionRegistrationRepository.findByUserIdValid(userId);
+    public List<Transaction> createTransactionForWinnerIfNotExists(Integer userId) {
+        List<AuctionRegistration> validRegistrations = auctionRegistrationRepository.findByUserIdValid(userId);
+        List<Transaction> createdTransactions = new ArrayList<>();
 
-        if (existingAuctionRegistration.isEmpty()) {
+        if (validRegistrations.isEmpty()) {
             throw new ResourceNotFoundException(ErrorMessages.AUCTION_REGISTRATION_NOT_FOUND);
         }
 
-        for (AuctionRegistration registration : existingAuctionRegistration) {
-            Optional<User> userWin = userRepository.findLatestUserInAuctionHistoryByAuctionId(registration.getId());
+        for (AuctionRegistration registration : validRegistrations) {
+            Auction auction = registration.getAuction();
+
+            if (!auction.getState().equals(AuctionState.FINISHED)) {
+                continue;
+            }
+
+            Optional<User> userWin = userRepository.findLatestUserInAuctionHistoryByAuctionId(registration.getAuction().getId());
             if (userWin.isPresent() && userWin.get().getId() == userId) {
-                    boolean existTransaction = hasTransactionForAuctionAndUser(registration.getAuction().getId(), userId);
-                    if (existTransaction) {
-                        return;
-                    }
+                boolean transactionExists = hasTransactionForAuctionAndUser(registration.getAuction().getId(), userId);
+
+                if (!transactionExists) {
                     Transaction transaction = Transaction.builder()
                             .user(userWin.get())
                             .auction(registration.getAuction())
@@ -142,9 +150,11 @@ public class TransactionServiceImpl implements TransactionService {
                             .type(TransactionType.PAYMENT_TO_WINNER)
                             .build();
 
-                    transactionRepository.save(transaction);
+                    Transaction createdTransaction = transactionRepository.save(transaction);
+                    createdTransactions.add(createdTransaction);
                 }
-
+            }
         }
+        return createdTransactions;
     }
 }

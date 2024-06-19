@@ -27,4 +27,8 @@ public interface AuctionRegistrationRepository extends JpaRepository<AuctionRegi
 
     @Query("SELECT SUM(ar.registrationFee) FROM AuctionRegistration ar")
     Double sumTotalRegistrationFee();
+
+    @Query("SELECT COUNT(DISTINCT ar.user.id) FROM AuctionRegistration ar WHERE ar.auctionRegistrationState = 'VALID'")
+    Long countDistinctUsersRegistered();
+
 }

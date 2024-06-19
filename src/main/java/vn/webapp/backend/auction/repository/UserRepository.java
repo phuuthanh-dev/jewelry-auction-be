@@ -12,7 +12,8 @@ import vn.webapp.backend.auction.model.User;
 import java.util.List;
 import java.util.Optional;
 
-public interface UserRepository extends JpaRepository<User, Integer> {
+public interface UserRepository extends JpaRepository<User, Integer>  {
+
     Optional<User> findByEmail(String email);
 
     Optional<User> findByUsername(String usename);
@@ -34,10 +35,25 @@ public interface UserRepository extends JpaRepository<User, Integer> {
             "AND ah.time = (SELECT MAX(ah2.time) FROM AuctionHistory ah2 WHERE ah2.auction.id = :auctionId AND ah2.state='ACTIVE')")
     Optional<User> findLatestUserInAuctionHistoryByAuctionId(@Param("auctionId") Integer auctionId);
 
-    @Query("SELECT COUNT(u) FROM User u")
+    @Query("SELECT COUNT(u) FROM User u WHERE u.state = 'ACTIVE'")
     Integer getTotalUser();
+
+    @Query("SELECT COUNT(u) FROM User u WHERE u.state = :state")
+    Integer getTotalUserByState(@Param("state") AccountState state);
 
     @Query("SELECT COUNT(u) FROM User u WHERE MONTH(u.registerDate) = :month AND YEAR(u.registerDate) = :year")
     Integer getTotalUserByMonthAndYear(@Param("month") Integer month, @Param("year") Integer year);
 
+    @Query(nativeQuery = true,
+            value = "SELECT TOP 5 u.* " +
+                    "FROM [Transaction] t " +
+                    "JOIN [User] u ON t.user_id = u.id " +
+                    "WHERE t.transaction_type = 'PAYMENT_TO_WINNER' " +
+                    "      AND t.transaction_state = 'SUCCEED' " +
+                    "GROUP BY u.id, u.cccd, u.address, u.avatar, u.bank_account_name, " +
+                    "         u.bank_account_number, u.bank_id, u.city, u.district, " +
+                    "         u.email, u.first_name, u.last_name, u.phone, u.password, " +
+                    "         u.role, u.state, u.register_date, u.username, u.ward, u.year_of_birth " +
+                    "ORDER BY SUM(t.total_price) DESC")
+    List<User> findTopUsersByTotalSpent();
 }

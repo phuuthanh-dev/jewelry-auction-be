@@ -29,5 +29,5 @@ public interface TransactionService {
 
     Page<Transaction> getTransactionHandover (TransactionType typename, Pageable pageable);
 
-    void createTransactionForWinnerIfNotExists(Integer userId);
+    List<Transaction> createTransactionForWinnerIfNotExists(Integer userId);
 }

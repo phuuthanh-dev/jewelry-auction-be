@@ -94,8 +94,7 @@ public class TransactionController {
     }
 
     @PostMapping("/create-transaction-for-winner-if-not-exist/{userId}")
-    public ResponseEntity<Void> createTransactionForWinnerIfNotExist(@PathVariable Integer userId) {
-        transactionService.createTransactionForWinnerIfNotExists(userId);
-        return ResponseEntity.ok().build();
+    public ResponseEntity<List<Transaction>> createTransactionForWinnerIfNotExist(@PathVariable Integer userId) {
+        return ResponseEntity.ok(transactionService.createTransactionForWinnerIfNotExists(userId));
     }
 }

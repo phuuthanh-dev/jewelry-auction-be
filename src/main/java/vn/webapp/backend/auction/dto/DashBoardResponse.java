@@ -14,8 +14,13 @@ public class DashBoardResponse {
     private Double totalRevenueToday;
     private Integer totalUser;
     private Integer totalJewelryActive;
+    private Integer totalJewelryWaitApproving;
+    private Integer totalUsersActive;
+    private Integer totalUsersInActive;
     private double percentAuctionFailed;
     private double percentAuctionSuccess;
+    private double participationRate;
+    private double notParticipationRate;
     private Integer[] totalUsersByMonth;
     private Integer[] totalAuctionByMonth;
     private Double totalRevenue;
