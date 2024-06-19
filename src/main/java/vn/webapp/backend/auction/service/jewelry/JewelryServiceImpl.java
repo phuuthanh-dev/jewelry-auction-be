@@ -84,6 +84,14 @@ public class JewelryServiceImpl implements JewelryService {
     }
 
     @Override
+    public Jewelry setHolding(Integer id) {
+        var existingJewelry = jewelryRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException(ErrorMessages.JEWELRY_NOT_FOUND));
+        existingJewelry.setIsHolding(true);
+        return  existingJewelry;
+    }
+
+    @Override
     public List<Jewelry> getJewelryByUsername(String username) {
         List<Jewelry> jewelryList = jewelryRepository.findJewelryByUsername(username);
         if (jewelryList.isEmpty()) {
@@ -117,6 +125,11 @@ public class JewelryServiceImpl implements JewelryService {
     @Override
     public Page<Jewelry> getJewelriesInWaitList(Pageable pageable) {
         return jewelryRepository.findJewelryInWaitlist(pageable);
+    }
+
+    @Override
+    public Page<Jewelry> getJewelryByStateAndIsHolding(JewelryState state, Boolean isHolding, Pageable pageable) {
+        return jewelryRepository.findJewelryByStateAndIsHolding(state,isHolding,pageable);
     }
 
     @Override
