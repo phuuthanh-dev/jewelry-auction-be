@@ -7,6 +7,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import vn.webapp.backend.auction.dto.RegisterAccountRequest;
+import vn.webapp.backend.auction.dto.UserSpentDTO;
 import vn.webapp.backend.auction.enums.AccountState;
 import vn.webapp.backend.auction.enums.Role;
 import vn.webapp.backend.auction.exception.ResourceNotFoundException;
@@ -14,11 +15,13 @@ import vn.webapp.backend.auction.exception.UserAlreadyExistsException;
 import vn.webapp.backend.auction.model.ErrorMessages;
 import vn.webapp.backend.auction.model.User;
 import vn.webapp.backend.auction.repository.AuctionRegistrationRepository;
+import vn.webapp.backend.auction.repository.TransactionRepository;
 import vn.webapp.backend.auction.repository.UserRepository;
 
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
+import java.util.ArrayList;
 import java.util.List;
 
 @Transactional
@@ -28,6 +31,7 @@ public class UserServiceImpl implements UserService {
     private final PasswordEncoder passwordEncoder;
     private final UserRepository userRepository;
     private final AuctionRegistrationRepository auctionRegistrationRepository;
+    private final TransactionRepository transactionRepository;
 
     @Override
     public User getUserByUsername(String username) {
@@ -163,6 +167,15 @@ public class UserServiceImpl implements UserService {
         return userRepository.save(user);
     }
 
-
+    @Override
+    public List<UserSpentDTO> getMostSpentUser() {
+        List<User> users = userRepository.findTopUsersByTotalSpent();
+        List<UserSpentDTO> list = new ArrayList<>();
+        for (User user : users) {
+            Double totalSpent = transactionRepository.getTotalPriceJewelryWonByUsernameAndAlreadyPay(user.getUsername());
+            list.add(new UserSpentDTO(user, totalSpent));
+        }
+        return list;
+    }
 
 }

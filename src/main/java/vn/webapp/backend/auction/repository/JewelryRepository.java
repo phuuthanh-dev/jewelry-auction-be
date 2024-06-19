@@ -35,4 +35,6 @@ public interface JewelryRepository extends JpaRepository<Jewelry, Integer> {
     @Query("SELECT COUNT(j) FROM Jewelry j WHERE j.state = 'ACTIVE'")
     Integer countAllJewelriesActive();
 
+    @Query("SELECT COUNT(j) FROM Jewelry j WHERE j.state = 'APPROVING'")
+    Integer countAllJewelriesWaitApproving();
 }
