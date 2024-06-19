@@ -21,4 +21,5 @@ public interface RequestApprovalRepository extends JpaRepository<RequestApproval
 
     @Query("SELECT ra FROM RequestApproval ra WHERE ra.sender.role = 'MANAGER' AND ra.isConfirm = true AND ra.state = 'ACTIVE' AND ra.jewelry.state = 'APPROVING'")
     Page<RequestApproval> findRequestApprovalPassed( Pageable pageable);
+
 }
