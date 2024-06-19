@@ -3,13 +3,9 @@ package vn.webapp.backend.auction;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.testng.AbstractTestNGSpringContextTests;
-import org.testng.Assert;
-import vn.webapp.backend.auction.dto.UserTransactionResponse;
 import vn.webapp.backend.auction.exception.ResourceNotFoundException;
-import vn.webapp.backend.auction.model.Auction;
 import vn.webapp.backend.auction.model.Transaction;
-import vn.webapp.backend.auction.service.TransactionService;
+import vn.webapp.backend.auction.service.transaction.TransactionService;
 
 import java.util.List;
 

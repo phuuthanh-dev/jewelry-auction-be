@@ -11,7 +11,7 @@ import vn.webapp.backend.auction.dto.RegisterAccountRequest;
 import vn.webapp.backend.auction.enums.AccountState;
 import vn.webapp.backend.auction.enums.Role;
 import vn.webapp.backend.auction.model.User;
-import vn.webapp.backend.auction.service.UserService;
+import vn.webapp.backend.auction.service.user.UserService;
 
 @RestController
 @RequiredArgsConstructor

@@ -5,7 +5,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import vn.webapp.backend.auction.dto.ImageRequest;
 import vn.webapp.backend.auction.model.Image;
-import vn.webapp.backend.auction.service.ImageService;
+import vn.webapp.backend.auction.service.image.ImageService;
 
 import java.util.List;
 

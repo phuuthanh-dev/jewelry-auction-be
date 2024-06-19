@@ -11,6 +11,7 @@ import vn.webapp.backend.auction.model.Transaction;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 public interface TransactionRepository extends JpaRepository<Transaction, Integer> {
     @Query("SELECT t FROM Transaction t WHERE t.user.username = :username")
@@ -49,4 +50,7 @@ public interface TransactionRepository extends JpaRepository<Transaction, Intege
 
     @Query("SELECT COUNT(t) FROM Transaction t WHERE t.type = 'PAYMENT_TO_WINNER' AND t.user.username = :username")
     Integer getTotalJewelryWon(@Param("username") String username);
+
+    @Query("SELECT t FROM Transaction t WHERE t.type = 'PAYMENT_TO_WINNER' AND t.auction.id = :auctionId AND t.user.id = :userId AND t.state != 'FAILED'")
+    Optional<Transaction> findTransactionByAuctionIdAndUserId(@Param("auctionId") Integer auctionId, @Param("userId") Integer userId);
 }

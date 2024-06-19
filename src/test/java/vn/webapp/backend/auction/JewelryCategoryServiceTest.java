@@ -6,7 +6,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.testng.AbstractTestNGSpringContextTests;
 import vn.webapp.backend.auction.exception.ResourceNotFoundException;
 import vn.webapp.backend.auction.model.JewelryCategory;
-import vn.webapp.backend.auction.service.JewelryCategoryService;
+import vn.webapp.backend.auction.service.category.JewelryCategoryService;
 
 import java.util.List;
 

@@ -9,7 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import vn.webapp.backend.auction.dto.SendJewelryFromUserRequest;
 import vn.webapp.backend.auction.model.Jewelry;
-import vn.webapp.backend.auction.service.JewelryService;
+import vn.webapp.backend.auction.service.jewelry.JewelryService;
 
 import java.util.List;
 

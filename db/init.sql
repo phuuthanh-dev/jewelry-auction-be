@@ -82,7 +82,7 @@ CREATE TABLE [dbo].[user]
     [year_of_birth]       [varchar](4)         NOT NULL,
     [bank_id]             [int]                NULL,
     [register_date]       [datetime2](6)       NULL
-    )
+)
 
 -- Insert data into the user table
     INSERT INTO [dbo].[user]
@@ -107,18 +107,19 @@ CREATE TABLE [dbo].[jewelry]
     [weight]      [float]              NOT NULL,
     [category_id] [int]                NULL,
     [user_id]     [int]                NULL,
-    )
+    [is_holding]  [bit]                NULL
+)
 
     INSERT INTO [dbo].[jewelry]
-([brand], [description], [material], [name], [price], [state], [weight], [category_id], [user_id])
+([brand], [description], [material], [name], [price], [state], [weight], [category_id], [user_id], [is_holding])
     VALUES (N'DOJI', N'Nhẫn đính hôn bằng kim cương.', N'Bạc', N'NHẪN ĐÍNH HÔN KIM CƯƠNG ENR3111W', 44500000, 'ACTIVE',
-            15.5, 2, 1),
-(N'DOJI', N'Nhẫn đính hôn bằng kim cương.', N'Bạc', N'NHẪN CƯỚI KIM CƯƠNG IWR163', 5000000, 'ACTIVE', 8.2, 2,
- 1),
-(N'DOJI', N'Nhẫn đính hôn bằng kim cương.', N'Bạc', N'NHẪN KIM CƯƠNG FDR0257', 41130000, 'ACTIVE', 20.1, 2, 1),
-(N'DOJI', N'Nhẫn đính hôn bằng kim cương.', N'Bạc', N'NHẪN KIM CƯƠNG DJR397-22', 37000000, 'ACTIVE', 10.0, 2,
- 1),
-(N'Fine Jewelry', N'Dây chuyền kim cương', N'Vàng',  N'Dây chuyền kim cương Y', 18000000, 'ACTIVE', 6.9, 1, 15);
+            15.5, 2, 1, 1),
+            (N'DOJI', N'Nhẫn đính hôn bằng kim cương.', N'Bạc', N'NHẪN CƯỚI KIM CƯƠNG IWR163', 5000000, 'ACTIVE', 8.2, 2,
+            1, 1),
+            (N'DOJI', N'Nhẫn đính hôn bằng kim cương.', N'Bạc', N'NHẪN KIM CƯƠNG FDR0257', 41130000, 'ACTIVE', 20.1, 2, 1, 1),
+            (N'DOJI', N'Nhẫn đính hôn bằng kim cương.', N'Bạc', N'NHẪN KIM CƯƠNG DJR397-22', 37000000, 'ACTIVE', 10.0, 2,
+            1, 1),
+            (N'Fine Jewelry', N'Dây chuyền kim cương', N'Vàng',  N'Dây chuyền kim cương Y', 18000000, 'ACTIVE', 6.9, 1, 15, 1);
 
 CREATE TABLE [dbo].[auction]
 (

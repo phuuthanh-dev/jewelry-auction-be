@@ -8,13 +8,11 @@ import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import vn.webapp.backend.auction.dto.UserTransactionResponse;
-import vn.webapp.backend.auction.enums.PaymentMethod;
 import vn.webapp.backend.auction.enums.TransactionState;
 import vn.webapp.backend.auction.enums.TransactionType;
-import vn.webapp.backend.auction.model.Auction;
 import vn.webapp.backend.auction.model.Transaction;
 import vn.webapp.backend.auction.model.User;
-import vn.webapp.backend.auction.service.TransactionService;
+import vn.webapp.backend.auction.service.transaction.TransactionService;
 
 import java.util.List;
 
@@ -92,6 +90,12 @@ public class TransactionController {
     @PutMapping("/set-method/{id}")
     public ResponseEntity<Transaction> setMethod(@PathVariable Integer id, @RequestParam String method) {
         transactionService.setTransactionMethod(id, method);
+        return ResponseEntity.ok().build();
+    }
+
+    @PostMapping("/create-transaction-for-winner-if-not-exist/{userId}")
+    public ResponseEntity<Void> createTransactionForWinnerIfNotExist(@PathVariable Integer userId) {
+        transactionService.createTransactionForWinnerIfNotExists(userId);
         return ResponseEntity.ok().build();
     }
 }
