@@ -57,6 +57,18 @@ public class RequestApprovalController {
         return ResponseEntity.ok(requestApprovalService.getRequestBySenderRole(role,pageable));
     }
 
+    @GetMapping("/confirm-by-member/{memberId}")
+    public ResponseEntity<Page<RequestApproval>> getRequestNeedMemberConfirm(
+            @PathVariable Integer memberId,
+            @RequestParam(defaultValue = "id") String sortBy,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "5") int size,
+            @RequestParam(defaultValue = "asc") String sortOrder) {
+        Sort.Direction direction = (sortOrder.equalsIgnoreCase("asc")) ? Sort.Direction.ASC : Sort.Direction.DESC;
+        Pageable pageable = PageRequest.of(page, size, direction, sortBy);
+        return ResponseEntity.ok(requestApprovalService.getRequestNeedConfirmByMember(memberId, pageable));
+    }
+
     @PostMapping("/send-from-user")
     public ResponseEntity<RequestApproval> newRequestJewelryFromUser(@RequestBody UserRequestApproval request) {
         return ResponseEntity.ok(requestApprovalService.requestFromUser(request));
