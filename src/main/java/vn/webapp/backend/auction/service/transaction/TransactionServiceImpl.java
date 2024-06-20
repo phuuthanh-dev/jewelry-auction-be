@@ -125,7 +125,7 @@ public class TransactionServiceImpl implements TransactionService {
         List<Transaction> createdTransactions = new ArrayList<>();
 
         if (validRegistrations.isEmpty()) {
-            throw new ResourceNotFoundException(ErrorMessages.AUCTION_REGISTRATION_NOT_FOUND);
+            return createdTransactions;
         }
 
         for (AuctionRegistration registration : validRegistrations) {
