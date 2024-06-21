@@ -12,8 +12,6 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.filter.OncePerRequestFilter;
 
-import org.springframework.lang.NonNull;
-
 import io.jsonwebtoken.ExpiredJwtException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -22,7 +20,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import vn.webapp.backend.auction.model.Token;
 import vn.webapp.backend.auction.repository.TokenRepository;
-import vn.webapp.backend.auction.service.JwtService;
+import vn.webapp.backend.auction.service.jwt.JwtService;
 
 @Component
 @RequiredArgsConstructor

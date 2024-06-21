@@ -64,6 +64,9 @@ CREATE TABLE [dbo].[user]
 (
     [id]                  [int] IDENTITY (1,1) NOT NULL,
     [cccd]                [varchar](20)        NOT NULL,
+    [cccd_first]          [varchar](MAX)       NOT NULL,
+    [cccd_last]           [varchar](MAX)       NOT NULL,
+    [cccd_from]           [nvarchar](50)       NOT NULL,
     [address]             [nvarchar](50)       NOT NULL,
     [avatar]              [varchar](max)       NULL,
     [bank_account_name]   [varchar](30)        NOT NULL,
@@ -82,17 +85,17 @@ CREATE TABLE [dbo].[user]
     [year_of_birth]       [varchar](4)         NOT NULL,
     [bank_id]             [int]                NULL,
     [register_date]       [datetime2](6)       NULL
-    )
+)
 
 -- Insert data into the user table
     INSERT INTO [dbo].[user]
 ([cccd], [address], [avatar], [city], [email], [first_name], [last_name], [password], [phone], [district], [ward],
-    [state], [username], [year_of_birth], [role], [bank_id], [bank_account_number], [bank_account_name], [register_date])
+    [state], [username], [year_of_birth], [role], [bank_id], [bank_account_number], [bank_account_name], [register_date], [cccd_first], [cccd_last], [cccd_from])
     VALUES ('011234567890', N'1 Lý Thường Kiệt',
             'https://scontent.fsgn2-7.fna.fbcdn.net/v/t39.30808-6/438275285_1101091104487039_4035794765477072253_n.jpg?_nc_cat=108&ccb=1-7&_nc_sid=5f2048&_nc_ohc=7MHTOamLKXgQ7kNvgGdad4i&_nc_ht=scontent.fsgn2-7.fna&oh=00_AYDZ0L0Y3_1M_tK5YBX-b1PhjuTPFeLod8Jz1UhW3t_Gkg&oe=6665416E',
             N'Lâm Đồng', 'phuuthanh2003@gmail.com', N'Phùng', N'Thành',
             '$2a$12$j/1n5Pjv4JgzG76ZG0hyH.MD6ftohJNbjuZjRHQFt31Ta/jViwKQ2', '0912345670', N'Hà Nội', N'Hoang', 'ACTIVE',
-            'phuuthanh2003', 1985, 'ADMIN', 7, '1030293193991', 'PHUNG HUU THANH', '2024-05-01 17:30:00');
+            'phuuthanh2003', 1985, 'ADMIN', 7, '1030293193991', 'PHUNG HUU THANH', '2024-05-01 17:30:00', '01', '123456', 'CA NINH');
 
 
 CREATE TABLE [dbo].[jewelry]
@@ -107,18 +110,19 @@ CREATE TABLE [dbo].[jewelry]
     [weight]      [float]              NOT NULL,
     [category_id] [int]                NULL,
     [user_id]     [int]                NULL,
-    )
+    [is_holding]  [bit]                NULL
+)
 
     INSERT INTO [dbo].[jewelry]
-([brand], [description], [material], [name], [price], [state], [weight], [category_id], [user_id])
+([brand], [description], [material], [name], [price], [state], [weight], [category_id], [user_id], [is_holding])
     VALUES (N'DOJI', N'Nhẫn đính hôn bằng kim cương.', N'Bạc', N'NHẪN ĐÍNH HÔN KIM CƯƠNG ENR3111W', 44500000, 'ACTIVE',
-            15.5, 2, 1),
-(N'DOJI', N'Nhẫn đính hôn bằng kim cương.', N'Bạc', N'NHẪN CƯỚI KIM CƯƠNG IWR163', 5000000, 'ACTIVE', 8.2, 2,
- 1),
-(N'DOJI', N'Nhẫn đính hôn bằng kim cương.', N'Bạc', N'NHẪN KIM CƯƠNG FDR0257', 41130000, 'ACTIVE', 20.1, 2, 1),
-(N'DOJI', N'Nhẫn đính hôn bằng kim cương.', N'Bạc', N'NHẪN KIM CƯƠNG DJR397-22', 37000000, 'ACTIVE', 10.0, 2,
- 1),
-(N'Fine Jewelry', N'Dây chuyền kim cương', N'Vàng',  N'Dây chuyền kim cương Y', 18000000, 'ACTIVE', 6.9, 1, 15);
+            15.5, 2, 1, 1),
+            (N'DOJI', N'Nhẫn đính hôn bằng kim cương.', N'Bạc', N'NHẪN CƯỚI KIM CƯƠNG IWR163', 5000000, 'ACTIVE', 8.2, 2,
+            1, 1),
+            (N'DOJI', N'Nhẫn đính hôn bằng kim cương.', N'Bạc', N'NHẪN KIM CƯƠNG FDR0257', 41130000, 'ACTIVE', 20.1, 2, 1, 1),
+            (N'DOJI', N'Nhẫn đính hôn bằng kim cương.', N'Bạc', N'NHẪN KIM CƯƠNG DJR397-22', 37000000, 'ACTIVE', 10.0, 2,
+            1, 1),
+            (N'Fine Jewelry', N'Dây chuyền kim cương', N'Vàng',  N'Dây chuyền kim cương Y', 18000000, 'ACTIVE', 6.9, 1, 15, 1);
 
 CREATE TABLE [dbo].[auction]
 (

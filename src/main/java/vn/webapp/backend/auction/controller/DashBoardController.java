@@ -4,7 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import vn.webapp.backend.auction.dto.DashBoardResponse;
-import vn.webapp.backend.auction.service.DashBoardService;
+import vn.webapp.backend.auction.service.dashboard.DashBoardService;
 
 @RestController
 @RequestMapping("/api/v1/dashboard")

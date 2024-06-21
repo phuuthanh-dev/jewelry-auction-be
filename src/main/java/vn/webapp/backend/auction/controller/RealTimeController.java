@@ -8,7 +8,7 @@ import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RestController;
 import vn.webapp.backend.auction.dto.BidResponse;
-import vn.webapp.backend.auction.service.RealTimeService;
+import vn.webapp.backend.auction.service.realtime.RealTimeService;
 
 import java.util.logging.Logger;
 

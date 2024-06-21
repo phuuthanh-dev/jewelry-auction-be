@@ -1,5 +1,5 @@
 package vn.webapp.backend.auction.enums;
 
 public enum AccountState  {
-    ACTIVE, INACTIVE, DISABLE
+    VERIFIED, ACTIVE, INACTIVE, DISABLE
 }

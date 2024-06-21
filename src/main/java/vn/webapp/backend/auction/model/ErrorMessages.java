@@ -10,4 +10,6 @@ public class ErrorMessages {
     public static final String AUCTION_NOT_FOUND = "Không tìm thấy phiên đấu giá.";
     public static final String USER_WINNER_NOT_FOUND = "không tìm thấy người chiến thắng.";
     public static final String TRANSACTION_NOT_FOUND = "không tìm thấy giao dịch.";
+    public static final String TRANSACTION_ALREADY_EXISTS = "Giao dịch đã tồn tại.";
+    public static final String AUCTION_REGISTRATION_NOT_FOUND = "Không tìm thấy đăng ký phiên đấu giá.";
 }

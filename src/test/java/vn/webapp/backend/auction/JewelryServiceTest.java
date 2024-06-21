@@ -8,7 +8,7 @@ import org.springframework.test.context.testng.AbstractTestNGSpringContextTests;
 import vn.webapp.backend.auction.exception.ResourceNotFoundException;
 
 import vn.webapp.backend.auction.model.Jewelry;
-import vn.webapp.backend.auction.service.JewelryService;
+import vn.webapp.backend.auction.service.jewelry.JewelryService;
 
 import java.util.List;
 

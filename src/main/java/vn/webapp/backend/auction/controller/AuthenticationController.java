@@ -8,7 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import vn.webapp.backend.auction.dto.*;
 import vn.webapp.backend.auction.dto.RegisterAccountRequest;
-import vn.webapp.backend.auction.service.AuthenticationServiceImpl;
+import vn.webapp.backend.auction.service.authenticate.AuthenticationServiceImpl;
 
 import java.io.IOException;
 
@@ -37,9 +37,9 @@ public class AuthenticationController {
     }
 
     @PostMapping("/change-password")
-    public ResponseEntity<AuthenticationResponse> changePassword(
+    public ResponseEntity<Void> changePassword(
             @RequestBody ChangePasswordRequest request) {
-        ResponseEntity.ok(authenticationService.changePassword(request));
+        authenticationService.changePassword(request);
         return ResponseEntity.ok().build();
     }
 

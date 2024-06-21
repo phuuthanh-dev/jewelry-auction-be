@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import vn.webapp.backend.auction.model.Bank;
-import vn.webapp.backend.auction.service.BankService;
+import vn.webapp.backend.auction.service.bank.BankService;
 
 import java.util.List;
 

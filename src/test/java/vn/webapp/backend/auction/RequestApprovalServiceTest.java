@@ -3,10 +3,9 @@ package vn.webapp.backend.auction;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.testng.AbstractTestNGSpringContextTests;
 import vn.webapp.backend.auction.exception.ResourceNotFoundException;
 import vn.webapp.backend.auction.model.RequestApproval;
-import vn.webapp.backend.auction.service.RequestApprovalService;
+import vn.webapp.backend.auction.service.request_approval.RequestApprovalService;
 
 import static org.testng.Assert.*;
 

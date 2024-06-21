@@ -27,12 +27,13 @@ public interface JewelryRepository extends JpaRepository<Jewelry, Integer> {
     @Query("SELECT j FROM Jewelry j INNER JOIN Auction a ON j.id = a.jewelry.id WHERE a.state = 'FINISHED'")
     Page<Jewelry> findJewelryInHandOver(Pageable pageable);
 
+    Page<Jewelry> findJewelryByStateAndIsHolding(JewelryState state, Boolean isHolding, Pageable pageable);
+
     Page<Jewelry> findByUserUsername(String username, Pageable pageable);
 
     @Query("SELECT j FROM Jewelry j ORDER BY j.id DESC")
     List<Jewelry> findLatestJewelry();
 
-    @Query("SELECT COUNT(j) FROM Jewelry j WHERE j.state = 'ACTIVE'")
-    Integer countAllJewelriesActive();
-
+    @Query("SELECT COUNT(j) FROM Jewelry j WHERE j.state = :state")
+    Integer countAllJewelriesByState(@Param("state") JewelryState state);
 }

@@ -7,11 +7,15 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import vn.webapp.backend.auction.dto.ChangePasswordRequest;
 import vn.webapp.backend.auction.dto.RegisterAccountRequest;
+import vn.webapp.backend.auction.dto.UserSpentDTO;
 import vn.webapp.backend.auction.enums.AccountState;
 import vn.webapp.backend.auction.enums.Role;
 import vn.webapp.backend.auction.model.User;
-import vn.webapp.backend.auction.service.UserService;
+import vn.webapp.backend.auction.service.user.UserService;
+
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -83,5 +87,23 @@ public class UserController {
     @GetMapping("/get-winner-auction/{auctionId}")
     public ResponseEntity<User> getLatestUserInAuctionHistoryByAuctionId(@PathVariable Integer auctionId) {
         return ResponseEntity.ok(userService.getLatestUserInAuctionHistoryByAuctionId(auctionId));
+    }
+
+    @GetMapping("/get-top-spent-user")
+    public ResponseEntity<List<UserSpentDTO>> getTopUser() {
+        return ResponseEntity.ok(userService.getMostSpentUser());
+    }
+
+    @GetMapping("/get-by-state")
+    public ResponseEntity<Page<User>> getUnVerifyUsers(
+            @RequestParam(required = false) String fullName,
+            @RequestParam(required = false) AccountState state,
+            @RequestParam(defaultValue = "id") String sortBy,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "5") int size,
+            @RequestParam(defaultValue = "asc") String sortOrder) {
+        Sort.Direction direction = (sortOrder.equalsIgnoreCase("asc")) ? Sort.Direction.ASC : Sort.Direction.DESC;
+        Pageable pageable = PageRequest.of(page, size, direction, sortBy);
+        return ResponseEntity.ok(userService.getUsersUnVerifyByFullNameContainingAndState(fullName, state, pageable));
     }
 }
