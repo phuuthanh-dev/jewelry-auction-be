@@ -34,6 +34,7 @@ public class DashBoardService {
         Integer totalAuctionFailed = auctionRepository.countAllAuctionsFailed();
         Integer totalAuctionSuccess = auctionRepository.countAllAuctionsSuccessful();
         Integer totalAuctionsFinished = auctionRepository.countAllAuctionsFinished();
+        Integer totalUsersVerified = userRepository.getTotalUserByState(AccountState.VERIFIED);
         Integer totalUsersActive = userRepository.getTotalUserByState(AccountState.ACTIVE);
         Integer totalUsersInActive = userRepository.getTotalUserByState(AccountState.INACTIVE);
         Integer totalMembers = userRepository.getTotalUserByRole(Role.MEMBER);
@@ -81,6 +82,7 @@ public class DashBoardService {
                 .totalJewelryWaitApproving(totalApprovingJewelry)
                 .totalAuctionJewelry(totalAuctionJewelry)
                 .totalAuctions(totalAuction)
+                .totalUsersVerified(totalUsersVerified)
                 .totalUsersActive(totalUsersActive)
                 .totalUsersInActive(totalUsersInActive)
                 .totalMembers(totalMembers)

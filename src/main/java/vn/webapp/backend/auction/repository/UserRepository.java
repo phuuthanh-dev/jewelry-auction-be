@@ -27,7 +27,10 @@ public interface UserRepository extends JpaRepository<User, Integer>  {
     @Query("SELECT u FROM User u " + "WHERE (:fullName IS NULL OR CONCAT(u.firstName,' ',u.lastName) LIKE %:fullName%) " + "AND (:role IS NULL OR u.role = :role) " + "AND (:state IS NULL OR u.state = :state)")
     Page<User> findByFullNameContainingAndRoleAndState(@Param("fullName") String fullName, @Param("role") Role role, @Param("state") AccountState state, Pageable pageable);
 
-    Page<User> findByFullNameContainingAndRoleNotAndState(String fullName, Integer roleId, AccountState state, Pageable pageable);
+    @Query("SELECT u FROM User u " +
+            "WHERE (:fullName IS NULL OR CONCAT(u.firstName, ' ', u.lastName) LIKE %:fullName%) " +
+            "AND (:state IS NULL OR u.state <> :state)")
+    Page<User> findByFullNameContainingAndStateNot(@Param("fullName") String fullName, @Param("state") AccountState state, Pageable pageable);
 
     @Query("SELECT ah.user " +
             "FROM AuctionHistory ah " +
@@ -56,7 +59,8 @@ public interface UserRepository extends JpaRepository<User, Integer>  {
                     "GROUP BY u.id, u.cccd, u.address, u.avatar, u.bank_account_name, " +
                     "         u.bank_account_number, u.bank_id, u.city, u.district, " +
                     "         u.email, u.first_name, u.last_name, u.phone, u.password, " +
-                    "         u.role, u.state, u.register_date, u.username, u.ward, u.year_of_birth " +
+                    "         u.role, u.state, u.register_date, u.username, u.ward, u.year_of_birth" +
+                    "         u.cccd_first, u.cccd_last, u.cccd_from " +
                     "ORDER BY SUM(t.total_price) DESC")
     List<User> findTopUsersByTotalSpent();
 }
