@@ -93,4 +93,17 @@ public class UserController {
     public ResponseEntity<List<UserSpentDTO>> getTopUser() {
         return ResponseEntity.ok(userService.getMostSpentUser());
     }
+
+    @GetMapping("/get-by-state")
+    public ResponseEntity<Page<User>> getUnVerifyUsers(
+            @RequestParam(required = false) String fullName,
+            @RequestParam(required = false) AccountState state,
+            @RequestParam(defaultValue = "id") String sortBy,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "5") int size,
+            @RequestParam(defaultValue = "asc") String sortOrder) {
+        Sort.Direction direction = (sortOrder.equalsIgnoreCase("asc")) ? Sort.Direction.ASC : Sort.Direction.DESC;
+        Pageable pageable = PageRequest.of(page, size, direction, sortBy);
+        return ResponseEntity.ok(userService.getUsersUnVerifyByFullNameContainingAndState(fullName, state, pageable));
+    }
 }

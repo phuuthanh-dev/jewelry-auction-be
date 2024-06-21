@@ -24,4 +24,5 @@ public interface UserService {
     Page<User> getStaffByFullNameContainingAndRoleAndState(String fullName, Role role, AccountState state , Pageable page);
     User getLatestUserInAuctionHistoryByAuctionId(Integer auctionId);
     List<UserSpentDTO> getMostSpentUser();
+    Page<User> getUsersUnVerifyByFullNameContainingAndState(String fullName, AccountState state, Pageable pageable);
  }

@@ -101,6 +101,14 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public Page<User> getUsersUnVerifyByFullNameContainingAndState(
+            String fullName,
+            AccountState state,
+            Pageable pageable) {
+        return userRepository.findByFullNameContainingAndStateNot(fullName, state, pageable);
+    }
+
+    @Override
     public Page<User> getMemberByFullNameContainingAndState(
             String fullName,
             AccountState state,
