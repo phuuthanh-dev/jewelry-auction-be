@@ -64,6 +64,9 @@ CREATE TABLE [dbo].[user]
 (
     [id]                  [int] IDENTITY (1,1) NOT NULL,
     [cccd]                [varchar](20)        NOT NULL,
+    [cccd_first]          [varchar](MAX)       NOT NULL,
+    [cccd_last]           [varchar](MAX)       NOT NULL,
+    [cccd_from]           [nvarchar](50)       NOT NULL,
     [address]             [nvarchar](50)       NOT NULL,
     [avatar]              [varchar](max)       NULL,
     [bank_account_name]   [varchar](30)        NOT NULL,
@@ -87,12 +90,12 @@ CREATE TABLE [dbo].[user]
 -- Insert data into the user table
     INSERT INTO [dbo].[user]
 ([cccd], [address], [avatar], [city], [email], [first_name], [last_name], [password], [phone], [district], [ward],
-    [state], [username], [year_of_birth], [role], [bank_id], [bank_account_number], [bank_account_name], [register_date])
+    [state], [username], [year_of_birth], [role], [bank_id], [bank_account_number], [bank_account_name], [register_date], [cccd_first], [cccd_last], [cccd_from])
     VALUES ('011234567890', N'1 Lý Thường Kiệt',
             'https://scontent.fsgn2-7.fna.fbcdn.net/v/t39.30808-6/438275285_1101091104487039_4035794765477072253_n.jpg?_nc_cat=108&ccb=1-7&_nc_sid=5f2048&_nc_ohc=7MHTOamLKXgQ7kNvgGdad4i&_nc_ht=scontent.fsgn2-7.fna&oh=00_AYDZ0L0Y3_1M_tK5YBX-b1PhjuTPFeLod8Jz1UhW3t_Gkg&oe=6665416E',
             N'Lâm Đồng', 'phuuthanh2003@gmail.com', N'Phùng', N'Thành',
             '$2a$12$j/1n5Pjv4JgzG76ZG0hyH.MD6ftohJNbjuZjRHQFt31Ta/jViwKQ2', '0912345670', N'Hà Nội', N'Hoang', 'ACTIVE',
-            'phuuthanh2003', 1985, 'ADMIN', 7, '1030293193991', 'PHUNG HUU THANH', '2024-05-01 17:30:00');
+            'phuuthanh2003', 1985, 'ADMIN', 7, '1030293193991', 'PHUNG HUU THANH', '2024-05-01 17:30:00', '01', '123456', 'CA NINH');
 
 
 CREATE TABLE [dbo].[jewelry]
