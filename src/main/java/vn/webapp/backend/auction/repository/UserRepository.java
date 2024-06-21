@@ -35,11 +35,14 @@ public interface UserRepository extends JpaRepository<User, Integer>  {
             "AND ah.time = (SELECT MAX(ah2.time) FROM AuctionHistory ah2 WHERE ah2.auction.id = :auctionId AND ah2.state='ACTIVE')")
     Optional<User> findLatestUserInAuctionHistoryByAuctionId(@Param("auctionId") Integer auctionId);
 
-    @Query("SELECT COUNT(u) FROM User u WHERE u.state = 'ACTIVE'")
+    @Query("SELECT COUNT(u) FROM User u WHERE u.state != 'DISABLE'")
     Integer getTotalUser();
 
     @Query("SELECT COUNT(u) FROM User u WHERE u.state = :state")
     Integer getTotalUserByState(@Param("state") AccountState state);
+
+    @Query("SELECT COUNT(u) FROM User u WHERE u.role = :role")
+    Integer getTotalUserByRole(@Param("role") Role role);
 
     @Query("SELECT COUNT(u) FROM User u WHERE MONTH(u.registerDate) = :month AND YEAR(u.registerDate) = :year")
     Integer getTotalUserByMonthAndYear(@Param("month") Integer month, @Param("year") Integer year);
