@@ -88,6 +88,10 @@ public class UserServiceImpl implements UserService {
         existingUser.setWard(user.getWard());
         existingUser.setCity(user.getCity());
         existingUser.setAvatar(user.getAvatar());
+        existingUser.setCccd(user.getCccd());
+        existingUser.setCccdFirst(user.getCccdFirst());
+        existingUser.setCccdLast(user.getCccdLast());
+        existingUser.setCccdFrom(user.getCccdFrom());
         existingUser.setPhone(user.getPhone());
         existingUser.setYob(user.getYob());
         existingUser.setBankAccountNumber(user.getBankAccountNumber());
@@ -162,7 +166,10 @@ public class UserServiceImpl implements UserService {
                 .registerDate(Timestamp.valueOf(LocalDateTime.now(ZoneId.of("Asia/Ho_Chi_Minh"))))
                 .phone(request.phone())
                 .address(request.address())
-                .CCCD(request.CCCD())
+                .cccd(request.cccd())
+                .cccdFirst(request.cccdFirst())
+                .cccdLast(request.cccdLast())
+                .cccdFrom(request.cccdFrom())
                 .build();
         return userRepository.save(user);
     }

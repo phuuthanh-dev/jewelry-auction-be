@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.mail.MessagingException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.transaction.Transactional;
 import org.springframework.http.ResponseCookie;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -31,7 +32,6 @@ import java.io.IOException;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
-
 
 @Service
 @RequiredArgsConstructor
@@ -144,6 +144,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
             userRepository.save(user);
         }
     }
+
     @Override
     public AuthenticationResponse register(RegisterAccountRequest request, HttpServletRequest httpServletRequest) throws MessagingException {
         userRepository.findByUsername(request.username())
@@ -171,7 +172,10 @@ public class AuthenticationServiceImpl implements AuthenticationService {
                 .avatar("https://www.iconpacks.net/icons/2/free-user-icon-3296-thumb.png")
                 .yob(request.yob())
                 .role(request.role())
-                .CCCD(request.CCCD())
+                .cccd(request.cccd())
+                .cccdFirst(request.cccdFirst())
+                .cccdLast(request.cccdLast())
+                .cccdFrom(request.cccdFrom())
                 .registerDate(Timestamp.valueOf(LocalDateTime.now(ZoneId.of("Asia/Ho_Chi_Minh"))))
                 .state(AccountState.INACTIVE)
                 .bankAccountName(request.bankAccountName())
@@ -251,6 +255,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     }
 
     @Override
+    @Transactional
     public AuthenticationResponse changePassword(ChangePasswordRequest request) {
         var user = userRepository.findByUsername(jwtService.extractUsername(request.token()))
                 .orElseThrow();
@@ -260,9 +265,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         user.setPassword(passwordEncoder.encode(request.newPassword()));
         userRepository.save(user);
         var jwtToken = jwtService.generateToken(user);
-        return AuthenticationResponse.builder()
-                .accessToken(jwtToken)
-                .build();
+        return new AuthenticationResponse(jwtToken);
     }
 
     @Override

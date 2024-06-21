@@ -19,15 +19,15 @@ public final class Endpoints {
 
     public static final String[] PUBLIC_POST_ENDPOINTS = {
             "/api/v1/auction-history", "/api/v1/jewelry/jewelry-request","/api/v1/image/add-image",
-            "/api/v1/auth/**",
             "/api/v1/request-approval/send-from-user",  "/api/v1/request-approval/send-from-staff", "/api/v1/request-approval/send-from-manager",
             "/api/v1/transaction/create-transaction-for-winner/**",  "/api/v1/transaction/create-transaction-for-winner-if-not-exist/**",
     };
 
     public static final String[] PUBLIC_PUT_ENDPOINTS = {
+            "/api/v1/user/change-password",
             "/api/v1/auction/set-state/**", "/api/v1/user","/api/v1/request-approval/set-state/**",
             "/api/v1/request-approval/confirm/**", "/api/v1/request-approval/cancel-request",
-            "/api/v1/transaction/set-method/**","/api/v1/jewelry/set-holding/**"
+            "/api/v1/transaction/set-method/**", "/api/v1/jewelry/set-holding/**"
     };
 
     public static final String[] MANAGER_GET_ENDPOINTS = {

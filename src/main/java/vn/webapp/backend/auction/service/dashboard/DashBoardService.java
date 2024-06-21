@@ -5,6 +5,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import vn.webapp.backend.auction.dto.DashBoardResponse;
 import vn.webapp.backend.auction.enums.AccountState;
+import vn.webapp.backend.auction.enums.JewelryState;
+import vn.webapp.backend.auction.enums.Role;
 import vn.webapp.backend.auction.repository.*;
 
 import java.time.LocalDateTime;
@@ -26,13 +28,18 @@ public class DashBoardService {
         // Total counts
         Integer totalUser = userRepository.getTotalUser();
         Integer totalAuction = auctionRepository.countAllAuctions();
-        Integer totalJewelryActive = jewelryRepository.countAllJewelriesActive();
-        Integer totalJewelryWaitApproving = jewelryRepository.countAllJewelriesWaitApproving();
+        Integer totalActiveJewelry = jewelryRepository.countAllJewelriesByState(JewelryState.ACTIVE);
+        Integer totalApprovingJewelry = jewelryRepository.countAllJewelriesByState(JewelryState.APPROVING);
+        Integer totalAuctionJewelry = jewelryRepository.countAllJewelriesByState(JewelryState.AUCTION);
         Integer totalAuctionFailed = auctionRepository.countAllAuctionsFailed();
         Integer totalAuctionSuccess = auctionRepository.countAllAuctionsSuccessful();
         Integer totalAuctionsFinished = auctionRepository.countAllAuctionsFinished();
         Integer totalUsersActive = userRepository.getTotalUserByState(AccountState.ACTIVE);
         Integer totalUsersInActive = userRepository.getTotalUserByState(AccountState.INACTIVE);
+        Integer totalMembers = userRepository.getTotalUserByRole(Role.MEMBER);
+        Integer totalStaffs = userRepository.getTotalUserByRole(Role.STAFF);
+        Integer totalManagers = userRepository.getTotalUserByRole(Role.MANAGER);
+        Integer totalAdmins = userRepository.getTotalUserByRole(Role.ADMIN);
         Long totalUsersRegister = auctionRegistrationRepository.countDistinctUsersRegistered();
         Long totalUsersNotRegistered = totalUser - totalUsersRegister;
 
@@ -70,11 +77,16 @@ public class DashBoardService {
         return DashBoardResponse.builder()
                 .totalUser(totalUser)
                 .totalRevenueToday(totalRevenueToday)
-                .totalJewelryActive(totalJewelryActive)
-                .totalJewelryWaitApproving(totalJewelryWaitApproving)
+                .totalJewelryActive(totalActiveJewelry)
+                .totalJewelryWaitApproving(totalApprovingJewelry)
+                .totalAuctionJewelry(totalAuctionJewelry)
                 .totalAuctions(totalAuction)
                 .totalUsersActive(totalUsersActive)
                 .totalUsersInActive(totalUsersInActive)
+                .totalMembers(totalMembers)
+                .totalStaffs(totalStaffs)
+                .totalManagers(totalManagers)
+                .totalAdmins(totalAdmins)
                 .totalUsersByMonth(totalUsersRegisterByMonth)
                 .totalAuctionByMonth(totalAuctionByMonth)
                 .percentAuctionFailed(percentAuctionFailed)
