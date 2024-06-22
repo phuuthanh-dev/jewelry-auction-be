@@ -30,4 +30,6 @@ public interface TransactionService {
     Page<Transaction> getTransactionHandover (TransactionType typename, Pageable pageable);
 
     List<Transaction> createTransactionForWinnerIfNotExists(Integer userId);
+
+    Page<Transaction> getOverdueTransactions(Pageable pageable);
 }
