@@ -68,7 +68,7 @@ public class UserController {
     }
 
     @PutMapping("/set-state/{id}")
-    public ResponseEntity<User> setState(@PathVariable Integer id, @RequestParam String state) {
+    public ResponseEntity<User> setState(@PathVariable Integer id, @RequestBody AccountState state) {
         userService.setAccountState(id, state);
         return ResponseEntity.ok().build();
     }
@@ -82,6 +82,12 @@ public class UserController {
     @PutMapping()
     public ResponseEntity<User> updateProfileUser(@RequestBody User user) {
         return ResponseEntity.ok(userService.updateUser(user));
+    }
+
+    @PutMapping("/reject-verify/{id}")
+    public ResponseEntity<User> rejectVerifyUser(@PathVariable Integer id) {
+        userService.rejectVerifyUser(id);
+        return ResponseEntity.ok().build();
     }
 
     @GetMapping("/get-winner-auction/{auctionId}")

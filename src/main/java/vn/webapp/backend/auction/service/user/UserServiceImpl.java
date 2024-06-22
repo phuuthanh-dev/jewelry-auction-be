@@ -70,10 +70,10 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void setAccountState(Integer id, String state) {
+    public void setAccountState(Integer id, AccountState state) {
         var existingUser = userRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException(ErrorMessages.USER_NOT_FOUND));
-        existingUser.setState(AccountState.valueOf(state));
+        existingUser.setState(state);
     }
 
     @Override
@@ -106,6 +106,14 @@ public class UserServiceImpl implements UserService {
             AccountState state,
             Pageable pageable) {
         return userRepository.findByFullNameContainingAndStateNot(fullName, state, pageable);
+    }
+
+    @Override
+    public void rejectVerifyUser(Integer id) {
+        var existingUser = userRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException(ErrorMessages.USER_NOT_FOUND));
+        existingUser.setCccdFirst(null);
+        existingUser.setCccdLast(null);
     }
 
     @Override
