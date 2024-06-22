@@ -18,11 +18,12 @@ public interface UserService {
     List<User> getAll();
     List<User> getAllStaff();
     User registerStaff(RegisterAccountRequest request);
-    void setAccountState(Integer id, String state);
+    void setAccountState(Integer id, AccountState state);
     User updateUser(User user);
     Page<User> getMemberByFullNameContainingAndState(String fullName ,AccountState state, Pageable pageable);
     Page<User> getStaffByFullNameContainingAndRoleAndState(String fullName, Role role, AccountState state , Pageable page);
     User getLatestUserInAuctionHistoryByAuctionId(Integer auctionId);
     List<UserSpentDTO> getMostSpentUser();
     Page<User> getUsersUnVerifyByFullNameContainingAndState(String fullName, AccountState state, Pageable pageable);
+    void rejectVerifyUser(Integer id);
  }
