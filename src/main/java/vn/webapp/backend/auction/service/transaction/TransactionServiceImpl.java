@@ -14,6 +14,7 @@ import vn.webapp.backend.auction.exception.ResourceNotFoundException;
 import vn.webapp.backend.auction.model.*;
 import vn.webapp.backend.auction.repository.*;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -156,5 +157,11 @@ public class TransactionServiceImpl implements TransactionService {
             }
         }
         return createdTransactions;
+    }
+
+    @Override
+    public Page<Transaction> getOverdueTransactions(Pageable pageable) {
+        LocalDateTime threeDaysAgo = LocalDateTime.now().minusDays(3);
+        return transactionRepository.findOverdueTransactions(threeDaysAgo, pageable);
     }
 }

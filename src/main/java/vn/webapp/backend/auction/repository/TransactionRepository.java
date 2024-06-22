@@ -57,6 +57,13 @@ public interface TransactionRepository extends JpaRepository<Transaction, Intege
             "AND t.paymentTime < :startOfNextDay")
     Double getTotalRevenueToday(@Param("startOfDay") LocalDateTime startOfDay, @Param("startOfNextDay") LocalDateTime startOfNextDay);
 
+    @Query("SELECT t FROM Transaction t " +
+            "WHERE t.type = 'PAYMENT_TO_WINNER' " +
+            "AND t.state != 'SUCCEED' " +
+            "AND t.state != 'FAILED' " +
+            "AND t.createDate < :threeDaysAgo")
+    Page<Transaction> findOverdueTransactions(@Param("threeDaysAgo") LocalDateTime threeDaysAgo, Pageable pageable);
+
     @Query("SELECT SUM(t.totalPrice) FROM Transaction t WHERE t.type = 'PAYMENT_TO_WINNER' AND t.user.username = :username")
     Double getTotalPriceJewelryWonByUsername(@Param("username") String username);
 

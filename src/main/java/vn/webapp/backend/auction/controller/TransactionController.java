@@ -76,6 +76,18 @@ public class TransactionController {
         return ResponseEntity.ok(transactionService.getTransactionHandover(type, pageable));
     }
 
+    @GetMapping("/get-overdue")
+    public ResponseEntity<Page<Transaction>> getTransactionOverdue(
+            @RequestParam(defaultValue = "5") int size,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "desc") String sortOrder,
+            @RequestParam(defaultValue = "createDate") String sortBy) {
+        Sort.Direction direction = (sortOrder.equalsIgnoreCase("desc")) ? Sort.Direction.DESC : Sort.Direction.ASC;
+        Pageable pageable = PageRequest.of(page, size, direction, sortBy);
+        Page<Transaction> overdueTransactions = transactionService.getOverdueTransactions(pageable);
+        return ResponseEntity.ok(overdueTransactions);
+    }
+
     @PostMapping("/create-transaction-for-winner/{auctionId}")
     public ResponseEntity<User> createTransactionForWinner(@PathVariable Integer auctionId) {
         return ResponseEntity.ok(transactionService.createTransactionForWinner(auctionId));
