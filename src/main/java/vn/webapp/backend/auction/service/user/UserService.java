@@ -26,4 +26,5 @@ public interface UserService {
     List<UserSpentDTO> getMostSpentUser();
     Page<User> getUsersUnVerifyByFullNameContainingAndState(String fullName, AccountState state, Pageable pageable);
     void rejectVerifyUser(Integer id);
+    List<User> getUserRegistrationAuctionByAuctionId(Integer auctionId);
  }

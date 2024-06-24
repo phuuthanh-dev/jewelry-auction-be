@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import vn.webapp.backend.auction.enums.AccountState;
 import vn.webapp.backend.auction.enums.Role;
+import vn.webapp.backend.auction.model.AuctionRegistration;
 import vn.webapp.backend.auction.model.User;
 
 import java.util.List;
@@ -26,6 +27,9 @@ public interface UserRepository extends JpaRepository<User, Integer>  {
 
     @Query("SELECT u FROM User u " + "WHERE (:fullName IS NULL OR CONCAT(u.firstName,' ',u.lastName) LIKE %:fullName%) " + "AND (:role IS NULL OR u.role = :role) " + "AND (:state IS NULL OR u.state = :state)")
     Page<User> findByFullNameContainingAndRoleAndState(@Param("fullName") String fullName, @Param("role") Role role, @Param("state") AccountState state, Pageable pageable);
+
+    @Query("SELECT u FROM User u " + "WHERE (:fullName IS NULL OR CONCAT(u.firstName,' ',u.lastName) LIKE %:fullName%) " + "AND (:role IS NULL OR u.role = :role) " + "AND (:state IS NULL OR u.state <> :state)")
+    Page<User> findByFullNameContainingAndRoleAndNotState(@Param("fullName") String fullName, @Param("role") Role role, @Param("state") AccountState state, Pageable pageable);
 
     @Query("SELECT u FROM User u " +
             "WHERE (:fullName IS NULL OR CONCAT(u.firstName, ' ', u.lastName) LIKE %:fullName%) " +
@@ -49,6 +53,9 @@ public interface UserRepository extends JpaRepository<User, Integer>  {
 
     @Query("SELECT COUNT(u) FROM User u WHERE MONTH(u.registerDate) = :month AND YEAR(u.registerDate) = :year")
     Integer getTotalUserByMonthAndYear(@Param("month") Integer month, @Param("year") Integer year);
+
+    @Query("SELECT ar.user FROM AuctionRegistration ar WHERE ar.auction.id = :auctionId AND ar.auctionRegistrationState = 'VALID'")
+    List<User> findByAuctionIdAndUserIdValid(@Param("auctionId") Integer auctionId);
 
     @Query(nativeQuery = true,
             value = "SELECT TOP 5 u.* " +

@@ -95,6 +95,11 @@ public class UserController {
         return ResponseEntity.ok(userService.getLatestUserInAuctionHistoryByAuctionId(auctionId));
     }
 
+    @GetMapping("/get-user-registration/{auctionId}")
+    public ResponseEntity<List<User>> getUserRegistrationAuctionByAuction(@PathVariable Integer auctionId) {
+        return ResponseEntity.ok(userService.getUserRegistrationAuctionByAuctionId(auctionId));
+    }
+
     @GetMapping("/get-top-spent-user")
     public ResponseEntity<List<UserSpentDTO>> getTopUser() {
         return ResponseEntity.ok(userService.getMostSpentUser());
