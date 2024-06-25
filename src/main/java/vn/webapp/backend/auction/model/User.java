@@ -79,16 +79,13 @@ public class User implements UserDetails {
 
     @Column(name = "CCCD_first")
     @Lob
-    @NotBlank(message = "The CCCD Frist is required")
     private String cccdFirst;
 
     @Column(name = "CCCD_last")
     @Lob
-    @NotBlank(message = "The CCCD Last is required")
     private String cccdLast;
 
     @Column(name = "CCCD_from", length = 50)
-    @NotBlank(message = "The CCCD From is required")
     private String cccdFrom;
 
     @Column(name = "register_date")

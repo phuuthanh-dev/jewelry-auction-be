@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import vn.webapp.backend.auction.enums.AccountState;
 import vn.webapp.backend.auction.enums.Role;
+import vn.webapp.backend.auction.model.AuctionRegistration;
 import vn.webapp.backend.auction.model.User;
 
 import java.util.List;
@@ -27,9 +28,12 @@ public interface UserRepository extends JpaRepository<User, Integer>  {
     @Query("SELECT u FROM User u " + "WHERE (:fullName IS NULL OR CONCAT(u.firstName,' ',u.lastName) LIKE %:fullName%) " + "AND (:role IS NULL OR u.role = :role) " + "AND (:state IS NULL OR u.state = :state)")
     Page<User> findByFullNameContainingAndRoleAndState(@Param("fullName") String fullName, @Param("role") Role role, @Param("state") AccountState state, Pageable pageable);
 
+    @Query("SELECT u FROM User u " + "WHERE (:fullName IS NULL OR CONCAT(u.firstName,' ',u.lastName) LIKE %:fullName%) " + "AND (:role IS NULL OR u.role = :role) " + "AND (:state IS NULL OR u.state <> :state)")
+    Page<User> findByFullNameContainingAndRoleAndNotState(@Param("fullName") String fullName, @Param("role") Role role, @Param("state") AccountState state, Pageable pageable);
+
     @Query("SELECT u FROM User u " +
             "WHERE (:fullName IS NULL OR CONCAT(u.firstName, ' ', u.lastName) LIKE %:fullName%) " +
-            "AND (:state IS NULL OR u.state <> :state)")
+            "AND (:state IS NULL OR u.state <> :state) AND u.cccdFirst IS NOT NULL AND u.cccdLast IS NOT NULL")
     Page<User> findByFullNameContainingAndStateNot(@Param("fullName") String fullName, @Param("state") AccountState state, Pageable pageable);
 
     @Query("SELECT ah.user " +
@@ -50,6 +54,9 @@ public interface UserRepository extends JpaRepository<User, Integer>  {
     @Query("SELECT COUNT(u) FROM User u WHERE MONTH(u.registerDate) = :month AND YEAR(u.registerDate) = :year")
     Integer getTotalUserByMonthAndYear(@Param("month") Integer month, @Param("year") Integer year);
 
+    @Query("SELECT ar.user FROM AuctionRegistration ar WHERE ar.auction.id = :auctionId AND ar.auctionRegistrationState = 'VALID'")
+    List<User> findByAuctionIdAndUserIdValid(@Param("auctionId") Integer auctionId);
+
     @Query(nativeQuery = true,
             value = "SELECT TOP 5 u.* " +
                     "FROM [Transaction] t " +
@@ -59,7 +66,7 @@ public interface UserRepository extends JpaRepository<User, Integer>  {
                     "GROUP BY u.id, u.cccd, u.address, u.avatar, u.bank_account_name, " +
                     "         u.bank_account_number, u.bank_id, u.city, u.district, " +
                     "         u.email, u.first_name, u.last_name, u.phone, u.password, " +
-                    "         u.role, u.state, u.register_date, u.username, u.ward, u.year_of_birth" +
+                    "         u.role, u.state, u.register_date, u.username, u.ward, u.year_of_birth, " +
                     "         u.cccd_first, u.cccd_last, u.cccd_from " +
                     "ORDER BY SUM(t.total_price) DESC")
     List<User> findTopUsersByTotalSpent();
