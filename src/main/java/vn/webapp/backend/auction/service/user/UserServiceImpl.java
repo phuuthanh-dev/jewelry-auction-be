@@ -15,6 +15,7 @@ import vn.webapp.backend.auction.exception.UserAlreadyExistsException;
 import vn.webapp.backend.auction.model.ErrorMessages;
 import vn.webapp.backend.auction.model.User;
 import vn.webapp.backend.auction.repository.AuctionRegistrationRepository;
+import vn.webapp.backend.auction.repository.AuctionRepository;
 import vn.webapp.backend.auction.repository.TransactionRepository;
 import vn.webapp.backend.auction.repository.UserRepository;
 
@@ -32,6 +33,7 @@ public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
     private final AuctionRegistrationRepository auctionRegistrationRepository;
     private final TransactionRepository transactionRepository;
+    private final AuctionRepository auctionRepository;
 
     @Override
     public User getUserByUsername(String username) {
@@ -139,11 +141,11 @@ public class UserServiceImpl implements UserService {
         // Perform the query based on role
         switch (role) {
             case MEMBER:
-                return userRepository.findByFullNameContainingAndRoleAndState(fullName, Role.MEMBER, state, page);
+                return userRepository.findByFullNameContainingAndRoleAndNotState(fullName, Role.MEMBER, AccountState.DISABLE, page);
             case MANAGER:
-                return userRepository.findByFullNameContainingAndRoleAndState(fullName, Role.MANAGER, state, page);
+                return userRepository.findByFullNameContainingAndRoleAndNotState(fullName, Role.MANAGER, AccountState.DISABLE, page);
             case STAFF:
-                return userRepository.findByFullNameContainingAndRoleAndState(fullName, Role.STAFF, state, page);
+                return userRepository.findByFullNameContainingAndRoleAndNotState(fullName, Role.STAFF, AccountState.DISABLE, page);
             default:
                 // Handle any other roles or default case
                 throw new IllegalArgumentException("Invalid role: " + role);
@@ -199,6 +201,14 @@ public class UserServiceImpl implements UserService {
             list.add(new UserSpentDTO(user, totalSpent));
         }
         return list;
+    }
+
+    @Override
+    public List<User> getUserRegistrationAuctionByAuctionId(Integer auctionId) {
+        var existingAuction = auctionRepository.findById(auctionId)
+                .orElseThrow(() -> new ResourceNotFoundException(ErrorMessages.AUCTION_NOT_FOUND));
+
+        return userRepository.findByAuctionIdAndUserIdValid(existingAuction.getId());
     }
 
 }

@@ -86,7 +86,6 @@ public class User implements UserDetails {
     private String cccdLast;
 
     @Column(name = "CCCD_from", length = 50)
-    @NotBlank(message = "The CCCD From is required")
     private String cccdFrom;
 
     @Column(name = "register_date")
