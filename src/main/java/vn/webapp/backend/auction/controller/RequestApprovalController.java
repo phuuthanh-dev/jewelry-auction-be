@@ -13,7 +13,7 @@ import vn.webapp.backend.auction.dto.StaffRequestApproval;
 import vn.webapp.backend.auction.dto.UserRequestApproval;
 import vn.webapp.backend.auction.enums.Role;
 import vn.webapp.backend.auction.model.RequestApproval;
-import vn.webapp.backend.auction.service.RequestApprovalService;
+import vn.webapp.backend.auction.service.request_approval.RequestApprovalService;
 
 @RestController
 @CrossOrigin(origins = "http://localhost:3000")
@@ -55,6 +55,18 @@ public class RequestApprovalController {
         Sort.Direction direction = (sortOrder.equalsIgnoreCase("asc")) ? Sort.Direction.ASC : Sort.Direction.DESC;
         Pageable pageable = PageRequest.of(page, size, direction, sortBy);
         return ResponseEntity.ok(requestApprovalService.getRequestBySenderRole(role,pageable));
+    }
+
+    @GetMapping("/confirm-by-member/{memberId}")
+    public ResponseEntity<Page<RequestApproval>> getRequestNeedMemberConfirm(
+            @PathVariable Integer memberId,
+            @RequestParam(defaultValue = "id") String sortBy,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "5") int size,
+            @RequestParam(defaultValue = "asc") String sortOrder) {
+        Sort.Direction direction = (sortOrder.equalsIgnoreCase("asc")) ? Sort.Direction.ASC : Sort.Direction.DESC;
+        Pageable pageable = PageRequest.of(page, size, direction, sortBy);
+        return ResponseEntity.ok(requestApprovalService.getRequestNeedConfirmByMember(memberId, pageable));
     }
 
     @PostMapping("/send-from-user")

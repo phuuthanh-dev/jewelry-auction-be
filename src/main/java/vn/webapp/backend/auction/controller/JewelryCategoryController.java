@@ -5,7 +5,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import vn.webapp.backend.auction.model.JewelryCategory;
-import vn.webapp.backend.auction.service.JewelryCategoryService;
+import vn.webapp.backend.auction.service.category.JewelryCategoryService;
 
 import java.util.List;
 

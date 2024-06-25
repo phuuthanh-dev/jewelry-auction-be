@@ -2,7 +2,7 @@
 [![Release Auction REST API](https://github.com/phuuthanh2003/AuctionWebApp_BE/actions/workflows/release.yml/badge.svg)](https://github.com/phuuthanh2003/AuctionWebApp_BE/actions/workflows/release.yml)
 [![Publish Auction Backend Docker Image](https://github.com/phuuthanh2003/AuctionWebApp_BE/actions/workflows/docker-publish.yml/badge.svg)](https://github.com/phuuthanh2003/AuctionWebApp_BE/actions/workflows/docker-publish.yml)
 [![Deploy Spring Boot with Railway](https://github.com/phuuthanh2003/AuctionWebApp_BE/actions/workflows/deploy.yml/badge.svg)](https://github.com/phuuthanh2003/AuctionWebApp_BE/actions/workflows/deploy.yml)
-[![CodeFactor](https://www.codefactor.io/repository/github/phuuthanh2003/AuctionWebApp_BE/badge)](https://www.codefactor.io/repository/github/phuuthanh2003/AuctionWebApp_BE)
+[![CodeFactor](https://www.codefactor.io/repository/github/phuuthanh-dev/auctionwebapp_be/badge)](https://www.codefactor.io/repository/github/phuuthanh-dev/auctionwebapp_be)
 ## Requirements
 
 - JDK 17 or later

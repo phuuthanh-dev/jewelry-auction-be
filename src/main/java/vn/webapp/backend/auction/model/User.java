@@ -10,6 +10,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import vn.webapp.backend.auction.enums.AccountState;
 import vn.webapp.backend.auction.enums.Role;
 
+import java.sql.Timestamp;
 import java.util.Collection;
 import java.util.List;
 
@@ -74,7 +75,21 @@ public class User implements UserDetails {
 
     @Column(name = "CCCD", nullable = false, length = 20)
     @NotBlank(message = "The CCCD is required")
-    private String CCCD;
+    private String cccd;
+
+    @Column(name = "CCCD_first")
+    @Lob
+    private String cccdFirst;
+
+    @Column(name = "CCCD_last")
+    @Lob
+    private String cccdLast;
+
+    @Column(name = "CCCD_from", length = 50)
+    private String cccdFrom;
+
+    @Column(name = "register_date")
+    private Timestamp registerDate;
 
     @Enumerated(EnumType.STRING)
     @Column(name ="state" , nullable = false, length = 10)

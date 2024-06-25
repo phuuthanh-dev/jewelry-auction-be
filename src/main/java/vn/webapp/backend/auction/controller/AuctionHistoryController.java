@@ -8,8 +8,9 @@ import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import vn.webapp.backend.auction.dto.BidRequest;
+import vn.webapp.backend.auction.enums.AuctionHistoryState;
 import vn.webapp.backend.auction.model.AuctionHistory;
-import vn.webapp.backend.auction.service.AuctionHistoryService;
+import vn.webapp.backend.auction.service.bid.AuctionHistoryService;
 
 import java.util.List;
 
@@ -31,6 +32,20 @@ public class AuctionHistoryController {
         Sort.Direction direction = (sortOrder.equalsIgnoreCase("desc")) ? Sort.Direction.DESC : Sort.Direction.ASC;
         Pageable pageable = PageRequest.of(page, size, direction, sortBy);
         return ResponseEntity.ok(auctionHistoryService.getAuctionHistoryByAuctionId(pageable, id));
+    }
+
+    @GetMapping("/get-by-auction-and-user")
+    public ResponseEntity<Page<AuctionHistory>> getAuctionHistoryByAuctionIdAndUserId(
+            @RequestParam(defaultValue = "time") String sortBy,
+            @RequestParam(defaultValue = "0") Integer auctionId,
+            @RequestParam(defaultValue = "0") Integer userId,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "5") int size,
+            @RequestParam(defaultValue = "ACTIVE") AuctionHistoryState state,
+            @RequestParam(defaultValue = "desc") String sortOrder) {
+        Sort.Direction direction = (sortOrder.equalsIgnoreCase("desc")) ? Sort.Direction.DESC : Sort.Direction.ASC;
+        Pageable pageable = PageRequest.of(page, size, direction, sortBy);
+        return ResponseEntity.ok(auctionHistoryService.getAuctionHistoryByAuctionIdAndUserId(auctionId, userId, state, pageable));
     }
 
     @GetMapping("/get-by-username")

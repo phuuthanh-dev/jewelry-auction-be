@@ -39,6 +39,9 @@ public class Jewelry {
     @Column(name = "weight", nullable = false)
     private Double weight;
 
+    @Column(name = "is_holding", nullable = false)
+    private Boolean isHolding;
+
     @Column(name = "state", nullable = false)
     @Enumerated(EnumType.STRING)
     private JewelryState state;

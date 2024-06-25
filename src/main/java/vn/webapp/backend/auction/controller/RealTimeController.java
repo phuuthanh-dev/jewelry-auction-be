@@ -7,7 +7,8 @@ import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RestController;
-import vn.webapp.backend.auction.service.RealTimeService;
+import vn.webapp.backend.auction.dto.BidResponse;
+import vn.webapp.backend.auction.service.realtime.RealTimeService;
 
 import java.util.logging.Logger;
 
@@ -22,7 +23,7 @@ public class RealTimeController {
 
     @MessageMapping("/update-auction")
     @SendTo("/user/auction")
-    public Double sendMessage(@Payload Integer auctionId) {
+    public BidResponse sendMessage(@Payload Integer auctionId) {
         return realTimeService.getLastPriceTogether(auctionId);
     }
 
