@@ -44,7 +44,8 @@ public final class Endpoints {
     };
 
     public static final String[] MANAGER_DELETE_ENDPOINTS = {
-            "/api/v1/jewelry/**", "/api/v1/jewelry-category/**", "/api/v1/auction/**"
+            "/api/v1/jewelry/**", "/api/v1/jewelry-category/**", "/api/v1/auction/**",
+            "/api/v1/image/jewelry/**"
     };
 
 

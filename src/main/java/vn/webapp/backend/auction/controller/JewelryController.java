@@ -1,5 +1,6 @@
 package vn.webapp.backend.auction.controller;
 
+import jakarta.mail.MessagingException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -121,7 +122,7 @@ public class JewelryController {
 
 
     @PutMapping("/set-holding/{id}")
-    public ResponseEntity<Jewelry> setHolding(@PathVariable Integer id) {
+    public ResponseEntity<Jewelry> setHolding(@PathVariable Integer id) throws MessagingException {
         jewelryService.setHolding(id);
         return ResponseEntity.ok().build();
     }

@@ -44,4 +44,9 @@ public class ImageServiceImpl implements ImageService  {
         imageRepository.save(image);
         return image;
     }
+
+    @Transactional
+    public void deleteByJewelryId(Integer jewelryId) {
+        imageRepository.deleteByJewelryId(jewelryId);
+    }
 }

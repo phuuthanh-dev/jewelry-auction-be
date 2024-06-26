@@ -61,4 +61,20 @@ public class EmailService {
 
         javaMailSender.send(message);
     }
+
+    @Async
+    public void sendConfirmHoldingEmail(String to, String fullName, String assetName) throws MessagingException {
+        MimeMessage message = javaMailSender.createMimeMessage();
+        MimeMessageHelper helper = new MimeMessageHelper(message, true);
+
+
+        String html = emailContent.setHtmlConfirmHoldingContent(fullName,assetName);
+
+        helper.setFrom(emailUsername);
+        helper.setTo(to);
+        helper.setSubject("Xác nhận tài sản được gửi tới DGS thành công .");
+        helper.setText(html, true);
+
+        javaMailSender.send(message);
+    }
 }
