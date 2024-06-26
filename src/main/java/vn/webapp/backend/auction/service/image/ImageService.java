@@ -9,4 +9,5 @@ public interface ImageService {
     List<Image> getImagesByJewelryId(Integer id);
     Image getImageByIconAndJewelryId(Integer id);
     Image createImage(ImageRequest request);
+    void deleteByJewelryId(Integer id);
 }

@@ -1,5 +1,6 @@
 package vn.webapp.backend.auction.service.jewelry;
 
+import jakarta.mail.MessagingException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import vn.webapp.backend.auction.dto.SendJewelryFromUserRequest;
@@ -35,6 +36,6 @@ public interface JewelryService {
 
     Jewelry getLatestJewelry();
 
-    Jewelry setHolding(Integer id);
+    Jewelry setHolding(Integer id) throws MessagingException;
 
 }

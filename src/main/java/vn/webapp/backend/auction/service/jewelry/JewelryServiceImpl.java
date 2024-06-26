@@ -1,5 +1,6 @@
 package vn.webapp.backend.auction.service.jewelry;
 
+import jakarta.mail.MessagingException;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -15,6 +16,7 @@ import vn.webapp.backend.auction.model.User;
 import vn.webapp.backend.auction.repository.JewelryCategoryRepository;
 import vn.webapp.backend.auction.repository.JewelryRepository;
 import vn.webapp.backend.auction.repository.UserRepository;
+import vn.webapp.backend.auction.service.email.EmailService;
 
 import java.util.List;
 import java.util.Optional;
@@ -27,6 +29,7 @@ public class JewelryServiceImpl implements JewelryService {
     private final JewelryRepository jewelryRepository;
     private final UserRepository userRepository;
     private final JewelryCategoryRepository jewelryCategoryRepository;
+    private final EmailService emailService;
 
     @Override
     public List<Jewelry> getAll() {
@@ -84,10 +87,13 @@ public class JewelryServiceImpl implements JewelryService {
     }
 
     @Override
-    public Jewelry setHolding(Integer id) {
+    public Jewelry setHolding(Integer id) throws MessagingException {
         var existingJewelry = jewelryRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException(ErrorMessages.JEWELRY_NOT_FOUND));
+        var exitingUser = existingJewelry.getUser();
         existingJewelry.setIsHolding(true);
+
+        emailService.sendConfirmHoldingEmail(exitingUser.getEmail(), exitingUser.getFullName(), existingJewelry.getName());
         return  existingJewelry;
     }
 
