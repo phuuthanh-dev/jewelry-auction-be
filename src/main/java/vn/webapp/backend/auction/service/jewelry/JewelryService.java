@@ -32,10 +32,12 @@ public interface JewelryService {
 
     Page<Jewelry> getJewelriesByUsername(String username, Pageable pageable);
 
+    Page<Jewelry> getJewelriesActiveByUserId(Integer userId, Pageable pageable);
+
     Jewelry requestJewelry(SendJewelryFromUserRequest request);
 
     Jewelry getLatestJewelry();
 
-    Jewelry setHolding(Integer id) throws MessagingException;
+    Jewelry setHolding(Integer id, boolean state) throws MessagingException;
 
 }

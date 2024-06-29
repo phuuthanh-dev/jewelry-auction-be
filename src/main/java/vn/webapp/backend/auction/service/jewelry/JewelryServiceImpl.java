@@ -48,6 +48,11 @@ public class JewelryServiceImpl implements JewelryService {
     }
 
     @Override
+    public Page<Jewelry> getJewelriesActiveByUserId(Integer userId, Pageable pageable) {
+        return jewelryRepository.findJewelryActiveByUserId(userId, pageable );
+    }
+
+    @Override
     public Jewelry requestJewelry(SendJewelryFromUserRequest request) {
         Optional<User> optionalUser = userRepository.findById(request.userId());
 
@@ -87,13 +92,14 @@ public class JewelryServiceImpl implements JewelryService {
     }
 
     @Override
-    public Jewelry setHolding(Integer id) throws MessagingException {
+    public Jewelry setHolding(Integer id,boolean state) throws MessagingException {
         var existingJewelry = jewelryRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException(ErrorMessages.JEWELRY_NOT_FOUND));
         var exitingUser = existingJewelry.getUser();
-        existingJewelry.setIsHolding(true);
-
-        emailService.sendConfirmHoldingEmail(exitingUser.getEmail(), exitingUser.getFullName(), existingJewelry.getName());
+        existingJewelry.setIsHolding(state);
+        if(state) {
+            emailService.sendConfirmHoldingEmail(exitingUser.getEmail(), exitingUser.getFullName(), existingJewelry.getName());
+        }
         return  existingJewelry;
     }
 

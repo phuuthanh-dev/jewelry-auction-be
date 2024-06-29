@@ -43,7 +43,7 @@ public interface AuctionRepository extends JpaRepository<Auction, Integer> {
 
     Page<Auction> findByStateIn(List<AuctionState> states, Pageable pageable);
 
-    @Query("SELECT a FROM Auction a WHERE a.jewelry.id = :jewelry_id")
+    @Query("SELECT a FROM Auction a WHERE a.jewelry.id = :jewelry_id AND a.state != 'DELETE'")
     List<Auction> findAuctionByJewelryId(@Param("jewelry_id") Integer jewelry_id);
 
     @Query("SELECT COUNT(a) FROM Auction a")

@@ -122,9 +122,21 @@ public class JewelryController {
 
 
     @PutMapping("/set-holding/{id}")
-    public ResponseEntity<Jewelry> setHolding(@PathVariable Integer id) throws MessagingException {
-        jewelryService.setHolding(id);
+    public ResponseEntity<Jewelry> setHolding(@PathVariable Integer id,  @RequestParam boolean state) throws MessagingException {
+        jewelryService.setHolding(id,state);
         return ResponseEntity.ok().build();
+    }
+
+    @GetMapping("/user-jewelry/{userId}")
+    public ResponseEntity<Page<Jewelry>> getJewelriesActiveByUserId(
+            @PathVariable  Integer userId,
+            @RequestParam(defaultValue = "id") String sortBy,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "5") int size,
+            @RequestParam(defaultValue = "desc") String sortOrder) {
+        Sort.Direction direction = (sortOrder.equalsIgnoreCase("asc")) ? Sort.Direction.ASC : Sort.Direction.DESC;
+        Pageable pageable = PageRequest.of(page, size, direction, sortBy);
+        return ResponseEntity.ok(jewelryService.getJewelriesActiveByUserId(userId,pageable));
     }
 
 }
