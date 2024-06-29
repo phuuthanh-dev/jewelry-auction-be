@@ -76,8 +76,8 @@ public class AuctionServiceImpl implements AuctionService{
     }
 
     @Override
-    public List<Auction> getAuctionByJewelryId(Integer id) {
-        return auctionRepository.findAuctionByJewelryId(id);
+    public Auction getCurrentAuctionByJewelryId(Integer id) {
+        return auctionRepository.findAuctionByJewelryId(id).get(0);
     }
 
     @Override
