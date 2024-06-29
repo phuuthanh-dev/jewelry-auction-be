@@ -31,4 +31,7 @@ public interface AuctionRegistrationRepository extends JpaRepository<AuctionRegi
     @Query("SELECT COUNT(DISTINCT ar.user.id) FROM AuctionRegistration ar WHERE ar.auctionRegistrationState = 'VALID'")
     Long countDistinctUsersRegistered();
 
+    @Query("SELECT COUNT(ar) FROM AuctionRegistration ar WHERE ar.auction.id = :auctionId AND ar.auctionRegistrationState = 'VALID'")
+    Integer countValidParticipantsByAuctionId(@Param("auctionId") Integer auctionId);
+
 }
