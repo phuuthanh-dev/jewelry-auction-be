@@ -132,23 +132,16 @@ public class UserServiceImpl implements UserService {
             AccountState state,
             Pageable page) {
 
-        // Default to MEMBER if role is null
         if (role == null) {
             role = Role.MEMBER;
         }
 
-        // Perform the query based on role
-        switch (role) {
-            case MEMBER:
-                return userRepository.findByFullNameContainingAndRoleAndNotState(fullName, Role.MEMBER, AccountState.DISABLE, page);
-            case MANAGER:
-                return userRepository.findByFullNameContainingAndRoleAndNotState(fullName, Role.MANAGER, AccountState.DISABLE, page);
-            case STAFF:
-                return userRepository.findByFullNameContainingAndRoleAndNotState(fullName, Role.STAFF, AccountState.DISABLE, page);
-            default:
-                // Handle any other roles or default case
-                throw new IllegalArgumentException("Invalid role: " + role);
-        }
+        return switch (role) {
+            case MEMBER -> userRepository.findByFullNameContainingAndRoleAndState(fullName, Role.MEMBER, state, page);
+            case MANAGER -> userRepository.findByFullNameContainingAndRoleAndState(fullName, Role.MANAGER, state, page);
+            case STAFF -> userRepository.findByFullNameContainingAndRoleAndState(fullName, Role.STAFF, state, page);
+            default -> throw new IllegalArgumentException("Invalid role: " + role);
+        };
     }
 
 
