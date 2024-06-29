@@ -118,17 +118,14 @@ public class AuctionServiceTest extends AbstractTestNGSpringContextTests{
     }
 
     @Test
-    public void testGetAuctionByJewelryIdReturnsWell() {
+    public void testGetCurrentAuctionByJewelryIdReturnsWell() {
         // Expected
         Integer jewelryId = 1;
         // Act
-        List<Auction> auctions = auctionService.getAuctionByJewelryId(jewelryId);
+        Auction auction = auctionService.getCurrentAuctionByJewelryId(jewelryId);
         // Assert
-        assertNotNull(auctions);
-        assertFalse(auctions.isEmpty());
-        for (Auction auction : auctions) {
-            assertEquals(auction.getJewelry().getId(), jewelryId);
-        }
+        assertNotNull(auction);
+        assertEquals(auction.getJewelry().getId(), jewelryId);
     }
     // ===================================================================
     @Test
