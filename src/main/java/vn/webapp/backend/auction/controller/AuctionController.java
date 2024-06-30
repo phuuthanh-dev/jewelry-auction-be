@@ -7,15 +7,18 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import vn.webapp.backend.auction.dto.AuctionRegistrationDTO;
 import vn.webapp.backend.auction.dto.AuctionRequest;
+import vn.webapp.backend.auction.dto.UserSpentDTO;
 import vn.webapp.backend.auction.enums.AuctionState;
 import vn.webapp.backend.auction.model.Auction;
+import vn.webapp.backend.auction.model.AuctionRegistration;
 import vn.webapp.backend.auction.service.auction.AuctionService;
 
 import java.util.List;
 
 @RestController
-@CrossOrigin(origins =  {"http://localhost:3000", "http://localhost:3001"})
+@CrossOrigin(origins = {"http://localhost:3000", "http://localhost:3001"})
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/auction")
 public class AuctionController {
@@ -62,11 +65,6 @@ public class AuctionController {
         return ResponseEntity.ok(auctionService.findAuctionByName(key));
     }
 
-//    @GetMapping("/get-by-today")
-//    public ResponseEntity<List<Auction>> getAuctionByToday( ) {
-//        return ResponseEntity.ok(auctionService.findTodayAuctions());
-//    }
-
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteAuction(@PathVariable Integer id) {
         auctionService.deleteAuction(id);
@@ -97,9 +95,9 @@ public class AuctionController {
     }
 
 
-    @GetMapping("/get-by-jewelry/{id}")
-    public ResponseEntity<List<Auction>> getAuctionByJewelryId(@PathVariable Integer id) {
-        return ResponseEntity.ok(auctionService.getAuctionByJewelryId(id));
+    @GetMapping("/get-current-by-jewelry/{id}")
+    public ResponseEntity<Auction> getCurrentAuctionByJewelryId(@PathVariable Integer id) {
+        return ResponseEntity.ok(auctionService.getCurrentAuctionByJewelryId(id));
     }
 
     @GetMapping("/get-by-staff/{id}")
@@ -117,5 +115,17 @@ public class AuctionController {
     @PostMapping("/create-new")
     public ResponseEntity<Auction> createNewAuction(@RequestBody AuctionRequest request) {
         return ResponseEntity.ok(auctionService.createNewAuction(request));
+    }
+
+    @GetMapping("/get-auction-registration")
+    public ResponseEntity<Page<AuctionRegistrationDTO>> getAuctionRegistrations(
+            @RequestParam(defaultValue = "startDate") String sortBy,
+            @RequestParam(defaultValue = "DELETED") AuctionState state,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "5") int size,
+            @RequestParam(defaultValue = "asc") String sortOrder) {
+        Sort.Direction direction = (sortOrder.equalsIgnoreCase("asc")) ? Sort.Direction.ASC : Sort.Direction.DESC;
+        Pageable pageable = PageRequest.of(page, size, direction, sortBy);
+        return ResponseEntity.ok(auctionService.getAuctionRegistrations(state, pageable));
     }
 }

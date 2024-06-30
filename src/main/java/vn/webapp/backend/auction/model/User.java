@@ -42,7 +42,7 @@ public class User implements UserDetails {
     @NotBlank(message = "The last name is required")
     private String lastName;
 
-    @Column(name = "email", nullable = false, length = 50)
+    @Column(name = "email", nullable = false, length = 50, unique = true)
     @NotBlank(message = "The email is required")
     private String email;
 
@@ -67,6 +67,7 @@ public class User implements UserDetails {
     private String ward;
 
     @Column(name = "year_of_birth", nullable = false, length = 4)
+    @NotBlank(message = "The year of birth is required")
     private String yob;
 
     @Column(name = "avatar")

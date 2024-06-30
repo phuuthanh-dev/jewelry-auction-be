@@ -12,12 +12,10 @@ import vn.webapp.backend.auction.enums.AccountState;
 import vn.webapp.backend.auction.enums.Role;
 import vn.webapp.backend.auction.exception.ResourceNotFoundException;
 import vn.webapp.backend.auction.exception.UserAlreadyExistsException;
+import vn.webapp.backend.auction.model.Bank;
 import vn.webapp.backend.auction.model.ErrorMessages;
 import vn.webapp.backend.auction.model.User;
-import vn.webapp.backend.auction.repository.AuctionRegistrationRepository;
-import vn.webapp.backend.auction.repository.AuctionRepository;
-import vn.webapp.backend.auction.repository.TransactionRepository;
-import vn.webapp.backend.auction.repository.UserRepository;
+import vn.webapp.backend.auction.repository.*;
 
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
@@ -34,6 +32,7 @@ public class UserServiceImpl implements UserService {
     private final AuctionRegistrationRepository auctionRegistrationRepository;
     private final TransactionRepository transactionRepository;
     private final AuctionRepository auctionRepository;
+    private final BankRepository bankRepository;
 
     @Override
     public User getUserByUsername(String username) {
@@ -133,23 +132,16 @@ public class UserServiceImpl implements UserService {
             AccountState state,
             Pageable page) {
 
-        // Default to MEMBER if role is null
         if (role == null) {
             role = Role.MEMBER;
         }
 
-        // Perform the query based on role
-        switch (role) {
-            case MEMBER:
-                return userRepository.findByFullNameContainingAndRoleAndNotState(fullName, Role.MEMBER, AccountState.DISABLE, page);
-            case MANAGER:
-                return userRepository.findByFullNameContainingAndRoleAndNotState(fullName, Role.MANAGER, AccountState.DISABLE, page);
-            case STAFF:
-                return userRepository.findByFullNameContainingAndRoleAndNotState(fullName, Role.STAFF, AccountState.DISABLE, page);
-            default:
-                // Handle any other roles or default case
-                throw new IllegalArgumentException("Invalid role: " + role);
-        }
+        return switch (role) {
+            case MEMBER -> userRepository.findByFullNameContainingAndRoleAndState(fullName, Role.MEMBER, state, page);
+            case MANAGER -> userRepository.findByFullNameContainingAndRoleAndState(fullName, Role.MANAGER, state, page);
+            case STAFF -> userRepository.findByFullNameContainingAndRoleAndState(fullName, Role.STAFF, state, page);
+            default -> throw new IllegalArgumentException("Invalid role: " + role);
+        };
     }
 
 
@@ -169,6 +161,8 @@ public class UserServiceImpl implements UserService {
                 .ifPresent(existingUser -> {
                     throw new UserAlreadyExistsException(ErrorMessages.USER_ALREADY_EXIST);
                 });
+        Bank bank = bankRepository.findById(request.bankId())
+                .orElseThrow(() -> new ResourceNotFoundException("Bank with ID: " + request.bankId() + " not found."));
         var user = User.builder()
                 .firstName(request.firstName())
                 .lastName(request.lastName())
@@ -176,10 +170,11 @@ public class UserServiceImpl implements UserService {
                 .email(request.email())
                 .password(passwordEncoder.encode(request.password()))
                 .role(request.role())
-                .state(AccountState.ACTIVE)
+                .state(AccountState.VERIFIED)
                 .district(request.district())
                 .ward(request.ward())
                 .city(request.city())
+                .avatar("https://www.iconpacks.net/icons/2/free-user-icon-3296-thumb.png")
                 .yob(request.yob())
                 .registerDate(Timestamp.valueOf(LocalDateTime.now(ZoneId.of("Asia/Ho_Chi_Minh"))))
                 .phone(request.phone())
@@ -188,6 +183,9 @@ public class UserServiceImpl implements UserService {
                 .cccdFirst(request.cccdFirst())
                 .cccdLast(request.cccdLast())
                 .cccdFrom(request.cccdFrom())
+                .bankAccountName(request.bankAccountName())
+                .bankAccountNumber(request.bankAccountNumber())
+                .bank(bank)
                 .build();
         return userRepository.save(user);
     }
