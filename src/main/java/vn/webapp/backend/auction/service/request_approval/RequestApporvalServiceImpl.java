@@ -87,8 +87,8 @@ public class RequestApporvalServiceImpl implements RequestApprovalService{
     }
 
     @Override
-    public Page<RequestApproval> getRequestBySenderRole(Role role, Pageable pageable) {
-        return requestApprovalRepository.findRequestApprovalBySenderRole(role, pageable);
+    public Page<RequestApproval> getRequestBySenderRole(Role role, String jewelryName, Pageable pageable) {
+        return requestApprovalRepository.findRequestApprovalBySenderRole(role,jewelryName, pageable);
     }
 
     @Override

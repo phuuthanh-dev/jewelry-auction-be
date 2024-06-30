@@ -104,14 +104,15 @@ public class AuctionController {
 
     @GetMapping("/get-by-staff/{id}")
     public ResponseEntity<Page<Auction>> getAuctionByStaffId(
-            @RequestParam(defaultValue = "id") String sortBy,
             @PathVariable Integer id,
+            @RequestParam(required = false) String auctionName,
+            @RequestParam(defaultValue = "id") String sortBy,
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "5") int size,
             @RequestParam(defaultValue = "asc") String sortOrder) {
         Sort.Direction direction = (sortOrder.equalsIgnoreCase("asc")) ? Sort.Direction.ASC : Sort.Direction.DESC;
         Pageable pageable = PageRequest.of(page, size, direction, sortBy);
-        return ResponseEntity.ok(auctionService.getByStaffID(id, pageable));
+        return ResponseEntity.ok(auctionService.getByStaffID(id,auctionName, pageable));
     }
 
     @PostMapping("/create-new")

@@ -27,7 +27,8 @@ public interface JewelryRepository extends JpaRepository<Jewelry, Integer> {
     @Query("SELECT j FROM Jewelry j INNER JOIN Auction a ON j.id = a.jewelry.id WHERE a.state = 'FINISHED'")
     Page<Jewelry> findJewelryInHandOver(Pageable pageable);
 
-    Page<Jewelry> findJewelryByStateAndIsHolding(JewelryState state, Boolean isHolding, Pageable pageable);
+    @Query("SELECT j FROM Jewelry j WHERE j.state = :state AND j.isHolding = :isHolding AND (:jewelryName IS NULL OR j.name LIKE %:jewelryName%)")
+    Page<Jewelry> findJewelryByStateAndIsHolding(@Param("state") JewelryState state, @Param("isHolding") Boolean isHolding, @Param("jewelryName") String jewelryName, Pageable pageable);
 
     Page<Jewelry> findByUserUsername(String username, Pageable pageable);
 

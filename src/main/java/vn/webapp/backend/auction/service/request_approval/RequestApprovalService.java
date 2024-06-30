@@ -14,7 +14,7 @@ public interface RequestApprovalService {
     void setRequestState(Integer id, Integer responderId, String state);
     void confirmRequest(Integer id, Integer responderId);
     void cancelRequest(CancelRequestApproval request);
-    Page<RequestApproval> getRequestBySenderRole(Role role, Pageable pageable);
+    Page<RequestApproval> getRequestBySenderRole(Role role, String jewelryName, Pageable pageable);
     RequestApproval requestFromUser(UserRequestApproval request);
     RequestApproval requestFromStaff(StaffRequestApproval request);
     RequestApproval requestFromManager(ManagerRequestApproval request);

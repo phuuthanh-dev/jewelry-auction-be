@@ -48,13 +48,14 @@ public class RequestApprovalController {
     @GetMapping("/sender/{role}")
     public ResponseEntity<Page<RequestApproval>> getRequestByRoleOfSender(
             @PathVariable Role role,
+            @RequestParam(required = false) String jewelryName,
             @RequestParam(defaultValue = "id") String sortBy,
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "5") int size,
             @RequestParam(defaultValue = "asc") String sortOrder) {
         Sort.Direction direction = (sortOrder.equalsIgnoreCase("asc")) ? Sort.Direction.ASC : Sort.Direction.DESC;
         Pageable pageable = PageRequest.of(page, size, direction, sortBy);
-        return ResponseEntity.ok(requestApprovalService.getRequestBySenderRole(role,pageable));
+        return ResponseEntity.ok(requestApprovalService.getRequestBySenderRole(role,jewelryName,pageable));
     }
 
     @GetMapping("/confirm-by-member/{memberId}")
