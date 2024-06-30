@@ -32,7 +32,7 @@ public interface JewelryService {
 
     Page<Jewelry> getJewelriesByUsername(String username, Pageable pageable);
 
-    Page<Jewelry> getJewelriesActiveByUserId(Integer userId, Pageable pageable);
+    Page<Jewelry> getJewelriesActiveByUserId(Integer userId, String jewelryName, Pageable pageable);
 
     Jewelry requestJewelry(SendJewelryFromUserRequest request);
 

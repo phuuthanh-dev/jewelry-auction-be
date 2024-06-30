@@ -48,8 +48,8 @@ public class JewelryServiceImpl implements JewelryService {
     }
 
     @Override
-    public Page<Jewelry> getJewelriesActiveByUserId(Integer userId, Pageable pageable) {
-        return jewelryRepository.findJewelryActiveByUserId(userId, pageable );
+    public Page<Jewelry> getJewelriesActiveByUserId(Integer userId, String jewelryName,Pageable pageable) {
+        return jewelryRepository.findJewelryActiveByUserId(userId, jewelryName, pageable );
     }
 
     @Override

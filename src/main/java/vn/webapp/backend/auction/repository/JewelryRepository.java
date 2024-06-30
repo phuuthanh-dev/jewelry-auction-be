@@ -37,7 +37,7 @@ public interface JewelryRepository extends JpaRepository<Jewelry, Integer> {
     @Query("SELECT COUNT(j) FROM Jewelry j WHERE j.state = :state")
     Integer countAllJewelriesByState(@Param("state") JewelryState state);
 
-    @Query("SELECT j FROM Jewelry j WHERE j.user.id = :userId AND (j.state = 'ACTIVE' OR j.state = 'AUCTION')")
-    Page<Jewelry> findJewelryActiveByUserId(@Param("userId") Integer userId, Pageable pageable);
+    @Query("SELECT j FROM Jewelry j WHERE j.user.id = :userId AND (:jewelryName IS NULL OR j.name LIKE %:jewelryName%) AND (j.state = 'ACTIVE' OR j.state = 'AUCTION')")
+    Page<Jewelry> findJewelryActiveByUserId(@Param("userId") Integer userId,@Param("jewelryName") String jewelryName, Pageable pageable);
 
 }

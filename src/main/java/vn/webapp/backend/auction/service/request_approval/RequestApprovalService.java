@@ -18,7 +18,7 @@ public interface RequestApprovalService {
     RequestApproval requestFromUser(UserRequestApproval request);
     RequestApproval requestFromStaff(StaffRequestApproval request);
     RequestApproval requestFromManager(ManagerRequestApproval request);
-    Page<RequestApproval> getRequestApprovalByUserId(Integer id, Pageable pageable);
+    Page<RequestApproval> getRequestApprovalByUserId(Integer id, String jewelryName,Pageable pageable);
     Page<RequestApproval> getRequestApprovalPassed(Pageable pageable);
     Page<RequestApproval> getRequestNeedConfirmByMember(Integer memberId, Pageable pageable);
 }

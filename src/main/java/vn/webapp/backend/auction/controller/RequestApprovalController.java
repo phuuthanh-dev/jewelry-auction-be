@@ -88,19 +88,20 @@ public class RequestApprovalController {
     @GetMapping("/user/{id}")
     public ResponseEntity<Page<RequestApproval>> getRequestApprovalByUserId(
             @PathVariable Integer id,
+            @RequestParam(required = false) String jewelryName,
             @RequestParam(defaultValue = "id") String sortBy,
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "5") int size,
             @RequestParam(defaultValue = "desc") String sortOrder) {
         Sort.Direction direction = (sortOrder.equalsIgnoreCase("asc")) ? Sort.Direction.ASC : Sort.Direction.DESC;
         Pageable pageable = PageRequest.of(page, size, direction, sortBy);
-        return ResponseEntity.ok(requestApprovalService.getRequestApprovalByUserId(id,pageable));
+        return ResponseEntity.ok(requestApprovalService.getRequestApprovalByUserId(id, jewelryName,pageable));
     }
 
     @GetMapping("/request-passed")
     public ResponseEntity<Page<RequestApproval>> getRequestPassed(
-            @RequestParam(defaultValue = "id") String sortBy,
             @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "id") String sortBy,
             @RequestParam(defaultValue = "5") int size,
             @RequestParam(defaultValue = "asc") String sortOrder) {
         Sort.Direction direction = (sortOrder.equalsIgnoreCase("asc")) ? Sort.Direction.ASC : Sort.Direction.DESC;
