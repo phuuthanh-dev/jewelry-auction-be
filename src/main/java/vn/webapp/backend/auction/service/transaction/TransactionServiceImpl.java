@@ -70,8 +70,8 @@ public class TransactionServiceImpl implements TransactionService {
     }
 
     @Override
-    public Page<Transaction> getTransactionHandover(TransactionType typename, Pageable pageable) {
-        return transactionRepository.findTransactionHandover(typename, pageable);
+    public Page<Transaction> getTransactionHandover(TransactionType typename, String jewelryName, Pageable pageable) {
+        return transactionRepository.findTransactionHandover(typename,jewelryName, pageable);
     }
 
     @Override

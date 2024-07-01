@@ -38,8 +38,8 @@ public interface AuctionRepository extends JpaRepository<Auction, Integer> {
             @Param("categoryId") Integer categoryId
     );
 
-    @Query("SELECT a FROM Auction a WHERE a.user.id = :staff_id")
-    Page<Auction> findByStaffID(@Param("staff_id") Integer staff_id, Pageable pageable);
+    @Query("SELECT a FROM Auction a WHERE a.user.id = :staff_id AND (:auctionName IS NULL OR a.name LIKE %:auctionName%)")
+    Page<Auction> findByStaffID(@Param("staff_id") Integer staff_id, @Param("auctionName") String auctionName,Pageable pageable);
 
     Page<Auction> findByStateIn(List<AuctionState> states, Pageable pageable);
 

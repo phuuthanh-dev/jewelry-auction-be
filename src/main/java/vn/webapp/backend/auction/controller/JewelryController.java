@@ -90,13 +90,14 @@ public class JewelryController {
     public ResponseEntity<Page<Jewelry>> getJewelryByHolding(
             @RequestParam JewelryState state,
             @RequestParam Boolean isHolding,
+            @RequestParam(required = false) String jewelryName,
             @RequestParam(defaultValue = "id") String sortBy,
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "5") int size,
             @RequestParam(defaultValue = "asc") String sortOrder) {
         Sort.Direction direction = (sortOrder.equalsIgnoreCase("asc")) ? Sort.Direction.ASC : Sort.Direction.DESC;
         Pageable pageable = PageRequest.of(page, size, direction, sortBy);
-        return ResponseEntity.ok(jewelryService.getJewelryByStateAndIsHolding(state,isHolding,pageable));
+        return ResponseEntity.ok(jewelryService.getJewelryByStateAndIsHolding(state,isHolding,jewelryName,pageable));
     }
 
     @GetMapping("/in-handover-list")
@@ -130,13 +131,14 @@ public class JewelryController {
     @GetMapping("/user-jewelry/{userId}")
     public ResponseEntity<Page<Jewelry>> getJewelriesActiveByUserId(
             @PathVariable  Integer userId,
+            @RequestParam(required = false) String jewelryName,
             @RequestParam(defaultValue = "id") String sortBy,
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "5") int size,
             @RequestParam(defaultValue = "desc") String sortOrder) {
         Sort.Direction direction = (sortOrder.equalsIgnoreCase("asc")) ? Sort.Direction.ASC : Sort.Direction.DESC;
         Pageable pageable = PageRequest.of(page, size, direction, sortBy);
-        return ResponseEntity.ok(jewelryService.getJewelriesActiveByUserId(userId,pageable));
+        return ResponseEntity.ok(jewelryService.getJewelriesActiveByUserId(userId, jewelryName,pageable));
     }
 
 }

@@ -78,8 +78,8 @@ public class AuctionServiceImpl implements AuctionService{
     }
 
     @Override
-    public Page<Auction> getByStaffID(Integer id, Pageable pageable) {
-        return auctionRepository.findByStaffID(id, pageable);
+    public Page<Auction> getByStaffID(Integer id, String auctionName, Pageable pageable) {
+        return auctionRepository.findByStaffID(id,auctionName, pageable);
     }
 
     @Override
