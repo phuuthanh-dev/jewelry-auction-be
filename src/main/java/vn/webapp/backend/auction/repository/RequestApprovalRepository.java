@@ -10,8 +10,8 @@ import vn.webapp.backend.auction.model.RequestApproval;
 
 
 public interface RequestApprovalRepository extends JpaRepository<RequestApproval, Integer> {
-    @Query("SELECT ra FROM RequestApproval ra WHERE ra.sender.role = :role AND (:jewelryName IS NULL OR ra.jewelry.name LIKE %:jewelryName%) AND ra.isConfirm = false AND ra.state = 'ACTIVE'")
-    Page<RequestApproval> findRequestApprovalBySenderRole(@Param("role") Role role,@Param("jewelryName") String jewelryName, Pageable pageable);
+    @Query("SELECT ra FROM RequestApproval ra WHERE ra.sender.role = :role AND (:jewelryName IS NULL OR ra.jewelry.name LIKE %:jewelryName%) AND (:category IS NULL OR ra.jewelry.category.name =:category) AND ra.isConfirm = false AND ra.state = 'ACTIVE'")
+    Page<RequestApproval> findRequestApprovalBySenderRole(@Param("role") Role role,@Param("jewelryName") String jewelryName,@Param("category") String category, Pageable pageable);
 
     @Query("SELECT ra FROM RequestApproval ra WHERE ra.sender.role = 'MANAGER' AND ra.isConfirm = false AND ra.jewelry.user.id = :memberId AND ra.state = 'ACTIVE'")
     Page<RequestApproval> findRequestNeedConfirmByMember(@Param("memberId") Integer memberId, Pageable pageable);
