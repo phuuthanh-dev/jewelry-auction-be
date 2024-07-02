@@ -87,8 +87,8 @@ public class RequestApporvalServiceImpl implements RequestApprovalService{
     }
 
     @Override
-    public Page<RequestApproval> getRequestBySenderRole(Role role, Pageable pageable) {
-        return requestApprovalRepository.findRequestApprovalBySenderRole(role, pageable);
+    public Page<RequestApproval> getRequestBySenderRole(Role role, String jewelryName,String category, Pageable pageable) {
+        return requestApprovalRepository.findRequestApprovalBySenderRole(role,jewelryName,category, pageable);
     }
 
     @Override
@@ -169,8 +169,8 @@ public class RequestApporvalServiceImpl implements RequestApprovalService{
     }
 
     @Override
-    public Page<RequestApproval> getRequestApprovalByUserId(Integer id, Pageable pageable) {
-        return requestApprovalRepository.findRequestApprovalByUserId(id, pageable);
+    public Page<RequestApproval> getRequestApprovalByUserId(Integer id, String jewelryName, Pageable pageable) {
+        return requestApprovalRepository.findRequestApprovalByUserId(id, jewelryName, pageable);
     }
 
     @Override
