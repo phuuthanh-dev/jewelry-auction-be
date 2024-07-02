@@ -11,6 +11,7 @@ import vn.webapp.backend.auction.dto.CancelRequestApproval;
 import vn.webapp.backend.auction.dto.ManagerRequestApproval;
 import vn.webapp.backend.auction.dto.StaffRequestApproval;
 import vn.webapp.backend.auction.dto.UserRequestApproval;
+import vn.webapp.backend.auction.enums.JewelryState;
 import vn.webapp.backend.auction.enums.Role;
 import vn.webapp.backend.auction.model.RequestApproval;
 import vn.webapp.backend.auction.service.request_approval.RequestApprovalService;
@@ -104,10 +105,12 @@ public class RequestApprovalController {
     public ResponseEntity<Page<RequestApproval>> getRequestPassed(
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "id") String sortBy,
+            @RequestParam(required = false) String jewelryName,
+            @RequestParam String category,
             @RequestParam(defaultValue = "5") int size,
             @RequestParam(defaultValue = "asc") String sortOrder) {
         Sort.Direction direction = (sortOrder.equalsIgnoreCase("asc")) ? Sort.Direction.ASC : Sort.Direction.DESC;
         Pageable pageable = PageRequest.of(page, size, direction, sortBy);
-        return ResponseEntity.ok(requestApprovalService.getRequestApprovalPassed(pageable));
+        return ResponseEntity.ok(requestApprovalService.getRequestApprovalPassed(jewelryName, category, pageable));
     }
 }

@@ -174,8 +174,8 @@ public class RequestApporvalServiceImpl implements RequestApprovalService{
     }
 
     @Override
-    public Page<RequestApproval> getRequestApprovalPassed( Pageable pageable) {
-        return requestApprovalRepository.findRequestApprovalPassed(pageable);
+    public Page<RequestApproval> getRequestApprovalPassed(String jewelryName, String category, Pageable pageable) {
+        return requestApprovalRepository.findRequestApprovalPassed(jewelryName, category, pageable);
     }
 
     @Override

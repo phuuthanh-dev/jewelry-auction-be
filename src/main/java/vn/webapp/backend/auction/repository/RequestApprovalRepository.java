@@ -19,7 +19,7 @@ public interface RequestApprovalRepository extends JpaRepository<RequestApproval
     @Query("SELECT ra FROM RequestApproval ra WHERE ra.sender.id = :id AND (:jewelryName IS NULL OR ra.jewelry.name LIKE %:jewelryName%)")
     Page<RequestApproval> findRequestApprovalByUserId(@Param("id") Integer id, @Param("jewelryName") String jewelryName,Pageable pageable);
 
-    @Query("SELECT ra FROM RequestApproval ra WHERE ra.sender.role = 'MANAGER' AND ra.isConfirm = true AND ra.state = 'ACTIVE' AND ra.jewelry.state = 'ACTIVE' AND ra.jewelry.isHolding = true")
-    Page<RequestApproval> findRequestApprovalPassed( Pageable pageable);
+    @Query("SELECT ra FROM RequestApproval ra WHERE ra.sender.role = 'MANAGER' AND (:jewelryName IS NULL OR ra.jewelry.name LIKE %:jewelryName%) AND (:category IS NULL OR ra.jewelry.category.name =:category) AND ra.isConfirm = true AND ra.state = 'ACTIVE' AND ra.jewelry.state = 'ACTIVE' AND ra.jewelry.isHolding = true")
+    Page<RequestApproval> findRequestApprovalPassed(@Param("jewelryName") String jewelryName,@Param("category") String category, Pageable pageable);
 
 }
