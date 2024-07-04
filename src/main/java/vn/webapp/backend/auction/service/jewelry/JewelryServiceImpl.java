@@ -48,8 +48,8 @@ public class JewelryServiceImpl implements JewelryService {
     }
 
     @Override
-    public Page<Jewelry> getJewelriesActiveByUserId(Integer userId, Pageable pageable) {
-        return jewelryRepository.findJewelryActiveByUserId(userId, pageable );
+    public Page<Jewelry> getJewelriesActiveByUserId(Integer userId, String jewelryName,Pageable pageable) {
+        return jewelryRepository.findJewelryActiveByUserId(userId, jewelryName, pageable );
     }
 
     @Override
@@ -140,8 +140,8 @@ public class JewelryServiceImpl implements JewelryService {
     }
 
     @Override
-    public Page<Jewelry> getJewelryByStateAndIsHolding(JewelryState state, Boolean isHolding, Pageable pageable) {
-        return jewelryRepository.findJewelryByStateAndIsHolding(state,isHolding,pageable);
+    public Page<Jewelry> getJewelryByStateAndIsHolding(JewelryState state, Boolean isHolding, String jewelryName, Pageable pageable) {
+        return jewelryRepository.findJewelryByStateAndIsHolding(state,isHolding,jewelryName,pageable);
     }
 
     @Override

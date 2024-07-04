@@ -27,6 +27,7 @@ public class AuctionController {
     @GetMapping("/sorted-and-paged")
     public ResponseEntity<Page<Auction>> getAllAuctionsSortedAndPaged(
             @RequestParam(defaultValue = "startDate") String sortBy,
+            @RequestParam(required = false) String auctionName,
             @RequestParam(defaultValue = "DELETED") AuctionState state,
             @RequestParam(defaultValue = "0") Integer categoryId,
             @RequestParam(defaultValue = "0") int page,
@@ -34,7 +35,7 @@ public class AuctionController {
             @RequestParam(defaultValue = "asc") String sortOrder) {
         Sort.Direction direction = (sortOrder.equalsIgnoreCase("asc")) ? Sort.Direction.ASC : Sort.Direction.DESC;
         Pageable pageable = PageRequest.of(page, size, direction, sortBy);
-        return ResponseEntity.ok(auctionService.getAllAuctions(state, pageable, categoryId));
+        return ResponseEntity.ok(auctionService.getAllAuctions(state, pageable,auctionName, categoryId));
     }
 
     @GetMapping("/get-by-day/{startDate}/{endDate}")
@@ -102,14 +103,15 @@ public class AuctionController {
 
     @GetMapping("/get-by-staff/{id}")
     public ResponseEntity<Page<Auction>> getAuctionByStaffId(
-            @RequestParam(defaultValue = "id") String sortBy,
             @PathVariable Integer id,
+            @RequestParam(required = false) String auctionName,
+            @RequestParam(defaultValue = "id") String sortBy,
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "5") int size,
             @RequestParam(defaultValue = "asc") String sortOrder) {
         Sort.Direction direction = (sortOrder.equalsIgnoreCase("asc")) ? Sort.Direction.ASC : Sort.Direction.DESC;
         Pageable pageable = PageRequest.of(page, size, direction, sortBy);
-        return ResponseEntity.ok(auctionService.getByStaffID(id, pageable));
+        return ResponseEntity.ok(auctionService.getByStaffID(id,auctionName, pageable));
     }
 
     @PostMapping("/create-new")
@@ -128,6 +130,8 @@ public class AuctionController {
     @GetMapping("/get-auction-registration")
     public ResponseEntity<Page<AuctionRegistrationDTO>> getAuctionRegistrations(
             @RequestParam(defaultValue = "startDate") String sortBy,
+            @RequestParam(required = false) String auctionName,
+            @RequestParam(defaultValue = "DELETED") AuctionState state,
             @RequestParam(defaultValue = "ALL") String state,
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "5") int size,
@@ -136,7 +140,7 @@ public class AuctionController {
 
         Sort.Direction direction = (sortOrder.equalsIgnoreCase("asc")) ? Sort.Direction.ASC : Sort.Direction.DESC;
         Pageable pageable = PageRequest.of(page, size, direction, sortBy);
-
+        return ResponseEntity.ok(auctionService.getAuctionRegistrations(state,auctionName, pageable));
         return ResponseEntity.ok(auctionService.getAuctionRegistrations(auctionState, pageable));
     }
 }

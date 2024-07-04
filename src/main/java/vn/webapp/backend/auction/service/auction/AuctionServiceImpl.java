@@ -79,8 +79,8 @@ public class AuctionServiceImpl implements AuctionService{
     }
 
     @Override
-    public Page<Auction> getByStaffID(Integer id, Pageable pageable) {
-        return auctionRepository.findByStaffID(id, pageable);
+    public Page<Auction> getByStaffID(Integer id, String auctionName, Pageable pageable) {
+        return auctionRepository.findByStaffID(id,auctionName, pageable);
     }
 
     @Override
@@ -127,8 +127,8 @@ public class AuctionServiceImpl implements AuctionService{
     }
 
     @Override
-    public Page<Auction> getAllAuctions(AuctionState state, Pageable pageable, Integer categoryId) {
-        return auctionRepository.findByStateAndCategoryNotDeletedOrEmptyState(state, pageable, categoryId);
+    public Page<Auction> getAllAuctions(AuctionState state, Pageable pageable, String auctionName, Integer categoryId) {
+        return auctionRepository.findByStateAndCategoryNotDeletedOrEmptyState(state,auctionName, pageable, categoryId);
     }
 
     @Override
@@ -149,8 +149,9 @@ public class AuctionServiceImpl implements AuctionService{
     }
 
     @Override
-    public Page<AuctionRegistrationDTO> getAuctionRegistrations(AuctionState state, Pageable pageable) {
-        List<Auction> auctions = auctionRepository.findByState(state);
+    public Page<AuctionRegistrationDTO> getAuctionRegistrations(AuctionState state, String auctionName, Pageable pageable) {
+        Page<Auction> auctions = auctionRepository.findByState(state,auctionName, pageable);
+
         List<AuctionRegistrationDTO> list = auctions.stream()
                 .map(auction -> {
                     Integer numberOfParticipants = auctionRegistrationRepository.countValidParticipantsByAuctionId(auction.getId());

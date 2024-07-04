@@ -26,13 +26,13 @@ public interface JewelryService {
 
     Page<Jewelry> getJewelriesInWaitList(Pageable pageable);
 
-    Page<Jewelry> getJewelryByStateAndIsHolding(JewelryState state, Boolean isHolding, Pageable pageable);
+    Page<Jewelry> getJewelryByStateAndIsHolding(JewelryState state, Boolean isHolding, String jewelryName, Pageable pageable);
 
     Page<Jewelry> getJewelriesInHandOver(Pageable pageable);
 
     Page<Jewelry> getJewelriesByUsername(String username, Pageable pageable);
 
-    Page<Jewelry> getJewelriesActiveByUserId(Integer userId, Pageable pageable);
+    Page<Jewelry> getJewelriesActiveByUserId(Integer userId, String jewelryName, Pageable pageable);
 
     Jewelry requestJewelry(SendJewelryFromUserRequest request);
 
