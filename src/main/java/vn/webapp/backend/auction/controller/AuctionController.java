@@ -131,7 +131,6 @@ public class AuctionController {
     public ResponseEntity<Page<AuctionRegistrationDTO>> getAuctionRegistrations(
             @RequestParam(defaultValue = "startDate") String sortBy,
             @RequestParam(required = false) String auctionName,
-            @RequestParam(defaultValue = "DELETED") AuctionState state,
             @RequestParam(defaultValue = "ALL") String state,
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "5") int size,
