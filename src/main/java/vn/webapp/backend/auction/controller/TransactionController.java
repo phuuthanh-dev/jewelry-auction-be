@@ -55,13 +55,14 @@ public class TransactionController {
     public ResponseEntity<Page<Transaction>> getTransactionByTypeAndState(
             @RequestParam(defaultValue = "createDate") String sortBy,
             @RequestParam(defaultValue = "PAYMENT_TO_WINNER") TransactionType type,
+            @RequestParam(required = false) String userName,
             @RequestParam(defaultValue = "5") int size,
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "SUCCEED") TransactionState state,
             @RequestParam(defaultValue = "desc") String sortOrder) {
         Sort.Direction direction = (sortOrder.equalsIgnoreCase("desc")) ? Sort.Direction.DESC : Sort.Direction.ASC;
         Pageable pageable = PageRequest.of(page, size, direction, sortBy);
-        return ResponseEntity.ok(transactionService.getTransactionByTypeAndState(type, state, pageable));
+        return ResponseEntity.ok(transactionService.getTransactionByTypeAndState(type,userName, state, pageable));
     }
 
     @GetMapping("/get-handover")
@@ -80,12 +81,13 @@ public class TransactionController {
     @GetMapping("/get-overdue")
     public ResponseEntity<Page<Transaction>> getTransactionOverdue(
             @RequestParam(defaultValue = "5") int size,
+            @RequestParam(required = false) String userName,
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "desc") String sortOrder,
             @RequestParam(defaultValue = "createDate") String sortBy) {
         Sort.Direction direction = (sortOrder.equalsIgnoreCase("desc")) ? Sort.Direction.DESC : Sort.Direction.ASC;
         Pageable pageable = PageRequest.of(page, size, direction, sortBy);
-        Page<Transaction> overdueTransactions = transactionService.getOverdueTransactions(pageable);
+        Page<Transaction> overdueTransactions = transactionService.getOverdueTransactions(userName,pageable);
         return ResponseEntity.ok(overdueTransactions);
     }
 

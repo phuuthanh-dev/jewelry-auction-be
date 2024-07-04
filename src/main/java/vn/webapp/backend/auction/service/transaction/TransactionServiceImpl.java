@@ -61,8 +61,8 @@ public class TransactionServiceImpl implements TransactionService {
     }
 
     @Override
-    public Page<Transaction> getTransactionByTypeAndState(TransactionType typename, TransactionState state, Pageable pageable) {
-        Page<Transaction> transactionsList = transactionRepository.findTransactionByTypeAndState(typename, state, pageable);
+    public Page<Transaction> getTransactionByTypeAndState(TransactionType typename, String userName, TransactionState state, Pageable pageable) {
+        Page<Transaction> transactionsList = transactionRepository.findTransactionByTypeAndState(typename,userName, state, pageable);
         if (transactionsList.isEmpty()) {
             throw new ResourceNotFoundException("Type'" + typename + "' does not have any transaction items.");
         }
@@ -160,8 +160,8 @@ public class TransactionServiceImpl implements TransactionService {
     }
 
     @Override
-    public Page<Transaction> getOverdueTransactions(Pageable pageable) {
+    public Page<Transaction> getOverdueTransactions(String userName,Pageable pageable) {
         LocalDateTime threeDaysAgo = LocalDateTime.now().minusDays(3);
-        return transactionRepository.findOverdueTransactions(threeDaysAgo, pageable);
+        return transactionRepository.findOverdueTransactions(userName,threeDaysAgo, pageable);
     }
 }
