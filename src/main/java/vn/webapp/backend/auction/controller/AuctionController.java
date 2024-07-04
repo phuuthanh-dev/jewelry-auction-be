@@ -129,7 +129,7 @@ public class AuctionController {
 
     @GetMapping("/get-auction-registration")
     public ResponseEntity<Page<AuctionRegistrationDTO>> getAuctionRegistrations(
-            @RequestParam(defaultValue = "startDate") String sortBy
+            @RequestParam(defaultValue = "startDate") String sortBy,
             @RequestParam(required = false) String auctionName,
             @RequestParam(defaultValue = "DELETED") AuctionState state,
             @RequestParam(defaultValue = "ALL") String state,
