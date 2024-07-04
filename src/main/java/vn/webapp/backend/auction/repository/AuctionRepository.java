@@ -22,7 +22,7 @@ public interface AuctionRepository extends JpaRepository<Auction, Integer> {
 
     List<Auction> findTop3ByStateInOrderByFirstPriceDesc(List<AuctionState> states);
 
-    @Query("SELECT a FROM Auction a WHERE a.state = :auctionState")
+    @Query("SELECT a FROM Auction a WHERE (:auctionState IS NULL AND a.state <> 'DELETED') OR a.state = :auctionState")
     List<Auction> findByState(@Param("auctionState") AuctionState auctionState);
 
     @Query("SELECT a FROM Auction a WHERE a.state = :auctionState AND (:auctionName IS NULL OR a.name LIKE %:auctionName%)")

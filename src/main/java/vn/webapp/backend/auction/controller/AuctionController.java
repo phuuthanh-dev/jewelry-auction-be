@@ -119,16 +119,28 @@ public class AuctionController {
         return ResponseEntity.ok(auctionService.createNewAuction(request));
     }
 
+    private AuctionState resolveAuctionState(String state) {
+        if ("ALL".equalsIgnoreCase(state)) {
+            return null;
+        } else {
+            return AuctionState.valueOf(state);
+        }
+    }
+
     @GetMapping("/get-auction-registration")
     public ResponseEntity<Page<AuctionRegistrationDTO>> getAuctionRegistrations(
             @RequestParam(defaultValue = "startDate") String sortBy,
             @RequestParam(required = false) String auctionName,
             @RequestParam(defaultValue = "DELETED") AuctionState state,
+            @RequestParam(defaultValue = "ALL") String state,
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "5") int size,
             @RequestParam(defaultValue = "asc") String sortOrder) {
+        AuctionState auctionState = resolveAuctionState(state);
+
         Sort.Direction direction = (sortOrder.equalsIgnoreCase("asc")) ? Sort.Direction.ASC : Sort.Direction.DESC;
         Pageable pageable = PageRequest.of(page, size, direction, sortBy);
         return ResponseEntity.ok(auctionService.getAuctionRegistrations(state,auctionName, pageable));
+        return ResponseEntity.ok(auctionService.getAuctionRegistrations(auctionState, pageable));
     }
 }
