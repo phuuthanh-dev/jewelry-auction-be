@@ -11,7 +11,6 @@ import vn.webapp.backend.auction.dto.CancelRequestApproval;
 import vn.webapp.backend.auction.dto.ManagerRequestApproval;
 import vn.webapp.backend.auction.dto.StaffRequestApproval;
 import vn.webapp.backend.auction.dto.UserRequestApproval;
-import vn.webapp.backend.auction.enums.JewelryState;
 import vn.webapp.backend.auction.enums.Role;
 import vn.webapp.backend.auction.model.RequestApproval;
 import vn.webapp.backend.auction.service.request_approval.RequestApprovalService;

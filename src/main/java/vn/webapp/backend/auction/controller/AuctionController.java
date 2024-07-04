@@ -9,10 +9,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import vn.webapp.backend.auction.dto.AuctionRegistrationDTO;
 import vn.webapp.backend.auction.dto.AuctionRequest;
-import vn.webapp.backend.auction.dto.UserSpentDTO;
 import vn.webapp.backend.auction.enums.AuctionState;
 import vn.webapp.backend.auction.model.Auction;
-import vn.webapp.backend.auction.model.AuctionRegistration;
 import vn.webapp.backend.auction.service.auction.AuctionService;
 
 import java.util.List;
@@ -35,7 +33,7 @@ public class AuctionController {
             @RequestParam(defaultValue = "asc") String sortOrder) {
         Sort.Direction direction = (sortOrder.equalsIgnoreCase("asc")) ? Sort.Direction.ASC : Sort.Direction.DESC;
         Pageable pageable = PageRequest.of(page, size, direction, sortBy);
-        return ResponseEntity.ok(auctionService.getAllAuctions(state, pageable,auctionName, categoryId));
+        return ResponseEntity.ok(auctionService.getAllAuctions(state, pageable, auctionName, categoryId));
     }
 
     @GetMapping("/get-by-day/{startDate}/{endDate}")
@@ -111,7 +109,7 @@ public class AuctionController {
             @RequestParam(defaultValue = "asc") String sortOrder) {
         Sort.Direction direction = (sortOrder.equalsIgnoreCase("asc")) ? Sort.Direction.ASC : Sort.Direction.DESC;
         Pageable pageable = PageRequest.of(page, size, direction, sortBy);
-        return ResponseEntity.ok(auctionService.getByStaffID(id,auctionName, pageable));
+        return ResponseEntity.ok(auctionService.getByStaffID(id, auctionName, pageable));
     }
 
     @PostMapping("/create-new")
@@ -139,6 +137,6 @@ public class AuctionController {
 
         Sort.Direction direction = (sortOrder.equalsIgnoreCase("asc")) ? Sort.Direction.ASC : Sort.Direction.DESC;
         Pageable pageable = PageRequest.of(page, size, direction, sortBy);
-        return ResponseEntity.ok(auctionService.getAuctionRegistrations(state,auctionName, pageable));
+        return ResponseEntity.ok(auctionService.getAuctionRegistrations(auctionState, auctionName, pageable));
     }
 }

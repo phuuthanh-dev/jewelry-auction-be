@@ -8,7 +8,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import vn.webapp.backend.auction.dto.AuctionRegistrationDTO;
 import vn.webapp.backend.auction.dto.AuctionRequest;
-import vn.webapp.backend.auction.dto.UserSpentDTO;
 import vn.webapp.backend.auction.enums.AuctionState;
 import vn.webapp.backend.auction.enums.JewelryState;
 import vn.webapp.backend.auction.exception.ResourceNotFoundException;
@@ -26,7 +25,6 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.ZoneId;
-import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
@@ -150,7 +148,7 @@ public class AuctionServiceImpl implements AuctionService{
 
     @Override
     public Page<AuctionRegistrationDTO> getAuctionRegistrations(AuctionState state, String auctionName, Pageable pageable) {
-        Page<Auction> auctions = auctionRepository.findByState(state,auctionName, pageable);
+        List<Auction> auctions = auctionRepository.findByState(state, auctionName, pageable);
         List<AuctionRegistrationDTO> list = auctions.stream()
                 .map(auction -> {
                     Integer numberOfParticipants = auctionRegistrationRepository.countValidParticipantsByAuctionId(auction.getId());
