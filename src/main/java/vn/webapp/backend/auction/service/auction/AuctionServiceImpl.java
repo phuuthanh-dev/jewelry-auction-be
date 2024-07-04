@@ -151,7 +151,6 @@ public class AuctionServiceImpl implements AuctionService{
     @Override
     public Page<AuctionRegistrationDTO> getAuctionRegistrations(AuctionState state, String auctionName, Pageable pageable) {
         Page<Auction> auctions = auctionRepository.findByState(state,auctionName, pageable);
-
         List<AuctionRegistrationDTO> list = auctions.stream()
                 .map(auction -> {
                     Integer numberOfParticipants = auctionRegistrationRepository.countValidParticipantsByAuctionId(auction.getId());
