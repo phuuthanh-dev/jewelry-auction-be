@@ -28,7 +28,7 @@ import java.util.Optional;
 @Transactional
 @Service
 @RequiredArgsConstructor
-public class RequestApporvalServiceImpl implements RequestApprovalService{
+public class RequestApprovalServiceImpl implements RequestApprovalService {
     private final RequestApprovalRepository requestApprovalRepository;
     private final UserRepository userRepository;
     private final JewelryRepository jewelryRepository;
@@ -174,8 +174,8 @@ public class RequestApporvalServiceImpl implements RequestApprovalService{
     }
 
     @Override
-    public Page<RequestApproval> getRequestApprovalPassed( Pageable pageable) {
-        return requestApprovalRepository.findRequestApprovalPassed(pageable);
+    public Page<RequestApproval> getRequestApprovalPassed(String jewelryName, String category, Pageable pageable) {
+        return requestApprovalRepository.findRequestApprovalPassed(jewelryName, category, pageable);
     }
 
     @Override
