@@ -1,6 +1,8 @@
 package vn.webapp.backend.auction.controller;
 
+import jakarta.mail.MessagingException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -12,6 +14,7 @@ import vn.webapp.backend.auction.dto.AuctionRequest;
 import vn.webapp.backend.auction.enums.AuctionState;
 import vn.webapp.backend.auction.model.Auction;
 import vn.webapp.backend.auction.service.auction.AuctionService;
+import vn.webapp.backend.auction.service.email.EmailService;
 
 import java.util.List;
 
@@ -21,7 +24,8 @@ import java.util.List;
 @RequestMapping("/api/v1/auction")
 public class AuctionController {
     private final AuctionService auctionService;
-
+    @Autowired
+    private EmailService emailService;
     @GetMapping("/sorted-and-paged")
     public ResponseEntity<Page<Auction>> getAllAuctionsSortedAndPaged(
             @RequestParam(defaultValue = "startDate") String sortBy,
@@ -138,5 +142,11 @@ public class AuctionController {
         Sort.Direction direction = (sortOrder.equalsIgnoreCase("asc")) ? Sort.Direction.ASC : Sort.Direction.DESC;
         Pageable pageable = PageRequest.of(page, size, direction, sortBy);
         return ResponseEntity.ok(auctionService.getAuctionRegistrations(auctionState, auctionName, pageable));
+    }
+
+    @GetMapping("/delete-result/{id}")
+    public ResponseEntity<Void> deleteResult(@PathVariable Integer id) throws MessagingException {
+        auctionService.deleteAuctionResult(id);
+        return ResponseEntity.ok().build();
     }
 }

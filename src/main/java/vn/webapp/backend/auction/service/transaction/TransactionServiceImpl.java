@@ -161,7 +161,7 @@ public class TransactionServiceImpl implements TransactionService {
 
     @Override
     public Page<Transaction> getOverdueTransactions(String userName,Pageable pageable) {
-        LocalDateTime threeDaysAgo = LocalDateTime.now().minusDays(3);
-        return transactionRepository.findOverdueTransactions(userName,threeDaysAgo, pageable);
+        LocalDateTime sevenDaysAgo = LocalDateTime.now().minusDays(7);
+        return transactionRepository.findOverdueTransactions(userName,sevenDaysAgo, pageable);
     }
 }
