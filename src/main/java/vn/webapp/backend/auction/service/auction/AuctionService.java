@@ -1,5 +1,6 @@
 package vn.webapp.backend.auction.service.auction;
 
+import jakarta.mail.MessagingException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import vn.webapp.backend.auction.dto.AuctionRegistrationDTO;
@@ -23,5 +24,6 @@ public interface AuctionService {
     Page<Auction> getByStaffID(Integer id, String auctionName, Pageable pageable);
     Auction getCurrentAuctionByJewelryId(Integer id);
     Auction createNewAuction(AuctionRequest request);
+    void deleteAuctionResult(Integer transactionId) throws MessagingException;
     Page<AuctionRegistrationDTO> getAuctionRegistrations(AuctionState state, String auctionName, Pageable pageable);
 }

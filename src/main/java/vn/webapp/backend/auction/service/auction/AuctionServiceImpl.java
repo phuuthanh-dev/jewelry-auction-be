@@ -1,5 +1,6 @@
 package vn.webapp.backend.auction.service.auction;
 
+import jakarta.mail.MessagingException;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -8,25 +9,20 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import vn.webapp.backend.auction.dto.AuctionRegistrationDTO;
 import vn.webapp.backend.auction.dto.AuctionRequest;
-import vn.webapp.backend.auction.dto.UserSpentDTO;
+import vn.webapp.backend.auction.enums.AccountState;
 import vn.webapp.backend.auction.enums.AuctionState;
 import vn.webapp.backend.auction.enums.JewelryState;
+import vn.webapp.backend.auction.enums.TransactionState;
 import vn.webapp.backend.auction.exception.ResourceNotFoundException;
-import vn.webapp.backend.auction.model.Auction;
-import vn.webapp.backend.auction.model.ErrorMessages;
-import vn.webapp.backend.auction.model.Jewelry;
-import vn.webapp.backend.auction.model.User;
-import vn.webapp.backend.auction.repository.AuctionRegistrationRepository;
-import vn.webapp.backend.auction.repository.AuctionRepository;
-import vn.webapp.backend.auction.repository.JewelryRepository;
-import vn.webapp.backend.auction.repository.UserRepository;
+import vn.webapp.backend.auction.model.*;
+import vn.webapp.backend.auction.repository.*;
+import vn.webapp.backend.auction.service.email.EmailService;
 
 import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.ZoneId;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -39,7 +35,9 @@ public class AuctionServiceImpl implements AuctionService{
     private final AuctionRepository auctionRepository;
     private final UserRepository userRepository;
     private final JewelryRepository jewelryRepository;
+    private final TransactionRepository transactionRepository;
     private final AuctionRegistrationRepository auctionRegistrationRepository;
+    private final EmailService emailService;
 
     @Override
     public List<Auction> getAll() {
@@ -135,6 +133,34 @@ public class AuctionServiceImpl implements AuctionService{
         var existingAuction = auctionRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException(ErrorMessages.AUCTION_NOT_FOUND));
         existingAuction.setState(AuctionState.valueOf(state));
+    }
+
+    @Override
+    public void deleteAuctionResult(Integer transactionId) throws MessagingException {
+        var existingTransaction = transactionRepository.findById(transactionId)
+                .orElseThrow(() -> new ResourceNotFoundException(ErrorMessages.TRANSACTION_NOT_FOUND));
+        Integer auctionId = existingTransaction.getAuction().getId();
+        Integer jewelryId = existingTransaction.getAuction().getJewelry().getId();
+        Integer userId = existingTransaction.getUser().getId();
+        var existingAuction = auctionRepository.findById(auctionId)
+                .orElseThrow(() -> new ResourceNotFoundException(ErrorMessages.AUCTION_NOT_FOUND));
+        var existingJewelry = jewelryRepository.findById(jewelryId)
+                .orElseThrow(() -> new ResourceNotFoundException(ErrorMessages.JEWELRY_NOT_FOUND));
+        var existingUser = userRepository.findById(userId)
+                .orElseThrow(() -> new ResourceNotFoundException(ErrorMessages.USER_NOT_FOUND));
+
+        existingTransaction.setState(TransactionState.HIDDEN);
+        existingAuction.setState(AuctionState.FINISHED);
+        existingJewelry.setState(JewelryState.ACTIVE);
+        existingUser.setState(AccountState.DISABLE);
+
+        String reason = ReasonMessages.DO_NOT_PAY_ON_TIME;
+        emailService.sendBlockAccountEmail(
+                existingUser.getEmail(),
+                existingUser.getFullName(),
+                existingUser.getUsername(),
+                reason
+        );
     }
 
     @Override

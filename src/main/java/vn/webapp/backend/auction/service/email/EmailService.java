@@ -67,12 +67,25 @@ public class EmailService {
         MimeMessage message = javaMailSender.createMimeMessage();
         MimeMessageHelper helper = new MimeMessageHelper(message, true);
 
-
         String html = emailContent.setHtmlConfirmHoldingContent(fullName,assetName);
 
         helper.setFrom(emailUsername);
         helper.setTo(to);
         helper.setSubject("Xác nhận tài sản được gửi tới DGS thành công .");
+        helper.setText(html, true);
+        javaMailSender.send(message);
+    }
+
+    @Async
+    public void sendBlockAccountEmail(String to, String fullName, String userName, String reason) throws MessagingException {
+        MimeMessage message = javaMailSender.createMimeMessage();
+        MimeMessageHelper helper = new MimeMessageHelper(message, true);
+
+        String html = emailContent.setHtmlBlockAccountContent(fullName,userName,reason);
+
+        helper.setFrom(emailUsername);
+        helper.setTo(to);
+        helper.setSubject("Tài khoản DGS của bạn sẽ bị khóa!.");
         helper.setText(html, true);
 
         javaMailSender.send(message);

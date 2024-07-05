@@ -59,11 +59,13 @@ public interface TransactionRepository extends JpaRepository<Transaction, Intege
 
     @Query("SELECT t FROM Transaction t " +
             "WHERE t.type = 'PAYMENT_TO_WINNER' " +
-            "AND (t.state != 'PENDING' OR t.state != 'FAILED') " +
+            "AND t.state != 'SUCCEED' " +
+            "AND t.state != 'FAILED' " +
+            "AND t.state != 'HIDDEN' " +
             "AND t.createDate < :sevenDaysAgo " +
             "AND (:userName IS NULL OR CONCAT(t.user.firstName, ' ', t.user.lastName) LIKE %:userName%)")
     Page<Transaction> findOverdueTransactions(@Param("userName") String userName,
-                                              @Param("threeDaysAgo") LocalDateTime sevenDaysAgo,
+                                              @Param("sevenDaysAgo") LocalDateTime sevenDaysAgo,
                                               Pageable pageable);
 
     @Query("SELECT SUM(t.totalPrice) FROM Transaction t WHERE t.type = 'PAYMENT_TO_WINNER' AND t.user.username = :username")
