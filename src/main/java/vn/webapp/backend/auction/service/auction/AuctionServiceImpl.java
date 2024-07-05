@@ -23,6 +23,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.ZoneId;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -175,7 +176,7 @@ public class AuctionServiceImpl implements AuctionService{
 
     @Override
     public Page<AuctionRegistrationDTO> getAuctionRegistrations(AuctionState state, String auctionName, Pageable pageable) {
-        Page<Auction> auctions = auctionRepository.findByState(state,auctionName, pageable);
+        List<Auction> auctions = auctionRepository.findByState(state, auctionName, pageable);
         List<AuctionRegistrationDTO> list = auctions.stream()
                 .map(auction -> {
                     Integer numberOfParticipants = auctionRegistrationRepository.countValidParticipantsByAuctionId(auction.getId());
@@ -188,8 +189,13 @@ public class AuctionServiceImpl implements AuctionService{
                             numberOfParticipants
                     );
                 })
+                .sorted(Comparator.comparingInt(AuctionRegistrationDTO::numberOfParticipants).reversed())
                 .collect(Collectors.toList());
 
-        return new PageImpl<>(list, pageable, auctions.getTotalElements());
+        int start = (int) pageable.getOffset();
+        int end = Math.min((start + pageable.getPageSize()), list.size());
+        List<AuctionRegistrationDTO> pagedAuctions = list.subList(start, end);
+
+        return new PageImpl<>(pagedAuctions , pageable, auctions.size());
     }
 }

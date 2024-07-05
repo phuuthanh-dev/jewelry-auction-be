@@ -28,7 +28,7 @@ import java.util.Optional;
 @Transactional
 @Service
 @RequiredArgsConstructor
-public class RequestApporvalServiceImpl implements RequestApprovalService{
+public class RequestApprovalServiceImpl implements RequestApprovalService {
     private final RequestApprovalRepository requestApprovalRepository;
     private final UserRepository userRepository;
     private final JewelryRepository jewelryRepository;
