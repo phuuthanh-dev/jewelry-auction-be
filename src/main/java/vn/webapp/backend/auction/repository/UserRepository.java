@@ -25,7 +25,9 @@ public interface UserRepository extends JpaRepository<User, Integer>  {
     @Query("UPDATE User u SET u.avatar = :avatar WHERE u.username = :username")
     void updateAvatar(String username, String avatar);
 
-    @Query("SELECT u FROM User u " + "WHERE (:fullName IS NULL OR CONCAT(u.firstName,' ',u.lastName) LIKE %:fullName%) " + "AND (:role IS NULL OR u.role = :role) " + "AND (:state IS NULL OR u.state = :state)")
+    @Query("SELECT u FROM User u " + "WHERE (:fullName IS NULL OR CONCAT(u.firstName,' ',u.lastName) " +
+            "LIKE %:fullName%) " + "AND (:role IS NULL OR u.role = :role) " +
+            "AND (:state IS NULL OR u.state = :state)")
     Page<User> findByFullNameContainingAndRoleAndState(@Param("fullName") String fullName, @Param("role") Role role, @Param("state") AccountState state, Pageable pageable);
 
     @Query("SELECT u FROM User u " + "WHERE (:fullName IS NULL OR CONCAT(u.firstName,' ',u.lastName) LIKE %:fullName%) " + "AND (:role IS NULL OR u.role = :role) " + "AND (:state IS NULL OR u.state <> :state)")
@@ -33,7 +35,7 @@ public interface UserRepository extends JpaRepository<User, Integer>  {
 
     @Query("SELECT u FROM User u " +
             "WHERE (:fullName IS NULL OR CONCAT(u.firstName, ' ', u.lastName) LIKE %:fullName%) " +
-            "AND (:state IS NULL OR u.state <> :state) AND u.cccdFirst IS NOT NULL AND u.cccdLast IS NOT NULL")
+            "AND (:state IS NULL OR u.state <> :state AND u.state <> 'DISABLE') AND u.cccdFirst IS NOT NULL AND u.cccdLast IS NOT NULL")
     Page<User> findByFullNameContainingAndStateNot(@Param("fullName") String fullName, @Param("state") AccountState state, Pageable pageable);
 
     @Query("SELECT ah.user " +

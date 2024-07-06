@@ -31,4 +31,11 @@ public class ImageController {
     public ResponseEntity<Image> createImage(@RequestBody ImageRequest request){
         return ResponseEntity.ok(imageService.createImage(request));
     }
+
+    @DeleteMapping("/jewelry/{jewelryId}")
+    public ResponseEntity<Void> deleteImagesByJewelryId(@PathVariable Integer jewelryId) {
+        imageService.deleteByJewelryId(jewelryId);
+        return ResponseEntity.noContent().build();
+    }
+
 }

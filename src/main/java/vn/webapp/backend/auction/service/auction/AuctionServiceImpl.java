@@ -3,8 +3,10 @@ package vn.webapp.backend.auction.service.auction;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import vn.webapp.backend.auction.dto.AuctionRegistrationDTO;
 import vn.webapp.backend.auction.dto.AuctionRequest;
 import vn.webapp.backend.auction.enums.AuctionState;
 import vn.webapp.backend.auction.enums.JewelryState;
@@ -13,6 +15,7 @@ import vn.webapp.backend.auction.model.Auction;
 import vn.webapp.backend.auction.model.ErrorMessages;
 import vn.webapp.backend.auction.model.Jewelry;
 import vn.webapp.backend.auction.model.User;
+import vn.webapp.backend.auction.repository.AuctionRegistrationRepository;
 import vn.webapp.backend.auction.repository.AuctionRepository;
 import vn.webapp.backend.auction.repository.JewelryRepository;
 import vn.webapp.backend.auction.repository.UserRepository;
@@ -22,8 +25,10 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.ZoneId;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Transactional
 @Service
@@ -33,6 +38,7 @@ public class AuctionServiceImpl implements AuctionService{
     private final AuctionRepository auctionRepository;
     private final UserRepository userRepository;
     private final JewelryRepository jewelryRepository;
+    private final AuctionRegistrationRepository auctionRegistrationRepository;
 
     @Override
     public List<Auction> getAll() {
@@ -71,13 +77,13 @@ public class AuctionServiceImpl implements AuctionService{
     }
 
     @Override
-    public Page<Auction> getByStaffID(Integer id, Pageable pageable) {
-        return auctionRepository.findByStaffID(id, pageable);
+    public Page<Auction> getByStaffID(Integer id, String auctionName, Pageable pageable) {
+        return auctionRepository.findByStaffID(id,auctionName, pageable);
     }
 
     @Override
-    public List<Auction> getAuctionByJewelryId(Integer id) {
-        return auctionRepository.findAuctionByJewelryId(id);
+    public Auction getCurrentAuctionByJewelryId(Integer id) {
+        return auctionRepository.findAuctionByJewelryId(id).get(0);
     }
 
     @Override
@@ -113,15 +119,14 @@ public class AuctionServiceImpl implements AuctionService{
         return auction;
     }
 
-
     @Override
     public List<Auction> findAuctionByName(String name) {
         return auctionRepository.findAuctionByNameContaining(name);
     }
 
     @Override
-    public Page<Auction> getAllAuctions(AuctionState state, Pageable pageable, Integer categoryId) {
-        return auctionRepository.findByStateAndCategoryNotDeletedOrEmptyState(state, pageable, categoryId);
+    public Page<Auction> getAllAuctions(AuctionState state, Pageable pageable, String auctionName, Integer categoryId) {
+        return auctionRepository.findByStateAndCategoryNotDeletedOrEmptyState(state,auctionName, pageable, categoryId);
     }
 
     @Override
@@ -139,5 +144,30 @@ public class AuctionServiceImpl implements AuctionService{
     @Override
     public Page<Auction> getAuctionsByStates(List<AuctionState> states, Pageable pageable) {
         return auctionRepository.findByStateIn(states, pageable);
+    }
+
+    @Override
+    public Page<AuctionRegistrationDTO> getAuctionRegistrations(AuctionState state, String auctionName, Pageable pageable) {
+        List<Auction> auctions = auctionRepository.findByState(state, auctionName, pageable);
+        List<AuctionRegistrationDTO> list = auctions.stream()
+                .map(auction -> {
+                    Integer numberOfParticipants = auctionRegistrationRepository.countValidParticipantsByAuctionId(auction.getId());
+                    return new AuctionRegistrationDTO(
+                            auction.getId(),
+                            auction.getName(),
+                            auction.getStartDate(),
+                            auction.getEndDate(),
+                            auction.getState(),
+                            numberOfParticipants
+                    );
+                })
+                .sorted(Comparator.comparingInt(AuctionRegistrationDTO::numberOfParticipants).reversed())
+                .collect(Collectors.toList());
+
+        int start = (int) pageable.getOffset();
+        int end = Math.min((start + pageable.getPageSize()), list.size());
+        List<AuctionRegistrationDTO> pagedAuctions = list.subList(start, end);
+
+        return new PageImpl<>(pagedAuctions , pageable, auctions.size());
     }
 }

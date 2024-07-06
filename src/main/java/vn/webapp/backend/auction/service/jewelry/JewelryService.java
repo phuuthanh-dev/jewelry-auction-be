@@ -1,5 +1,6 @@
 package vn.webapp.backend.auction.service.jewelry;
 
+import jakarta.mail.MessagingException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import vn.webapp.backend.auction.dto.SendJewelryFromUserRequest;
@@ -25,16 +26,18 @@ public interface JewelryService {
 
     Page<Jewelry> getJewelriesInWaitList(Pageable pageable);
 
-    Page<Jewelry> getJewelryByStateAndIsHolding(JewelryState state, Boolean isHolding, Pageable pageable);
+    Page<Jewelry> getJewelryByStateAndIsHolding(JewelryState state, Boolean isHolding, String jewelryName, Pageable pageable);
 
     Page<Jewelry> getJewelriesInHandOver(Pageable pageable);
 
     Page<Jewelry> getJewelriesByUsername(String username, Pageable pageable);
 
+    Page<Jewelry> getJewelriesActiveByUserId(Integer userId, String jewelryName, Pageable pageable);
+
     Jewelry requestJewelry(SendJewelryFromUserRequest request);
 
     Jewelry getLatestJewelry();
 
-    Jewelry setHolding(Integer id);
+    Jewelry setHolding(Integer id, boolean state) throws MessagingException;
 
 }

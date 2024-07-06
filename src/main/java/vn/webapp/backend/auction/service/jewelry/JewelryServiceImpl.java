@@ -1,5 +1,6 @@
 package vn.webapp.backend.auction.service.jewelry;
 
+import jakarta.mail.MessagingException;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -15,6 +16,7 @@ import vn.webapp.backend.auction.model.User;
 import vn.webapp.backend.auction.repository.JewelryCategoryRepository;
 import vn.webapp.backend.auction.repository.JewelryRepository;
 import vn.webapp.backend.auction.repository.UserRepository;
+import vn.webapp.backend.auction.service.email.EmailService;
 
 import java.util.List;
 import java.util.Optional;
@@ -27,6 +29,7 @@ public class JewelryServiceImpl implements JewelryService {
     private final JewelryRepository jewelryRepository;
     private final UserRepository userRepository;
     private final JewelryCategoryRepository jewelryCategoryRepository;
+    private final EmailService emailService;
 
     @Override
     public List<Jewelry> getAll() {
@@ -42,6 +45,11 @@ public class JewelryServiceImpl implements JewelryService {
     @Override
     public Page<Jewelry> getJewelriesByUsername(String username, Pageable pageable) {
         return jewelryRepository.findByUserUsername(username, pageable);
+    }
+
+    @Override
+    public Page<Jewelry> getJewelriesActiveByUserId(Integer userId, String jewelryName,Pageable pageable) {
+        return jewelryRepository.findJewelryActiveByUserId(userId, jewelryName, pageable );
     }
 
     @Override
@@ -84,10 +92,14 @@ public class JewelryServiceImpl implements JewelryService {
     }
 
     @Override
-    public Jewelry setHolding(Integer id) {
+    public Jewelry setHolding(Integer id,boolean state) throws MessagingException {
         var existingJewelry = jewelryRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException(ErrorMessages.JEWELRY_NOT_FOUND));
-        existingJewelry.setIsHolding(true);
+        var exitingUser = existingJewelry.getUser();
+        existingJewelry.setIsHolding(state);
+        if(state) {
+            emailService.sendConfirmHoldingEmail(exitingUser.getEmail(), exitingUser.getFullName(), existingJewelry.getName());
+        }
         return  existingJewelry;
     }
 
@@ -128,8 +140,8 @@ public class JewelryServiceImpl implements JewelryService {
     }
 
     @Override
-    public Page<Jewelry> getJewelryByStateAndIsHolding(JewelryState state, Boolean isHolding, Pageable pageable) {
-        return jewelryRepository.findJewelryByStateAndIsHolding(state,isHolding,pageable);
+    public Page<Jewelry> getJewelryByStateAndIsHolding(JewelryState state, Boolean isHolding, String jewelryName, Pageable pageable) {
+        return jewelryRepository.findJewelryByStateAndIsHolding(state,isHolding,jewelryName,pageable);
     }
 
     @Override

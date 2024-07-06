@@ -44,7 +44,7 @@ public class UserController {
     public ResponseEntity<Page<User>> getMember(
             @RequestParam(required = false) String fullName,
             @RequestParam(required = false) AccountState state,
-            @RequestParam(defaultValue = "id") String sortBy,
+            @RequestParam(defaultValue = "register_date") String sortBy,
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "5") int size,
             @RequestParam(defaultValue = "asc") String sortOrder) {
