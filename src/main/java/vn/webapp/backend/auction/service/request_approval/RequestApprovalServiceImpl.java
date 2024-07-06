@@ -13,6 +13,7 @@ import vn.webapp.backend.auction.enums.JewelryState;
 import vn.webapp.backend.auction.enums.RequestApprovalState;
 import vn.webapp.backend.auction.enums.Role;
 import vn.webapp.backend.auction.exception.ResourceNotFoundException;
+import vn.webapp.backend.auction.exception.UserNotFoundException;
 import vn.webapp.backend.auction.model.ErrorMessages;
 import vn.webapp.backend.auction.model.Jewelry;
 import vn.webapp.backend.auction.model.RequestApproval;
@@ -23,7 +24,6 @@ import vn.webapp.backend.auction.repository.UserRepository;
 
 import java.sql.Timestamp;
 import java.time.Instant;
-import java.util.Optional;
 
 @Transactional
 @Service
@@ -45,10 +45,10 @@ public class RequestApprovalServiceImpl implements RequestApprovalService {
                 .orElseThrow(() -> new ResourceNotFoundException(ErrorMessages.REQUEST_APPROVAL_NOT_FOUND));
         var existUser = userRepository.findById(responderId)
                 .orElseThrow(() -> new ResourceNotFoundException(ErrorMessages.USER_NOT_FOUND));
-        if(existUser.getRole().equals(Role.STAFF)) {
+        if (existUser.getRole().equals(Role.STAFF)) {
             existingRequest.setStaff(existUser);
         }
-        if(existUser.getRole().equals(Role.MEMBER)) {
+        if (existUser.getRole().equals(Role.MEMBER)) {
             existingRequest.getJewelry().setState(JewelryState.HIDDEN);
         }
         existingRequest.setResponder(existUser);
@@ -87,23 +87,18 @@ public class RequestApprovalServiceImpl implements RequestApprovalService {
     }
 
     @Override
-    public Page<RequestApproval> getRequestBySenderRole(Role role, String jewelryName,String category, Pageable pageable) {
-        return requestApprovalRepository.findRequestApprovalBySenderRole(role,jewelryName,category, pageable);
+    public Page<RequestApproval> getRequestBySenderRole(Role role, String jewelryName, String category, Pageable pageable) {
+        return requestApprovalRepository.findRequestApprovalBySenderRole(role, jewelryName, category, pageable);
     }
 
     @Override
     public RequestApproval requestFromUser(UserRequestApproval request) {
-        Optional<User> existSender = userRepository.findById(request.senderId());
-        if (existSender.isEmpty()) {
-            throw new IllegalArgumentException("User with ID " + request.senderId() + " not found");
-        }
+        User sender = userRepository.findById(request.senderId())
+                .orElseThrow(() -> new UserNotFoundException(ErrorMessages.USER_NOT_FOUND));
 
-        Optional<Jewelry> existJewelry = jewelryRepository.findById(request.jewelryId());
-        if (existJewelry.isEmpty()) {
-            throw new IllegalArgumentException("Jewelry with ID " + request.jewelryId() + " not found");
-        }
-        User sender = existSender.get();
-        Jewelry jewelry = existJewelry.get();
+        Jewelry jewelry = jewelryRepository.findById(request.jewelryId())
+                .orElseThrow(() -> new IllegalArgumentException(ErrorMessages.JEWELRY_NOT_FOUND));
+
         RequestApproval newRequest = new RequestApproval();
         newRequest.setRequestTime(request.requestTime());
         newRequest.setJewelry(jewelry);
@@ -117,17 +112,12 @@ public class RequestApprovalServiceImpl implements RequestApprovalService {
 
     @Override
     public RequestApproval requestFromStaff(StaffRequestApproval request) {
-        Optional<User> existSender = userRepository.findById(request.senderId());
-        if (existSender.isEmpty()) {
-            throw new IllegalArgumentException("User with ID " + request.senderId() + " not found");
-        }
+        User sender = userRepository.findById(request.senderId())
+                .orElseThrow(() -> new UserNotFoundException(ErrorMessages.USER_NOT_FOUND));
 
-        Optional<RequestApproval> existRequestApproval = requestApprovalRepository.findById(request.requestApprovalId());
-        if (existRequestApproval.isEmpty()) {
-            throw new IllegalArgumentException("Request with ID " + request.requestApprovalId() + " not found");
-        }
-        User sender = existSender.get();
-        RequestApproval oldRequest = existRequestApproval.get();
+        RequestApproval oldRequest = requestApprovalRepository.findById(request.requestApprovalId())
+                .orElseThrow(() -> new IllegalArgumentException(ErrorMessages.REQUEST_APPROVAL_NOT_FOUND));
+
         RequestApproval newRequest = new RequestApproval();
         newRequest.setRequestTime(request.requestTime());
         newRequest.setJewelry(oldRequest.getJewelry());
@@ -143,19 +133,13 @@ public class RequestApprovalServiceImpl implements RequestApprovalService {
 
     @Override
     public RequestApproval requestFromManager(ManagerRequestApproval request) {
-        Optional<User> existSender = userRepository.findById(request.senderId());
-        if (existSender.isEmpty()) {
-            throw new IllegalArgumentException("User with ID " + request.senderId() + " not found");
-        }
+        User sender = userRepository.findById(request.senderId())
+                .orElseThrow(() -> new UserNotFoundException(ErrorMessages.USER_NOT_FOUND));
 
-        Optional<RequestApproval> existRequestApproval = requestApprovalRepository.findById(request.requestApprovalId());
-        if (existRequestApproval.isEmpty()) {
-            throw new IllegalArgumentException("Request with ID " + request.requestApprovalId() + " not found");
-        }
-        User sender = existSender.get();
-        RequestApproval oldRequest = existRequestApproval.get();
+        RequestApproval oldRequest = requestApprovalRepository.findById(request.requestApprovalId())
+                .orElseThrow(() -> new IllegalArgumentException(ErrorMessages.REQUEST_APPROVAL_NOT_FOUND));
+
         RequestApproval newRequest = new RequestApproval();
-
         newRequest.setRequestTime(request.requestTime());
         newRequest.setJewelry(oldRequest.getJewelry());
         newRequest.setConfirm(false);
@@ -180,6 +164,6 @@ public class RequestApprovalServiceImpl implements RequestApprovalService {
 
     @Override
     public Page<RequestApproval> getRequestNeedConfirmByMember(Integer memberId, Pageable pageable) {
-        return requestApprovalRepository.findRequestNeedConfirmByMember(memberId,pageable);
+        return requestApprovalRepository.findRequestNeedConfirmByMember(memberId, pageable);
     }
 }

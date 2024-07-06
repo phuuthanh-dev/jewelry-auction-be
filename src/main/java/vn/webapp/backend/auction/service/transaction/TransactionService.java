@@ -32,4 +32,6 @@ public interface TransactionService {
     List<Transaction> createTransactionForWinnerIfNotExists(Integer userId);
 
     Page<Transaction> getOverdueTransactions(String userName,Pageable pageable);
+
+    void setTransactionAfterPaySuccess(Integer transactionId);
 }
