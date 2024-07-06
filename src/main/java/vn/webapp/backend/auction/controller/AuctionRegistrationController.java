@@ -20,7 +20,6 @@ public class AuctionRegistrationController {
 
     private final AuctionRegistrationService auctionRegistrationService;
 
-    // API to retrieve all registrations for a specific auction
     @GetMapping("/auction/{auctionId}")
     public ResponseEntity<List<AuctionRegistration>> getRegistrationsForAuction(@PathVariable Integer auctionId) {
         List<AuctionRegistration> registrations = auctionRegistrationService.findByAuctionIdAndValid(auctionId);

@@ -53,6 +53,8 @@ public class SecurityConfiguration {
                                 .requestMatchers(HttpMethod.POST, Endpoints.PUBLIC_POST_ENDPOINTS).permitAll()
                                 .requestMatchers(HttpMethod.PUT, Endpoints.PUBLIC_PUT_ENDPOINTS).permitAll()
 
+                                .requestMatchers(HttpMethod.GET, Endpoints.STAFF_GET_ENDPOINTS).hasAuthority(Role.STAFF.name())
+
                                 .requestMatchers(HttpMethod.GET, Endpoints.MANAGER_GET_ENDPOINTS).hasAuthority(Role.MANAGER.name())
                                 .requestMatchers(HttpMethod.POST, Endpoints.MANAGER_POST_ENDPOINTS).hasAuthority(Role.MANAGER.name())
                                 .requestMatchers(HttpMethod.PUT, Endpoints.MANAGER_PUT_ENDPOINTS).hasAuthority(Role.MANAGER.name())

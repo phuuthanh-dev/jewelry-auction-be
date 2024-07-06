@@ -14,7 +14,9 @@ import vn.webapp.backend.auction.exception.ResourceNotFoundException;
 import vn.webapp.backend.auction.model.*;
 import vn.webapp.backend.auction.repository.*;
 
+import java.sql.Timestamp;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -76,16 +78,25 @@ public class TransactionServiceImpl implements TransactionService {
 
     @Override
     public void setTransactionState(Integer id, String state) {
-        var existingAuction = transactionRepository.findById(id)
+        var existingTransaction = transactionRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException(ErrorMessages.AUCTION_NOT_FOUND));
-        existingAuction.setState(TransactionState.valueOf(state));
+        existingTransaction.setState(TransactionState.valueOf(state));
     }
 
     @Override
     public void setTransactionMethod(Integer id, String method) {
-        var existingAuction = transactionRepository.findById(id)
+        var existingTransaction = transactionRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException(ErrorMessages.AUCTION_NOT_FOUND));
-        existingAuction.setPaymentMethod(PaymentMethod.valueOf(method));
+        existingTransaction.setPaymentMethod(PaymentMethod.valueOf(method));
+    }
+
+    @Override
+    public void setTransactionAfterPaySuccess(Integer transactionId) {
+        var existingAuction = transactionRepository.findById(transactionId)
+                .orElseThrow(() -> new ResourceNotFoundException(ErrorMessages.AUCTION_NOT_FOUND));
+        existingAuction.setState(TransactionState.SUCCEED);
+        existingAuction.setPaymentMethod(PaymentMethod.BANKING);
+        existingAuction.setPaymentTime(Timestamp.valueOf(LocalDateTime.now(ZoneId.of("Asia/Ho_Chi_Minh"))));
     }
 
     @Override
@@ -97,7 +108,7 @@ public class TransactionServiceImpl implements TransactionService {
                 .orElseThrow(() -> new ResourceNotFoundException(ErrorMessages.USER_WINNER_NOT_FOUND));
 
         if (hasTransactionForAuctionAndUser(auctionId, userWin.getId())) {
-            throw new ResourceNotFoundException(ErrorMessages.TRANSACTION_ALREADY_EXISTS);
+            return userWin;
         }
 
         Transaction transaction = Transaction.builder()
@@ -161,7 +172,7 @@ public class TransactionServiceImpl implements TransactionService {
 
     @Override
     public Page<Transaction> getOverdueTransactions(String userName,Pageable pageable) {
-        LocalDateTime threeDaysAgo = LocalDateTime.now().minusDays(3);
-        return transactionRepository.findOverdueTransactions(userName,threeDaysAgo, pageable);
+        LocalDateTime sevenDaysAgo = LocalDateTime.now().minusDays(7);
+        return transactionRepository.findOverdueTransactions(userName,sevenDaysAgo, pageable);
     }
 }

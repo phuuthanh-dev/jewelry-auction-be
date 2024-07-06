@@ -5,11 +5,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-import vn.webapp.backend.auction.enums.AuctionRegistrationState;
-import vn.webapp.backend.auction.enums.PaymentMethod;
-import vn.webapp.backend.auction.enums.TransactionState;
-import vn.webapp.backend.auction.enums.TransactionType;
+import vn.webapp.backend.auction.enums.*;
 import vn.webapp.backend.auction.exception.ResourceNotFoundException;
+import vn.webapp.backend.auction.exception.UserNotAllowedAccess;
 import vn.webapp.backend.auction.model.*;
 import vn.webapp.backend.auction.repository.AuctionRegistrationRepository;
 import vn.webapp.backend.auction.repository.AuctionRepository;
@@ -35,6 +33,10 @@ public class AuctionRegistrationServiceImpl implements AuctionRegistrationServic
     public void registerUserForAuction(String username, Integer auctionId) {
         User user = userRepository.findByUsername(username).orElseThrow(() -> new ResourceNotFoundException(ErrorMessages.USER_NOT_FOUND));
         Auction auction = auctionRepository.findById(auctionId).orElseThrow(() -> new ResourceNotFoundException(ErrorMessages.AUCTION_NOT_FOUND));
+
+        if (user.getState() != AccountState.VERIFIED) {
+            throw new UserNotAllowedAccess(ErrorMessages.USER_NOT_VERIFIED);
+        }
 
         double registrationFee = auction.getParticipationFee() + auction.getDeposit();
 

@@ -30,6 +30,10 @@ public final class Endpoints {
             "/api/v1/transaction/set-method/**", "/api/v1/jewelry/set-holding/**"
     };
 
+    public static final String[] STAFF_GET_ENDPOINTS = {
+            "/api/v1/user/get-user-registration/**",
+    };
+
     public static final String[] MANAGER_GET_ENDPOINTS = {
             "/api/v1/transaction/get-handover"
     };
