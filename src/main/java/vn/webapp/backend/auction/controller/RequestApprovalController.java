@@ -104,10 +104,12 @@ public class RequestApprovalController {
     public ResponseEntity<Page<RequestApproval>> getRequestPassed(
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "id") String sortBy,
+            @RequestParam(required = false) String jewelryName,
+            @RequestParam String category,
             @RequestParam(defaultValue = "5") int size,
             @RequestParam(defaultValue = "asc") String sortOrder) {
         Sort.Direction direction = (sortOrder.equalsIgnoreCase("asc")) ? Sort.Direction.ASC : Sort.Direction.DESC;
         Pageable pageable = PageRequest.of(page, size, direction, sortBy);
-        return ResponseEntity.ok(requestApprovalService.getRequestApprovalPassed(pageable));
+        return ResponseEntity.ok(requestApprovalService.getRequestApprovalPassed(jewelryName, category, pageable));
     }
 }
