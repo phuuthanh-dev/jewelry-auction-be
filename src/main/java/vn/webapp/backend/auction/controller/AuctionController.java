@@ -34,8 +34,8 @@ public class AuctionController {
             @RequestParam(defaultValue = "0") Integer categoryId,
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "5") int size,
-            @RequestParam(defaultValue = "asc") String sortOrder)
-    {AuctionState auctionState = resolveAuctionState(state);
+            @RequestParam(defaultValue = "asc") String sortOrder) {
+        AuctionState auctionState = resolveAuctionState(state);
         Sort.Direction direction = (sortOrder.equalsIgnoreCase("asc")) ? Sort.Direction.ASC : Sort.Direction.DESC;
         Pageable pageable = PageRequest.of(page, size, direction, sortBy);
         return ResponseEntity.ok(auctionService.getAllAuctions(auctionState, pageable, auctionName, categoryId));

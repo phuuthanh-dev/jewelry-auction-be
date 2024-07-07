@@ -59,12 +59,12 @@ public class TransactionController {
             @RequestParam(required = false) String userName,
             @RequestParam(defaultValue = "5") int size,
             @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "SUCCEED") String StrState,
+            @RequestParam(defaultValue = "SUCCEED") String state,
             @RequestParam(defaultValue = "desc") String sortOrder) {
-        TransactionState state = resolveTransactionState(StrState);
+        TransactionState transactionState = resolveTransactionState(state);
         Sort.Direction direction = (sortOrder.equalsIgnoreCase("desc")) ? Sort.Direction.DESC : Sort.Direction.ASC;
         Pageable pageable = PageRequest.of(page, size, direction, sortBy);
-        return ResponseEntity.ok(transactionService.getTransactionByTypeAndState(type,userName, state, pageable));
+        return ResponseEntity.ok(transactionService.getTransactionByTypeAndState(type, userName, transactionState, pageable));
     }
 
     @GetMapping("/get-handover")

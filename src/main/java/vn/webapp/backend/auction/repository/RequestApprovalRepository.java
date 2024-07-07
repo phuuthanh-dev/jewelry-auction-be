@@ -12,7 +12,7 @@ import vn.webapp.backend.auction.model.RequestApproval;
 public interface RequestApprovalRepository extends JpaRepository<RequestApproval, Integer> {
     @Query("SELECT ra FROM RequestApproval ra WHERE ra.sender.role = :role " +
             "AND (:jewelryName IS NULL OR ra.jewelry.name LIKE %:jewelryName%) " +
-            "AND (:category IS NULL OR :category = 'Tất cả' OR ra.jewelry.category.name = :category) " +
+            "AND (:category IS NULL OR ra.jewelry.category.name = :category) " +
             "AND ra.isConfirm = false AND ra.state = 'ACTIVE'")
     Page<RequestApproval> findRequestApprovalBySenderRole(
             @Param("role") Role role,
@@ -29,7 +29,7 @@ public interface RequestApprovalRepository extends JpaRepository<RequestApproval
 
     @Query("SELECT ra FROM RequestApproval ra WHERE ra.sender.role = 'MANAGER' " +
             "AND (:jewelryName IS NULL OR ra.jewelry.name LIKE %:jewelryName%) " +
-            "AND (:category IS NULL OR :category = 'Tất cả' OR ra.jewelry.category.name = :category) " +
+            "AND (:category IS NULL OR ra.jewelry.category.name = :category) " +
             "AND ra.isConfirm = true AND ra.state = 'ACTIVE' " +
             "AND ra.jewelry.state = 'ACTIVE' AND ra.jewelry.isHolding = true")
     Page<RequestApproval> findRequestApprovalPassed(
