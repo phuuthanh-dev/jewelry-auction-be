@@ -39,7 +39,7 @@ public class Jewelry {
     @Column(name = "weight", nullable = false)
     private Double weight;
 
-    @Column(name = "is_holding", nullable = false)
+    @Column(name = "is_holding", nullable = true)
     private Boolean isHolding;
 
     @Column(name = "state", nullable = false)
