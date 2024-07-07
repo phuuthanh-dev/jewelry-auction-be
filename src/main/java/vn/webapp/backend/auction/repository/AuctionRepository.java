@@ -29,9 +29,11 @@ public interface AuctionRepository extends JpaRepository<Auction, Integer> {
     List<Auction> findByState(@Param("auctionState") AuctionState auctionState, @Param("auctionName") String auctionName);
 
     @Query("SELECT a FROM Auction a WHERE " +
-            "((:auctionState = 'DELETED' AND a.state != 'DELETED') " +
-            "OR (:auctionState != '' AND a.state = :auctionState)) " +
-            "AND (:categoryId = 0 OR a.jewelry.category.id = :categoryId) AND (:auctionName IS NULL OR a.name LIKE %:auctionName%)")
+            "((:auctionState IS NULL) OR " +
+            "(:auctionState = 'DELETED' AND a.state != 'DELETED') OR " +
+            "(:auctionState IS NOT NULL AND :auctionState != '' AND a.state = :auctionState)) " +
+            "AND (:categoryId = 0 OR a.jewelry.category.id = :categoryId) " +
+            "AND (:auctionName IS NULL OR a.name LIKE %:auctionName%)")
     Page<Auction> findByStateAndCategoryNotDeletedOrEmptyState(
             @Param("auctionState") AuctionState auctionState,
             @Param("auctionName") String auctionName,
