@@ -18,9 +18,15 @@ public interface TransactionRepository extends JpaRepository<Transaction, Intege
     @Query("SELECT t FROM Transaction t WHERE t.user.username = :username")
     Page<Transaction> findTransactionsByUsername(@Param("username") String username, Pageable pageable);
 
-    @Query("SELECT t FROM Transaction t WHERE t.type = :typename AND (:userName IS NULL OR CONCAT(t.user.firstName, ' ', t.user.lastName) LIKE %:userName%)  AND t.state=:state")
-    Page<Transaction> findTransactionByTypeAndState(@Param("typename") TransactionType typename,@Param("userName") String userName, @Param("state") TransactionState state, Pageable pageable);
-
+    @Query("SELECT t FROM Transaction t WHERE t.type = :typename " +
+            "AND (:userName IS NULL OR CONCAT(t.user.firstName, ' ', t.user.lastName) LIKE %:userName%) " +
+            "AND (:state IS NULL OR t.state = :state)")
+    Page<Transaction> findTransactionByTypeAndState(
+            @Param("typename") TransactionType typename,
+            @Param("userName") String userName,
+            @Param("state") TransactionState state,
+            Pageable pageable
+    );
     @Query("SELECT t FROM Transaction t WHERE t.paymentMethod IS NOT NULL AND t.type = :typename AND (:jewelryName IS NULL OR t.auction.jewelry.name LIKE %:jewelryName%) AND t.auction.jewelry.state = 'AUCTION' AND t.auction.jewelry.isHolding= true")
     Page<Transaction> findTransactionHandover(@Param("typename") TransactionType typename , @Param("jewelryName") String jewelryName, Pageable pageable);
 

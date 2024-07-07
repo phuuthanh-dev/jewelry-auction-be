@@ -176,7 +176,7 @@ public class AuctionServiceImpl implements AuctionService{
 
     @Override
     public Page<AuctionRegistrationDTO> getAuctionRegistrations(AuctionState state, String auctionName, Pageable pageable) {
-        List<Auction> auctions = auctionRepository.findByState(state, auctionName, pageable);
+        List<Auction> auctions = auctionRepository.findByState(state, auctionName);
         List<AuctionRegistrationDTO> list = auctions.stream()
                 .map(auction -> {
                     Integer numberOfParticipants = auctionRegistrationRepository.countValidParticipantsByAuctionId(auction.getId());
@@ -197,5 +197,10 @@ public class AuctionServiceImpl implements AuctionService{
         List<AuctionRegistrationDTO> pagedAuctions = list.subList(start, end);
 
         return new PageImpl<>(pagedAuctions , pageable, auctions.size());
+    }
+
+    @Override
+    public Page<Auction> getAllFailedAuctions(Pageable pageable, String auctionName) {
+        return auctionRepository.findAuctionFailedAndName(pageable, auctionName);
     }
 }
