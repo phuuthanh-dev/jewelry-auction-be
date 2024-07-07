@@ -26,4 +26,5 @@ public interface AuctionService {
     Auction createNewAuction(AuctionRequest request);
     void deleteAuctionResult(Integer transactionId) throws MessagingException;
     Page<AuctionRegistrationDTO> getAuctionRegistrations(AuctionState state, String auctionName, Pageable pageable);
+    Page<Auction> getAllFailedAuctions(Pageable pageable, String auctionName);
 }

@@ -65,4 +65,10 @@ public interface AuctionRepository extends JpaRepository<Auction, Integer> {
             "WHERE MONTH(a.createDate) = :month AND YEAR(a.createDate) = :year")
     Integer countAuctionsByMonthAndYear(@Param("month") Integer month, @Param("year") Integer year);
 
+    @Query("SELECT a FROM Auction a " +
+            "WHERE a.lastPrice IS NULL " +
+            "AND a.state = 'FINISHED' " +
+            "AND (:auctionName IS NULL OR a.name LIKE %:auctionName%)")
+    Page<Auction> findAuctionFailedAndName(Pageable pageable, @Param("auctionName") String auctionName);
+
 }

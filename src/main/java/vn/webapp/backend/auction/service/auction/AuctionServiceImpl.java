@@ -198,4 +198,9 @@ public class AuctionServiceImpl implements AuctionService{
 
         return new PageImpl<>(pagedAuctions , pageable, auctions.size());
     }
+
+    @Override
+    public Page<Auction> getAllFailedAuctions(Pageable pageable, String auctionName) {
+        return auctionRepository.findAuctionFailedAndName(pageable, auctionName);
+    }
 }

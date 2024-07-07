@@ -21,7 +21,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-@Transactional
 @Service
 @RequiredArgsConstructor
 public class TransactionServiceImpl implements TransactionService {
@@ -77,6 +76,7 @@ public class TransactionServiceImpl implements TransactionService {
     }
 
     @Override
+    @Transactional
     public void setTransactionState(Integer id, String state) {
         var existingTransaction = transactionRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException(ErrorMessages.AUCTION_NOT_FOUND));
@@ -84,6 +84,7 @@ public class TransactionServiceImpl implements TransactionService {
     }
 
     @Override
+    @Transactional
     public void setTransactionMethod(Integer id, String method) {
         var existingTransaction = transactionRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException(ErrorMessages.AUCTION_NOT_FOUND));
@@ -91,6 +92,7 @@ public class TransactionServiceImpl implements TransactionService {
     }
 
     @Override
+    @Transactional
     public void setTransactionAfterPaySuccess(Integer transactionId) {
         var existingAuction = transactionRepository.findById(transactionId)
                 .orElseThrow(() -> new ResourceNotFoundException(ErrorMessages.AUCTION_NOT_FOUND));
@@ -107,22 +109,40 @@ public class TransactionServiceImpl implements TransactionService {
         var userWin = userRepository.findLatestUserInAuctionHistoryByAuctionId(auction.getId())
                 .orElseThrow(() -> new ResourceNotFoundException(ErrorMessages.USER_WINNER_NOT_FOUND));
 
-        if (hasTransactionForAuctionAndUser(auctionId, userWin.getId())) {
-            return userWin;
+        if (!hasTransactionForAuctionAndUser(auctionId, userWin.getId())) {
+            Transaction winnerTransaction = Transaction.builder()
+                    .user(userWin)
+                    .auction(auction)
+                    .state(TransactionState.PENDING)
+                    .totalPrice(auction.getLastPrice())
+                    .feesIncurred(0.0)
+                    .createDate(auction.getEndDate())
+                    .type(TransactionType.PAYMENT_TO_WINNER)
+                    .build();
+
+            transactionRepository.save(winnerTransaction);
         }
 
-        Transaction transaction = Transaction.builder()
-                .user(userWin)
-                .auction(auction)
-                .state(TransactionState.PENDING)
-                .totalPrice(auction.getLastPrice())
-                .feesIncurred(0.0)
-                .createDate(auction.getEndDate())
-                .type(TransactionType.PAYMENT_TO_WINNER)
-                .build();
+        var otherUsers = userRepository.findUsersInAuctionHistoryByAuctionIdExceptWinner(auction.getId(), userWin.getId());
+        for (var user : otherUsers) {
+            if (!hasTransactionForAuctionAndUser(auctionId, user.getId())) {
+                Transaction refundTransaction = Transaction.builder()
+                        .user(user)
+                        .auction(auction)
+                        .state(TransactionState.PENDING)
+                        .totalPrice(auction.getDeposit())
+                        .feesIncurred(0.0)
+                        .createDate(auction.getEndDate())
+                        .type(TransactionType.REFUND)
+                        .build();
 
-        transactionRepository.save(transaction);
-
+                try {
+                    transactionRepository.save(refundTransaction);
+                } catch (Exception e) {
+                    System.out.println("Error creating refund transaction for user: " + user.getUsername() + " in auction: " + auctionId + ". Error: " + e.getMessage());
+                }
+            }
+        }
         return userWin;
     }
 
