@@ -54,12 +54,12 @@ public interface AuctionRepository extends JpaRepository<Auction, Integer> {
     Integer countAllAuctionsFinished();
 
     @Query("SELECT COUNT(a) FROM Auction a WHERE a.state = 'FINISHED' " +
-            "AND a.id NOT IN (SELECT ah.auction.id FROM AuctionHistory ah)")
-    Integer countAllAuctionsFailed();
+            "AND a.id NOT IN (SELECT ah.auction.id FROM AuctionHistory ah)  AND YEAR(a.endDate) = :year AND MONTH(a.endDate) = :month")
+    Integer countAllAuctionsFailed(@Param("month") Integer month, @Param("year") Integer year);
 
     @Query("SELECT COUNT(a) FROM Auction a WHERE a.state = 'FINISHED' " +
-            "AND a.id IN (SELECT ah.auction.id FROM AuctionHistory ah)")
-    Integer countAllAuctionsSuccessful();
+            "AND a.id IN (SELECT ah.auction.id FROM AuctionHistory ah) AND YEAR(a.endDate) = :year AND MONTH(a.endDate) = :month")
+    Integer countAllAuctionsSuccessful(@Param("month") Integer month, @Param("year") Integer year);
 
     @Query("SELECT COUNT(a) FROM Auction a " +
             "WHERE MONTH(a.createDate) = :month AND YEAR(a.createDate) = :year")

@@ -9,6 +9,8 @@ import vn.webapp.backend.auction.enums.JewelryState;
 import vn.webapp.backend.auction.enums.Role;
 import vn.webapp.backend.auction.repository.*;
 
+import java.time.Year;
+
 import java.time.LocalDateTime;
 
 @Service
@@ -21,19 +23,19 @@ public class DashBoardService {
     private final AuctionRegistrationRepository auctionRegistrationRepository;
     private final TransactionRepository transactionRepository;
 
-    public DashBoardResponse getInformation(Integer yearGetRegisterAccount, Integer yearGetAuction, Integer yearGetRevenue) {
+    public DashBoardResponse getInformation(Integer yearGetRegisterAccount, Integer yearGetAuction, Integer yearGetRevenue,
+                                            Integer yearGetAuctionFailedAndSuccess, Integer monthGetAuctionFailedAndSuccess,
+                                            Integer yearGetUserJoinAuction) {
         LocalDateTime startOfDay = LocalDateTime.now().withHour(0).withMinute(0).withSecond(0).withNano(0);
         LocalDateTime startOfNextDay = startOfDay.plusDays(1);
 
         // Total counts
         Integer totalUser = userRepository.getTotalUser();
-        Integer totalAuction = auctionRepository.countAllAuctions();
         Integer totalActiveJewelry = jewelryRepository.countAllJewelriesByState(JewelryState.ACTIVE);
         Integer totalApprovingJewelry = jewelryRepository.countAllJewelriesByState(JewelryState.APPROVING);
         Integer totalAuctionJewelry = jewelryRepository.countAllJewelriesByState(JewelryState.AUCTION);
-        Integer totalAuctionFailed = auctionRepository.countAllAuctionsFailed();
-        Integer totalAuctionSuccess = auctionRepository.countAllAuctionsSuccessful();
-        Integer totalAuctionsFinished = auctionRepository.countAllAuctionsFinished();
+        Integer auctionFailed = auctionRepository.countAllAuctionsFailed(monthGetAuctionFailedAndSuccess, yearGetAuctionFailedAndSuccess);
+        Integer auctionSuccess = auctionRepository.countAllAuctionsSuccessful(monthGetAuctionFailedAndSuccess, yearGetAuctionFailedAndSuccess);
         Integer totalUsersVerified = userRepository.getTotalUserByState(AccountState.VERIFIED);
         Integer totalUsersActive = userRepository.getTotalUserByState(AccountState.ACTIVE);
         Integer totalUsersInActive = userRepository.getTotalUserByState(AccountState.INACTIVE);
@@ -41,18 +43,15 @@ public class DashBoardService {
         Integer totalStaffs = userRepository.getTotalUserByRole(Role.STAFF);
         Integer totalManagers = userRepository.getTotalUserByRole(Role.MANAGER);
         Integer totalAdmins = userRepository.getTotalUserByRole(Role.ADMIN);
-        Long totalUsersRegister = auctionRegistrationRepository.countDistinctUsersRegistered();
-        Long totalUsersNotRegistered = totalUser - totalUsersRegister;
 
         // Total revenues
-        Double totalCommissionRevenue = transactionRepository.getTotalCommissionRevenue();
         Double totalRevenueToday = transactionRepository.getTotalRevenueToday(startOfDay, startOfNextDay);
-        Double totalRegistrationFeeRevenue = transactionRepository.getTotalRegistrationFeeRevenue();
 
         // Arrays for monthly data
         Integer[] totalUsersRegisterByMonth = new Integer[12];
         Integer[] totalAuctionByMonth = new Integer[12];
         Double[] totalRevenueByMonth = new Double[12];
+        Double[] totalParticipationByMonth = new Double[12];
 
         // Calculate data for each month of the year
         for (int month = 1; month <= 12; month++) {
@@ -66,14 +65,24 @@ public class DashBoardService {
             totalRegistrationFeeRevenueByMonthAndYear = (totalRegistrationFeeRevenueByMonthAndYear != null) ? totalRegistrationFeeRevenueByMonthAndYear : 0.0;
 
             totalRevenueByMonth[month - 1] = totalRevenue + totalRegistrationFeeRevenueByMonthAndYear;
+
+
+            Long participation = auctionRegistrationRepository.countDistinctUsersRegistered(month, yearGetUserJoinAuction);
+            totalParticipationByMonth[month - 1] = participation.doubleValue();
         }
 
-        double percentAuctionFailed = (double) totalAuctionFailed / totalAuctionsFinished * 100;
-        double percentAuctionSuccess = (double) totalAuctionSuccess / totalAuctionsFinished * 100;
-        double participationRate = (double) totalUsersRegister / totalUser * 100;
-        double notParticipationRate = (double) totalUsersNotRegistered / totalUser * 100;
+        // Calculate revenue for the last 10 years
+        Double[] totalRevenueNear10Year = new Double[10];
+        for (int i = 0; i < 10; i++) {
+            int year = Year.now().getValue() - 9 + i;
+            Double totalRevenueForYear = transactionRepository.getTotalCommissionRevenueByYear(year);
+            totalRevenueForYear = (totalRevenueForYear != null) ? totalRevenueForYear : 0.0;
 
-        Double totalRevenue = totalRegistrationFeeRevenue + totalCommissionRevenue;
+            Double totalRegistrationFeeRevenueForYear = transactionRepository.getTotalRegistrationFeeRevenueByYear(year);
+            totalRegistrationFeeRevenueForYear = (totalRegistrationFeeRevenueForYear != null) ? totalRegistrationFeeRevenueForYear : 0.0;
+
+            totalRevenueNear10Year[i] = totalRevenueForYear + totalRegistrationFeeRevenueForYear;
+        }
 
         return DashBoardResponse.builder()
                 .totalUser(totalUser)
@@ -81,7 +90,6 @@ public class DashBoardService {
                 .totalJewelryActive(totalActiveJewelry)
                 .totalJewelryWaitApproving(totalApprovingJewelry)
                 .totalAuctionJewelry(totalAuctionJewelry)
-                .totalAuctions(totalAuction)
                 .totalUsersVerified(totalUsersVerified)
                 .totalUsersActive(totalUsersActive)
                 .totalUsersInActive(totalUsersInActive)
@@ -91,11 +99,10 @@ public class DashBoardService {
                 .totalAdmins(totalAdmins)
                 .totalUsersByMonth(totalUsersRegisterByMonth)
                 .totalAuctionByMonth(totalAuctionByMonth)
-                .percentAuctionFailed(percentAuctionFailed)
-                .percentAuctionSuccess(percentAuctionSuccess)
-                .notParticipationRate(notParticipationRate)
-                .participationRate(participationRate)
-                .totalRevenue(totalRevenue)
+                .auctionFailed(auctionFailed)
+                .auctionSuccess(auctionSuccess)
+                .totalParticipationByMonth(totalParticipationByMonth)
+                .totalRevenueNear10Year(totalRevenueNear10Year)
                 .totalRevenueByMonth(totalRevenueByMonth)
                 .build();
     }
