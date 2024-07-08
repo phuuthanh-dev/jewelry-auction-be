@@ -28,8 +28,8 @@ public interface AuctionRegistrationRepository extends JpaRepository<AuctionRegi
     @Query("SELECT SUM(ar.registrationFee) FROM AuctionRegistration ar")
     Double sumTotalRegistrationFee();
 
-    @Query("SELECT COUNT(DISTINCT ar.user.id) FROM AuctionRegistration ar WHERE ar.auctionRegistrationState = 'VALID'")
-    Long countDistinctUsersRegistered();
+    @Query("SELECT COUNT(DISTINCT ar.user.id) FROM AuctionRegistration ar WHERE ar.auctionRegistrationState = 'VALID' AND MONTH(ar.registrationDate) = :month AND YEAR(ar.registrationDate) = :year")
+    Long countDistinctUsersRegistered(@Param("month") Integer month, @Param("year") Integer year);
 
     @Query("SELECT COUNT(ar) FROM AuctionRegistration ar WHERE ar.auction.id = :auctionId AND ar.auctionRegistrationState = 'VALID'")
     Integer countValidParticipantsByAuctionId(@Param("auctionId") Integer auctionId);
