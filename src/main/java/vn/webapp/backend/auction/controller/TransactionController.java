@@ -44,12 +44,13 @@ public class TransactionController {
     public ResponseEntity<Page<Transaction>> getAuctionHistoryByUsername(
             @RequestParam(defaultValue = "createDate") String sortBy,
             @RequestParam(defaultValue = "0") String username,
+            @RequestParam(required = false) String assetName,
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "5") int size,
             @RequestParam(defaultValue = "desc") String sortOrder) {
         Sort.Direction direction = (sortOrder.equalsIgnoreCase("desc")) ? Sort.Direction.DESC : Sort.Direction.ASC;
         Pageable pageable = PageRequest.of(page, size, direction, sortBy);
-        return ResponseEntity.ok(transactionService.getTransactionsByUsername(username, pageable));
+        return ResponseEntity.ok(transactionService.getTransactionsByUsername(username,assetName, pageable));
     }
 
     @GetMapping("/get-by-type-state")

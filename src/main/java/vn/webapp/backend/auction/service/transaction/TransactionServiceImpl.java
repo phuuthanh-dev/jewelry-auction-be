@@ -57,8 +57,8 @@ public class TransactionServiceImpl implements TransactionService {
     }
 
     @Override
-    public Page<Transaction> getTransactionsByUsername(String username, Pageable pageable) {
-        return transactionRepository.findTransactionsByUsername(username, pageable);
+    public Page<Transaction> getTransactionsByUsername(String username, String assetName, Pageable pageable) {
+        return transactionRepository.findTransactionsByUsername(username,assetName, pageable);
     }
 
     @Override

@@ -9,5 +9,5 @@ import java.util.List;
 public interface AuctionRegistrationService {
     void registerUserForAuction(String username, Integer auctionId);
     List<AuctionRegistration> findByAuctionIdAndValid(Integer auctionId);
-    Page<AuctionRegistration> findByUserIdAndValid(Integer userId, Pageable pageable);
+    Page<AuctionRegistration> findByUserIdAndValid(Integer userId, String auctionName, Pageable pageable);
 }
