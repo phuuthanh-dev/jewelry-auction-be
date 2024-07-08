@@ -30,7 +30,7 @@ public class RequestApprovalController {
 
     @PutMapping("/set-state/{id}")
     public ResponseEntity<RequestApproval> setState(@PathVariable Integer id, @RequestParam Integer responderId, @RequestParam String state) {
-        requestApprovalService.setRequestState(id,responderId, state);
+        requestApprovalService.setRequestState(id, responderId, state);
         return ResponseEntity.ok().build();
     }
 
@@ -57,7 +57,7 @@ public class RequestApprovalController {
             @RequestParam(defaultValue = "asc") String sortOrder) {
         Sort.Direction direction = (sortOrder.equalsIgnoreCase("asc")) ? Sort.Direction.ASC : Sort.Direction.DESC;
         Pageable pageable = PageRequest.of(page, size, direction, sortBy);
-        return ResponseEntity.ok(requestApprovalService.getRequestBySenderRole(role,jewelryName,category,pageable));
+        return ResponseEntity.ok(requestApprovalService.getRequestBySenderRole(role, jewelryName, category, pageable));
     }
 
 
@@ -99,7 +99,7 @@ public class RequestApprovalController {
             @RequestParam(defaultValue = "desc") String sortOrder) {
         Sort.Direction direction = (sortOrder.equalsIgnoreCase("asc")) ? Sort.Direction.ASC : Sort.Direction.DESC;
         Pageable pageable = PageRequest.of(page, size, direction, sortBy);
-        return ResponseEntity.ok(requestApprovalService.getRequestApprovalByUserId(id, jewelryName,pageable));
+        return ResponseEntity.ok(requestApprovalService.getRequestApprovalByUserId(id, jewelryName, pageable));
     }
 
     @GetMapping("/request-passed")

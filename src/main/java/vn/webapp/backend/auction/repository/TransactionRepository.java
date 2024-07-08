@@ -33,11 +33,11 @@ public interface TransactionRepository extends JpaRepository<Transaction, Intege
     @Query("SELECT COUNT(t) FROM Transaction t WHERE t.type = 'REGISTRATION' AND t.user.username = :username")
     Integer getCountTransactionsRegistrationByUsername(@Param("username") String username);
 
-    @Query("SELECT SUM(t.totalPrice * 0.08) FROM Transaction t WHERE t.type = 'PAYMENT_TO_WINNER' AND t.state = 'SUCCEED'")
-    Double getTotalCommissionRevenue();
+    @Query("SELECT SUM(t.totalPrice * 0.08) FROM Transaction t WHERE t.type = 'PAYMENT_TO_WINNER' AND t.state = 'SUCCEED' AND YEAR(t.paymentTime) = :year")
+    Double getTotalCommissionRevenueByYear(@Param("year") Integer year);
 
-    @Query("SELECT SUM(t.auction.participationFee) FROM Transaction t WHERE t.type = 'REGISTRATION' AND t.state = 'SUCCEED'")
-    Double getTotalRegistrationFeeRevenue();
+    @Query("SELECT SUM(t.auction.participationFee) FROM Transaction t WHERE t.type = 'REGISTRATION' AND t.state = 'SUCCEED' AND YEAR(t.paymentTime) = :year")
+    Double getTotalRegistrationFeeRevenueByYear(@Param("year") Integer year);
 
     @Query("SELECT COALESCE(SUM(t.totalPrice * 0.08), 0) " +
             "FROM Transaction t " +
