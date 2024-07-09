@@ -15,23 +15,29 @@ import java.util.List;
 import java.util.Optional;
 
 public interface TransactionRepository extends JpaRepository<Transaction, Integer> {
-    @Query("SELECT t FROM Transaction t WHERE t.user.username = :username")
-    Page<Transaction> findTransactionsByUsername(@Param("username") String username, Pageable pageable);
+    @Query("SELECT t FROM Transaction t WHERE t.user.username = :username AND (:assetName IS NULL OR t.auction.name LIKE %:assetName%)")
+    Page<Transaction> findTransactionsByUsername(@Param("username") String username,@Param("assetName") String assetName, Pageable pageable);
 
-    @Query("SELECT t FROM Transaction t WHERE t.type = :typename AND (:userName IS NULL OR CONCAT(t.user.firstName, ' ', t.user.lastName) LIKE %:userName%)  AND t.state=:state")
-    Page<Transaction> findTransactionByTypeAndState(@Param("typename") TransactionType typename,@Param("userName") String userName, @Param("state") TransactionState state, Pageable pageable);
-
+    @Query("SELECT t FROM Transaction t WHERE t.type = :typename " +
+            "AND (:userName IS NULL OR CONCAT(t.user.firstName, ' ', t.user.lastName) LIKE %:userName%) " +
+            "AND (:state IS NULL OR t.state = :state)")
+    Page<Transaction> findTransactionByTypeAndState(
+            @Param("typename") TransactionType typename,
+            @Param("userName") String userName,
+            @Param("state") TransactionState state,
+            Pageable pageable
+    );
     @Query("SELECT t FROM Transaction t WHERE t.paymentMethod IS NOT NULL AND t.type = :typename AND (:jewelryName IS NULL OR t.auction.jewelry.name LIKE %:jewelryName%) AND t.auction.jewelry.state = 'AUCTION' AND t.auction.jewelry.isHolding= true")
     Page<Transaction> findTransactionHandover(@Param("typename") TransactionType typename , @Param("jewelryName") String jewelryName, Pageable pageable);
 
     @Query("SELECT COUNT(t) FROM Transaction t WHERE t.type = 'REGISTRATION' AND t.user.username = :username")
     Integer getCountTransactionsRegistrationByUsername(@Param("username") String username);
 
-    @Query("SELECT SUM(t.totalPrice * 0.08) FROM Transaction t WHERE t.type = 'PAYMENT_TO_WINNER' AND t.state = 'SUCCEED'")
-    Double getTotalCommissionRevenue();
+    @Query("SELECT SUM(t.totalPrice * 0.08) FROM Transaction t WHERE t.type = 'PAYMENT_TO_WINNER' AND t.state = 'SUCCEED' AND YEAR(t.paymentTime) = :year")
+    Double getTotalCommissionRevenueByYear(@Param("year") Integer year);
 
-    @Query("SELECT SUM(t.auction.participationFee) FROM Transaction t WHERE t.type = 'REGISTRATION' AND t.state = 'SUCCEED'")
-    Double getTotalRegistrationFeeRevenue();
+    @Query("SELECT SUM(t.auction.participationFee) FROM Transaction t WHERE t.type = 'REGISTRATION' AND t.state = 'SUCCEED' AND YEAR(t.paymentTime) = :year")
+    Double getTotalRegistrationFeeRevenueByYear(@Param("year") Integer year);
 
     @Query("SELECT COALESCE(SUM(t.totalPrice * 0.08), 0) " +
             "FROM Transaction t " +
@@ -61,10 +67,11 @@ public interface TransactionRepository extends JpaRepository<Transaction, Intege
             "WHERE t.type = 'PAYMENT_TO_WINNER' " +
             "AND t.state != 'SUCCEED' " +
             "AND t.state != 'FAILED' " +
-            "AND t.createDate < :threeDaysAgo " +
+            "AND t.state != 'HIDDEN' " +
+            "AND t.createDate < :sevenDaysAgo " +
             "AND (:userName IS NULL OR CONCAT(t.user.firstName, ' ', t.user.lastName) LIKE %:userName%)")
     Page<Transaction> findOverdueTransactions(@Param("userName") String userName,
-                                              @Param("threeDaysAgo") LocalDateTime threeDaysAgo,
+                                              @Param("sevenDaysAgo") LocalDateTime sevenDaysAgo,
                                               Pageable pageable);
 
     @Query("SELECT SUM(t.totalPrice) FROM Transaction t WHERE t.type = 'PAYMENT_TO_WINNER' AND t.user.username = :username")

@@ -25,13 +25,13 @@ public interface AuctionRepository extends JpaRepository<Auction, Integer> {
     List<Auction> findByState(@Param("auctionState") AuctionState auctionState);
 
     //    @Query("SELECT a FROM Auction a WHERE a.state = :auctionState AND (:auctionName IS NULL OR a.name LIKE %:auctionName%)")
-    @Query("SELECT a FROM Auction a WHERE (:auctionState IS NULL AND a.state <> 'DELETED') OR (a.state = :auctionState) AND (:auctionName IS NULL OR a.name LIKE %:auctionName%)")
-    List<Auction> findByState(@Param("auctionState") AuctionState auctionState, @Param("auctionName") String auctionName, Pageable pageable);
+    @Query("SELECT a FROM Auction a WHERE ((:auctionState IS NULL AND a.state <> 'DELETED') OR (a.state = :auctionState)) AND (:auctionName IS NULL OR a.name LIKE %:auctionName%)")
+    List<Auction> findByState(@Param("auctionState") AuctionState auctionState, @Param("auctionName") String auctionName);
 
     @Query("SELECT a FROM Auction a WHERE " +
-            "((:auctionState = 'DELETED' AND a.state != 'DELETED') " +
-            "OR (:auctionState != '' AND a.state = :auctionState)) " +
-            "AND (:categoryId = 0 OR a.jewelry.category.id = :categoryId) AND (:auctionName IS NULL OR a.name LIKE %:auctionName%)")
+            "(:auctionState IS NULL OR a.state = :auctionState) " +
+            "AND (:categoryId = 0 OR a.jewelry.category.id = :categoryId) " +
+            "AND (:auctionName IS NULL OR a.name LIKE %:auctionName%)")
     Page<Auction> findByStateAndCategoryNotDeletedOrEmptyState(
             @Param("auctionState") AuctionState auctionState,
             @Param("auctionName") String auctionName,
@@ -54,15 +54,21 @@ public interface AuctionRepository extends JpaRepository<Auction, Integer> {
     Integer countAllAuctionsFinished();
 
     @Query("SELECT COUNT(a) FROM Auction a WHERE a.state = 'FINISHED' " +
-            "AND a.id NOT IN (SELECT ah.auction.id FROM AuctionHistory ah)")
-    Integer countAllAuctionsFailed();
+            "AND a.id NOT IN (SELECT ah.auction.id FROM AuctionHistory ah)  AND YEAR(a.endDate) = :year AND MONTH(a.endDate) = :month")
+    Integer countAllAuctionsFailed(@Param("month") Integer month, @Param("year") Integer year);
 
     @Query("SELECT COUNT(a) FROM Auction a WHERE a.state = 'FINISHED' " +
-            "AND a.id IN (SELECT ah.auction.id FROM AuctionHistory ah)")
-    Integer countAllAuctionsSuccessful();
+            "AND a.id IN (SELECT ah.auction.id FROM AuctionHistory ah) AND YEAR(a.endDate) = :year AND MONTH(a.endDate) = :month")
+    Integer countAllAuctionsSuccessful(@Param("month") Integer month, @Param("year") Integer year);
 
     @Query("SELECT COUNT(a) FROM Auction a " +
             "WHERE MONTH(a.createDate) = :month AND YEAR(a.createDate) = :year")
     Integer countAuctionsByMonthAndYear(@Param("month") Integer month, @Param("year") Integer year);
+
+    @Query("SELECT a FROM Auction a " +
+            "WHERE a.lastPrice IS NULL " +
+            "AND a.state = 'FINISHED' " +
+            "AND (:auctionName IS NULL OR a.name LIKE %:auctionName%)")
+    Page<Auction> findAuctionFailedAndName(Pageable pageable, @Param("auctionName") String auctionName);
 
 }

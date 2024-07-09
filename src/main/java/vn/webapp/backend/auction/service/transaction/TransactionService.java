@@ -21,7 +21,7 @@ public interface TransactionService {
 
     void setTransactionMethod(Integer id, String method);
 
-    Page<Transaction> getTransactionsByUsername (String username, Pageable pageable);
+    Page<Transaction> getTransactionsByUsername (String username, String assetName, Pageable pageable);
 
     User createTransactionForWinner(Integer auctionId);
 
@@ -32,4 +32,6 @@ public interface TransactionService {
     List<Transaction> createTransactionForWinnerIfNotExists(Integer userId);
 
     Page<Transaction> getOverdueTransactions(String userName,Pageable pageable);
+
+    void setTransactionAfterPaySuccess(Integer transactionId);
 }

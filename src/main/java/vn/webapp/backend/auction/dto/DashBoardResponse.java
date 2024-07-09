@@ -10,7 +10,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class DashBoardResponse {
-    private Integer totalAuctions;
     private Double totalRevenueToday;
     private Integer totalUser;
     private Integer totalJewelryActive;
@@ -23,12 +22,11 @@ public class DashBoardResponse {
     private Integer totalStaffs;
     private Integer totalManagers;
     private Integer totalAdmins;
-    private double percentAuctionFailed;
-    private double percentAuctionSuccess;
-    private double participationRate;
-    private double notParticipationRate;
+    private double auctionFailed;
+    private double auctionSuccess;
+    private Double[] totalParticipationByMonth;
     private Integer[] totalUsersByMonth;
     private Integer[] totalAuctionByMonth;
-    private Double totalRevenue;
+    private Double[] totalRevenueNear10Year;
     private Double[] totalRevenueByMonth;
 }

@@ -1,6 +1,8 @@
 package vn.webapp.backend.auction.controller;
 
+import jakarta.mail.MessagingException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -12,6 +14,7 @@ import vn.webapp.backend.auction.dto.AuctionRequest;
 import vn.webapp.backend.auction.enums.AuctionState;
 import vn.webapp.backend.auction.model.Auction;
 import vn.webapp.backend.auction.service.auction.AuctionService;
+import vn.webapp.backend.auction.service.email.EmailService;
 
 import java.util.List;
 
@@ -21,19 +24,21 @@ import java.util.List;
 @RequestMapping("/api/v1/auction")
 public class AuctionController {
     private final AuctionService auctionService;
+    private final EmailService emailService;
 
     @GetMapping("/sorted-and-paged")
     public ResponseEntity<Page<Auction>> getAllAuctionsSortedAndPaged(
             @RequestParam(defaultValue = "startDate") String sortBy,
             @RequestParam(required = false) String auctionName,
-            @RequestParam(defaultValue = "DELETED") AuctionState state,
+            @RequestParam(defaultValue = "ALL") String state,
             @RequestParam(defaultValue = "0") Integer categoryId,
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "5") int size,
             @RequestParam(defaultValue = "asc") String sortOrder) {
+        AuctionState auctionState = resolveAuctionState(state);
         Sort.Direction direction = (sortOrder.equalsIgnoreCase("asc")) ? Sort.Direction.ASC : Sort.Direction.DESC;
         Pageable pageable = PageRequest.of(page, size, direction, sortBy);
-        return ResponseEntity.ok(auctionService.getAllAuctions(state, pageable, auctionName, categoryId));
+        return ResponseEntity.ok(auctionService.getAllAuctions(auctionState, pageable, auctionName, categoryId));
     }
 
     @GetMapping("/get-by-day/{startDate}/{endDate}")
@@ -138,5 +143,23 @@ public class AuctionController {
         Sort.Direction direction = (sortOrder.equalsIgnoreCase("asc")) ? Sort.Direction.ASC : Sort.Direction.DESC;
         Pageable pageable = PageRequest.of(page, size, direction, sortBy);
         return ResponseEntity.ok(auctionService.getAuctionRegistrations(auctionState, auctionName, pageable));
+    }
+
+    @GetMapping("/delete-result/{id}")
+    public ResponseEntity<Void> deleteResult(@PathVariable Integer id) throws MessagingException {
+        auctionService.deleteAuctionResult(id);
+        return ResponseEntity.ok().build();
+    }
+
+    @GetMapping("/get-failed-auctions")
+    public ResponseEntity<Page<Auction>> getAllFailedAuctions(
+            @RequestParam(defaultValue = "endDate") String sortBy,
+            @RequestParam(required = false) String auctionName,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "5") int size,
+            @RequestParam(defaultValue = "asc") String sortOrder) {
+        Sort.Direction direction = (sortOrder.equalsIgnoreCase("asc")) ? Sort.Direction.ASC : Sort.Direction.DESC;
+        Pageable pageable = PageRequest.of(page, size, direction, sortBy);
+        return ResponseEntity.ok(auctionService.getAllFailedAuctions(pageable, auctionName));
     }
 }

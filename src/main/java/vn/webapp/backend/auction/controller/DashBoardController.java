@@ -18,8 +18,13 @@ public class DashBoardController {
     public ResponseEntity<DashBoardResponse> getDashBoardTotal(
             @RequestParam("yearGetRegisterAccount") Integer yearGetRegisterAccount,
             @RequestParam("yearGetAuction") Integer yearGetAuction,
-            @RequestParam("yearGetRevenue") Integer yearGetRevenue
+            @RequestParam("yearGetRevenue") Integer yearGetRevenue,
+            @RequestParam("yearGetAuctionFailedAndSuccess") Integer yearGetAuctionFailedAndSuccess,
+            @RequestParam("monthGetAuctionFailedAndSuccess") Integer monthGetAuctionFailedAndSuccess,
+            @RequestParam("yearGetUserJoinAuction") Integer yearGetUserJoinAuction
     ) {
-        return ResponseEntity.ok(dashBoardService.getInformation(yearGetRegisterAccount, yearGetAuction, yearGetRevenue));
+        return ResponseEntity.ok(dashBoardService.getInformation(yearGetRegisterAccount, yearGetAuction, yearGetRevenue,
+                yearGetAuctionFailedAndSuccess, monthGetAuctionFailedAndSuccess,
+                yearGetUserJoinAuction));
     }
 }

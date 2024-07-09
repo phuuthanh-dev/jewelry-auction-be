@@ -69,8 +69,7 @@ public class VNPAYController {
         if (!status.equals("00")) {
             redirectUrl += "?paymentStatus=failed";
         } else {
-            transactionService.setTransactionState(transactionId, "SUCCEED");
-            transactionService.setTransactionMethod(transactionId, "BANKING");
+            transactionService.setTransactionAfterPaySuccess(transactionId);
             redirectUrl += "?paymentStatus=success";
         }
 

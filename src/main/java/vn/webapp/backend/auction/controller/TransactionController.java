@@ -8,6 +8,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import vn.webapp.backend.auction.dto.UserTransactionResponse;
+import vn.webapp.backend.auction.enums.AuctionState;
 import vn.webapp.backend.auction.enums.TransactionState;
 import vn.webapp.backend.auction.enums.TransactionType;
 import vn.webapp.backend.auction.model.Transaction;
@@ -43,12 +44,13 @@ public class TransactionController {
     public ResponseEntity<Page<Transaction>> getAuctionHistoryByUsername(
             @RequestParam(defaultValue = "createDate") String sortBy,
             @RequestParam(defaultValue = "0") String username,
+            @RequestParam(required = false) String assetName,
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "5") int size,
             @RequestParam(defaultValue = "desc") String sortOrder) {
         Sort.Direction direction = (sortOrder.equalsIgnoreCase("desc")) ? Sort.Direction.DESC : Sort.Direction.ASC;
         Pageable pageable = PageRequest.of(page, size, direction, sortBy);
-        return ResponseEntity.ok(transactionService.getTransactionsByUsername(username, pageable));
+        return ResponseEntity.ok(transactionService.getTransactionsByUsername(username,assetName, pageable));
     }
 
     @GetMapping("/get-by-type-state")
@@ -58,11 +60,12 @@ public class TransactionController {
             @RequestParam(required = false) String userName,
             @RequestParam(defaultValue = "5") int size,
             @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "SUCCEED") TransactionState state,
+            @RequestParam(defaultValue = "SUCCEED") String state,
             @RequestParam(defaultValue = "desc") String sortOrder) {
+        TransactionState transactionState = resolveTransactionState(state);
         Sort.Direction direction = (sortOrder.equalsIgnoreCase("desc")) ? Sort.Direction.DESC : Sort.Direction.ASC;
         Pageable pageable = PageRequest.of(page, size, direction, sortBy);
-        return ResponseEntity.ok(transactionService.getTransactionByTypeAndState(type,userName, state, pageable));
+        return ResponseEntity.ok(transactionService.getTransactionByTypeAndState(type, userName, transactionState, pageable));
     }
 
     @GetMapping("/get-handover")
@@ -111,5 +114,13 @@ public class TransactionController {
     @PostMapping("/create-transaction-for-winner-if-not-exist/{userId}")
     public ResponseEntity<List<Transaction>> createTransactionForWinnerIfNotExist(@PathVariable Integer userId) {
         return ResponseEntity.ok(transactionService.createTransactionForWinnerIfNotExists(userId));
+    }
+
+    private TransactionState resolveTransactionState(String state) {
+        if ("ALL".equalsIgnoreCase(state)) {
+            return null;
+        } else {
+            return TransactionState.valueOf(state);
+        }
     }
 }
