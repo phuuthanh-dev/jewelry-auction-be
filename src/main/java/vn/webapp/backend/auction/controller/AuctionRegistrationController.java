@@ -30,11 +30,12 @@ public class AuctionRegistrationController {
     public ResponseEntity<Page<AuctionRegistration>> getAuctionRegistrationsByUser(
             @RequestParam(defaultValue = "registrationDate") String sortBy,
             @RequestParam(defaultValue = "5") int size,
+            @RequestParam(required = false) String auctionName,
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "0") int userId,
             @RequestParam(defaultValue = "desc") String sortOrder) {
         Sort.Direction direction = (sortOrder.equalsIgnoreCase("desc")) ? Sort.Direction.DESC : Sort.Direction.ASC;
         Pageable pageable = PageRequest.of(page, size, direction, sortBy);
-        return ResponseEntity.ok(auctionRegistrationService.findByUserIdAndValid(userId, pageable));
+        return ResponseEntity.ok(auctionRegistrationService.findByUserIdAndValid(userId,auctionName, pageable));
     }
 }
