@@ -15,7 +15,7 @@ import java.util.List;
 import java.util.Optional;
 
 public interface TransactionRepository extends JpaRepository<Transaction, Integer> {
-    @Query("SELECT t FROM Transaction t WHERE t.user.username = :username")
+    @Query("SELECT t FROM Transaction t WHERE t.user.username = :username AND t.state != 'HIDDEN'")
     Page<Transaction> findTransactionsByUsername(@Param("username") String username, Pageable pageable);
 
     @Query("SELECT t FROM Transaction t WHERE t.type = :typename " +

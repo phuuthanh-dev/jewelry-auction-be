@@ -126,7 +126,6 @@ public class AuctionServiceImpl implements AuctionService{
 
     @Override
     public Page<Auction> getAllAuctions(AuctionState state, Pageable pageable, String auctionName, Integer categoryId) {
-        System.out.println("state: " + state);
         return auctionRepository.findByStateAndCategoryNotDeletedOrEmptyState(state,auctionName, pageable, categoryId);
     }
 
