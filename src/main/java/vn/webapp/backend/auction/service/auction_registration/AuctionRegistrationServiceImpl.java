@@ -75,8 +75,8 @@ public class AuctionRegistrationServiceImpl implements AuctionRegistrationServic
     }
 
     @Override
-    public Page<AuctionRegistration> findByUserIdAndValid(Integer userId, Pageable pageable) {
-        return  auctionRegistrationRepository.findByUserIdAndValid(userId,pageable);
+    public Page<AuctionRegistration> findByUserIdAndValid(Integer userId,String auctionName, Pageable pageable) {
+        return  auctionRegistrationRepository.findByUserIdAndValid(userId,auctionName,pageable);
     }
 
 }

@@ -19,8 +19,8 @@ public interface AuctionRegistrationRepository extends JpaRepository<AuctionRegi
     @Query("SELECT ar FROM AuctionRegistration ar WHERE ar.auction.id = :auctionId AND ar.user.id = :userId AND ar.auctionRegistrationState = 'VALID'")
     Optional<AuctionRegistration> findByAuctionIdAndUserIdValid(@Param("userId") Integer userId, @Param("auctionId") Integer auctionId);
 
-    @Query("SELECT ar FROM AuctionRegistration ar JOIN FETCH ar.user a WHERE a.id = :userId")
-    Page<AuctionRegistration> findByUserIdAndValid(@Param("userId") Integer userId, Pageable pageable);
+    @Query("SELECT ar FROM AuctionRegistration ar JOIN FETCH ar.user a WHERE a.id = :userId  AND (:auctionName IS NULL OR ar.auction.name LIKE %:auctionName%)")
+    Page<AuctionRegistration> findByUserIdAndValid(@Param("userId") Integer userId,@Param("auctionName") String auctionName, Pageable pageable);
 
     @Query("SELECT ar FROM AuctionRegistration ar WHERE ar.user.id = :userId AND ar.auctionRegistrationState = 'VALID'")
     List<AuctionRegistration> findByUserIdValid(@Param("userId") Integer userId);
