@@ -63,7 +63,7 @@ public class AuctionServiceImpl implements AuctionService{
     }
 
     @Override
-    public List<Auction> findAuctionSortByBetweenStartdayAndEndday(String startDay, String endDay) {
+    public List<Auction> findAuctionSortByBetweenStartDayAndEndDay(String startDay, String endDay) {
         LocalDate localDate1 = LocalDate.parse(startDay);
         LocalDate localDate2 = LocalDate.parse(endDay);
 
@@ -126,8 +126,19 @@ public class AuctionServiceImpl implements AuctionService{
 
     @Override
     public Page<Auction> getAllAuctions(AuctionState state, Pageable pageable, String auctionName, Integer categoryId) {
-        System.out.println("state: " + state);
         return auctionRepository.findByStateAndCategoryNotDeletedOrEmptyState(state,auctionName, pageable, categoryId);
+    }
+
+    @Override
+    public Auction updateEndTimeAuction(Integer auctionId, Long time) {
+        var existingAuction = auctionRepository.findById(auctionId)
+                .orElseThrow(() -> new ResourceNotFoundException(ErrorMessages.AUCTION_NOT_FOUND));
+
+        Timestamp currentEndDate = existingAuction.getEndDate();
+        Timestamp newEndDate = new Timestamp(currentEndDate.getTime() + time);
+
+        existingAuction.setEndDate(newEndDate);
+        return existingAuction;
     }
 
     @Override

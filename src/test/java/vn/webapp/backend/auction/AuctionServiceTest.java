@@ -106,7 +106,7 @@ public class AuctionServiceTest extends AbstractTestNGSpringContextTests{
         Timestamp timestampEndDate2 = Timestamp.valueOf(endOfDay);
 
         // Act
-        List<Auction> auctions = auctionService.findAuctionSortByBetweenStartdayAndEndday(startDay, endDay);
+        List<Auction> auctions = auctionService.findAuctionSortByBetweenStartDayAndEndDay(startDay, endDay);
 
         // Assert
         assertNotNull(auctions);
@@ -169,7 +169,7 @@ public class AuctionServiceTest extends AbstractTestNGSpringContextTests{
         String endDay = "2024-01-02";
 
         // Act
-        List<Auction> auctions = auctionService.findAuctionSortByBetweenStartdayAndEndday(startDay, endDay);
+        List<Auction> auctions = auctionService.findAuctionSortByBetweenStartDayAndEndDay(startDay, endDay);
 
         // Assert
         assertNotNull(auctions);
