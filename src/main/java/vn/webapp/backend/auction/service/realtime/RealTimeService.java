@@ -7,6 +7,7 @@ import vn.webapp.backend.auction.model.Auction;
 import vn.webapp.backend.auction.model.ErrorMessages;
 import vn.webapp.backend.auction.repository.AuctionRepository;
 
+import java.sql.Timestamp;
 import java.util.Optional;
 
 @Service
@@ -15,14 +16,15 @@ public class RealTimeService {
 
     private final AuctionRepository auctionRepository;
 
-    public BidResponse getLastPriceTogether(Integer id) {
-        Optional<Auction> auctionOptional = auctionRepository.findById(id);
+    public BidResponse getLastPriceTogether(Integer id, Long bonusTime, String username) {
+        Auction auction = auctionRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException(ErrorMessages.AUCTION_NOT_FOUND));
 
-        if (auctionOptional.isEmpty()) {
-            throw new IllegalArgumentException(ErrorMessages.AUCTION_NOT_FOUND);
-        }
+        Timestamp currentEndDate = auction.getEndDate();
+        Timestamp newEndDate = new Timestamp(currentEndDate.getTime() + bonusTime);
+        auction.setEndDate(newEndDate);
+        auctionRepository.save(auction);
 
-        Auction auction = auctionOptional.get();
-        return new BidResponse(auction.getLastPrice(), auction.getId());
+        return new BidResponse(auction.getLastPrice(), auction.getId(), auction.getEndDate(), bonusTime, username);
     }
 }
