@@ -168,7 +168,7 @@ public class RequestApprovalServiceImpl implements RequestApprovalService {
     }
 
     @Override
-    public Page<RequestApproval> getRequestNeedConfirmByMember(Integer memberId, Pageable pageable) {
-        return requestApprovalRepository.findRequestNeedConfirmByMember(memberId, pageable);
+    public Page<RequestApproval> getRequestNeedConfirmByMember(Integer memberId,String jewelryName, Pageable pageable) {
+        return requestApprovalRepository.findRequestNeedConfirmByMember(memberId,jewelryName, pageable);
     }
 }

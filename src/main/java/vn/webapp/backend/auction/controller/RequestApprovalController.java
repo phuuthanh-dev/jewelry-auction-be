@@ -65,12 +65,13 @@ public class RequestApprovalController {
     public ResponseEntity<Page<RequestApproval>> getRequestNeedMemberConfirm(
             @PathVariable Integer memberId,
             @RequestParam(defaultValue = "id") String sortBy,
+            @RequestParam(required = false) String jewelryName,
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "5") int size,
             @RequestParam(defaultValue = "asc") String sortOrder) {
         Sort.Direction direction = (sortOrder.equalsIgnoreCase("asc")) ? Sort.Direction.ASC : Sort.Direction.DESC;
         Pageable pageable = PageRequest.of(page, size, direction, sortBy);
-        return ResponseEntity.ok(requestApprovalService.getRequestNeedConfirmByMember(memberId, pageable));
+        return ResponseEntity.ok(requestApprovalService.getRequestNeedConfirmByMember(memberId,jewelryName, pageable));
     }
 
     @PostMapping("/send-from-user")
