@@ -48,7 +48,7 @@ public class TransactionServiceImpl implements TransactionService {
         Double totalPriceJewelryWonByUsername = transactionRepository.getTotalPriceJewelryWonByUsername(username);
         Integer totalJewelryWon = transactionRepository.getTotalJewelryWon(username);
         Integer totalBid = auctionHistoryRepository.getTotalBidByUsername(username);
-
+        
         return UserTransactionResponse.builder()
                 .numberTransactionsRequest(numberRegistration)
                 .totalPriceJewelryWonByUsername(totalPriceJewelryWonByUsername)
@@ -58,8 +58,8 @@ public class TransactionServiceImpl implements TransactionService {
     }
 
     @Override
-    public Page<Transaction> getTransactionsByUsername(String username, Pageable pageable) {
-        return transactionRepository.findTransactionsByUsername(username, pageable);
+    public Page<Transaction> getTransactionsByUsername(String username, String assetName, Pageable pageable) {
+        return transactionRepository.findTransactionsByUsername(username,assetName, pageable);
     }
 
     @Override

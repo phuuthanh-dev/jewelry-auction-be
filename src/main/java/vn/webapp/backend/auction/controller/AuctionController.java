@@ -26,6 +26,14 @@ public class AuctionController {
     private final AuctionService auctionService;
     private final EmailService emailService;
 
+    private AuctionState resolveAuctionState(String state) {
+        if ("ALL".equalsIgnoreCase(state)) {
+            return null;
+        } else {
+            return AuctionState.valueOf(state);
+        }
+    }
+
     @GetMapping("/sorted-and-paged")
     public ResponseEntity<Page<Auction>> getAllAuctionsSortedAndPaged(
             @RequestParam(defaultValue = "startDate") String sortBy,
@@ -45,7 +53,7 @@ public class AuctionController {
     public ResponseEntity<List<Auction>> getAllAuctionsSortedAndPaged(
             @PathVariable String startDate,
             @PathVariable String endDate) {
-        return ResponseEntity.ok(auctionService.findAuctionSortByBetweenStartdayAndEndday(startDate, endDate));
+        return ResponseEntity.ok(auctionService.findAuctionSortByBetweenStartDayAndEndDay(startDate, endDate));
     }
 
     @GetMapping("/get-all")
@@ -122,14 +130,6 @@ public class AuctionController {
         return ResponseEntity.ok(auctionService.createNewAuction(request));
     }
 
-    private AuctionState resolveAuctionState(String state) {
-        if ("ALL".equalsIgnoreCase(state)) {
-            return null;
-        } else {
-            return AuctionState.valueOf(state);
-        }
-    }
-
     @GetMapping("/get-auction-registration")
     public ResponseEntity<Page<AuctionRegistrationDTO>> getAuctionRegistrations(
             @RequestParam(defaultValue = "startDate") String sortBy,
@@ -161,5 +161,10 @@ public class AuctionController {
         Sort.Direction direction = (sortOrder.equalsIgnoreCase("asc")) ? Sort.Direction.ASC : Sort.Direction.DESC;
         Pageable pageable = PageRequest.of(page, size, direction, sortBy);
         return ResponseEntity.ok(auctionService.getAllFailedAuctions(pageable, auctionName));
+    }
+
+    @PutMapping("/update-end-date/{id}")
+    public ResponseEntity<Auction> updateEndTimeAuction(@PathVariable Integer id, @RequestParam Long time) {
+        return ResponseEntity.ok(auctionService.updateEndTimeAuction(id, time));
     }
 }
