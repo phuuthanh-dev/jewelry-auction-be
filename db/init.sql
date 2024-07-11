@@ -106,7 +106,7 @@ CREATE TABLE [dbo].[jewelry]
     [description] [nvarchar](max)      NOT NULL,
     [material]    [nvarchar](20)       NOT NULL,
     [name]        [nvarchar](50)       NOT NULL,
-    [price]       [float]              NULL,
+    [buy_now_price]       [float]              NULL,
     [state]       [nvarchar](20)       NOT NULL,
     [weight]      [float]              NOT NULL,
     [category_id] [int]                NULL,
@@ -115,7 +115,7 @@ CREATE TABLE [dbo].[jewelry]
 )
 
     INSERT INTO [dbo].[jewelry]
-([brand], [description], [material], [name], [price], [state], [weight], [category_id], [user_id], [is_holding])
+([brand], [description], [material], [name], [buy_now_price], [state], [weight], [category_id], [user_id], [is_holding])
     VALUES (N'DOJI', N'Nhẫn đính hôn bằng kim cương.', N'Bạc', N'NHẪN ĐÍNH HÔN KIM CƯƠNG ENR3111W', 44500000, 'ACTIVE',
             15.5, 2, 1, 1),
             (N'DOJI', N'Nhẫn đính hôn bằng kim cương.', N'Bạc', N'NHẪN CƯỚI KIM CƯƠNG IWR163', 5000000, 'ACTIVE', 8.2, 2,
@@ -195,7 +195,7 @@ CREATE TABLE [dbo].[image]
     [icon] [bit] NULL,
     [link] [varchar](255) NULL,
     [jewelry_id] [int] NULL
-    )
+)
 
     INSERT INTO [dbo].[image] ([data], [icon], [link], [jewelry_id])
     VALUES
