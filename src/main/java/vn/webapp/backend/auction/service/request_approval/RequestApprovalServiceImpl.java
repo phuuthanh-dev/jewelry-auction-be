@@ -107,7 +107,7 @@ public class RequestApprovalServiceImpl implements RequestApprovalService {
         newRequest.setConfirm(false);
         newRequest.setState(RequestApprovalState.ACTIVE);
         newRequest.setSender(sender);
-        newRequest.setDesiredPrice(jewelry.getPrice());
+        newRequest.setDesiredPrice(jewelry.getBuy_now_price());
         requestApprovalRepository.save(newRequest);
         return newRequest;
     }
@@ -126,7 +126,7 @@ public class RequestApprovalServiceImpl implements RequestApprovalService {
         newRequest.setConfirm(false);
         newRequest.setState(RequestApprovalState.ACTIVE);
         newRequest.setSender(sender);
-        newRequest.setDesiredPrice(oldRequest.getJewelry().getPrice());
+        newRequest.setDesiredPrice(oldRequest.getJewelry().getBuy_now_price());
         newRequest.setValuation(request.valuation());
         newRequest.setStaff(sender);
         requestApprovalRepository.save(newRequest);

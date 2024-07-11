@@ -24,8 +24,9 @@ public class Jewelry {
     @NotBlank(message = "The price required")
     private String name;
 
+    @Column(name = "buy_now_price", nullable = false)
     @Min(value = 1, message = "The price must be at least 1")
-    private Double price;
+    private Double buy_now_price;
 
     @Column(name = "description", nullable = false)
     private String description;
