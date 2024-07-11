@@ -3,7 +3,7 @@ package vn.webapp.backend.auction.service.user;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import vn.webapp.backend.auction.dto.RegisterAccountRequest;
-import vn.webapp.backend.auction.dto.UserSpentDTO;
+import vn.webapp.backend.auction.dto.UserSpentResponse;
 import vn.webapp.backend.auction.enums.AccountState;
 import vn.webapp.backend.auction.enums.Role;
 import vn.webapp.backend.auction.model.User;
@@ -23,7 +23,7 @@ public interface UserService {
     Page<User> getMemberByFullNameContainingAndState(String fullName ,AccountState state, Pageable pageable);
     Page<User> getStaffByFullNameContainingAndRoleAndState(String fullName, Role role, AccountState state , Pageable page);
     User getLatestUserInAuctionHistoryByAuctionId(Integer auctionId);
-    List<UserSpentDTO> getMostSpentUser();
+    List<UserSpentResponse> getMostSpentUser();
     Page<User> getUsersUnVerifyByFullNameContainingAndState(String fullName, AccountState state, Pageable pageable);
     void rejectVerifyUser(Integer id);
     List<User> getUserRegistrationAuctionByAuctionId(Integer auctionId);

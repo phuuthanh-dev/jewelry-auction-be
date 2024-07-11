@@ -3,7 +3,7 @@ package vn.webapp.backend.auction.service.auction;
 import jakarta.mail.MessagingException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import vn.webapp.backend.auction.dto.AuctionRegistrationDTO;
+import vn.webapp.backend.auction.dto.AuctionRegistrationResponse;
 import vn.webapp.backend.auction.dto.AuctionRequest;
 import vn.webapp.backend.auction.enums.AuctionState;
 import vn.webapp.backend.auction.model.Auction;
@@ -39,7 +39,7 @@ public interface AuctionService {
 
     void deleteAuctionResult(Integer transactionId) throws MessagingException;
 
-    Page<AuctionRegistrationDTO> getAuctionRegistrations(AuctionState state, String auctionName, Pageable pageable);
+    Page<AuctionRegistrationResponse> getAuctionRegistrations(AuctionState state, String auctionName, Pageable pageable);
 
     Page<Auction> getAllFailedAuctions(Pageable pageable, String auctionName);
 

@@ -2,7 +2,7 @@ package vn.webapp.backend.auction.dto;
 
 public record SendJewelryFromUserRequest(
         Integer userId,
-        Double price,
+        Double buyNowPrice,
         String description,
         String material,
         Double weight,

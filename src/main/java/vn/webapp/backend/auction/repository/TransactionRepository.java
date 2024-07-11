@@ -20,7 +20,7 @@ public interface TransactionRepository extends JpaRepository<Transaction, Intege
 
     @Query("SELECT t FROM Transaction t WHERE t.type = :typename " +
             "AND (:userName IS NULL OR CONCAT(t.user.firstName, ' ', t.user.lastName) LIKE %:userName%) " +
-            "AND (:state IS NULL OR t.state = :state)")
+            "AND ((:state IS NULL AND t.state <> 'HIDDEN') OR t.state = :state)")
     Page<Transaction> findTransactionByTypeAndState(
             @Param("typename") TransactionType typename,
             @Param("userName") String userName,

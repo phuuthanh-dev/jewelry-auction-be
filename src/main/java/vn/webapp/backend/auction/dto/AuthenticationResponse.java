@@ -14,4 +14,6 @@ public class AuthenticationResponse {
 
     @JsonProperty("access_token")
     private String accessToken;
+
+    private String banReason;
 }

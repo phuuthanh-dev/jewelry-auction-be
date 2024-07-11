@@ -71,7 +71,7 @@ public class JewelryServiceImpl implements JewelryService {
 
         Jewelry jewelry = new Jewelry();
         jewelry.setUser(user);
-        jewelry.setPrice(request.price());
+        jewelry.setBuyNowPrice(request.buyNowPrice());
         jewelry.setDescription(request.description());
         jewelry.setMaterial(request.material());
         jewelry.setWeight(request.weight());

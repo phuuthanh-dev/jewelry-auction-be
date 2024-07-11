@@ -24,8 +24,9 @@ public class Jewelry {
     @NotBlank(message = "The price required")
     private String name;
 
+    @Column(name = "buy_now_price")
     @Min(value = 1, message = "The price must be at least 1")
-    private Double price;
+    private Double buyNowPrice;
 
     @Column(name = "description", nullable = false)
     private String description;
@@ -39,7 +40,7 @@ public class Jewelry {
     @Column(name = "weight", nullable = false)
     private Double weight;
 
-    @Column(name = "is_holding", nullable = true)
+    @Column(name = "is_holding")
     private Boolean isHolding;
 
     @Column(name = "state", nullable = false)
