@@ -30,7 +30,7 @@ public class AuctionRegistrationServiceImpl implements AuctionRegistrationServic
     private final TransactionRepository transactionRepository;
 
     @Override
-    public void registerUserForAuction(String username, Integer auctionId) {
+    public void registerUserForAuction(String username, Integer auctionId, String transactionCode, String bankCode) {
         User user = userRepository.findByUsername(username).orElseThrow(() -> new ResourceNotFoundException(ErrorMessages.USER_NOT_FOUND));
         Auction auction = auctionRepository.findById(auctionId).orElseThrow(() -> new ResourceNotFoundException(ErrorMessages.AUCTION_NOT_FOUND));
 
@@ -50,6 +50,8 @@ public class AuctionRegistrationServiceImpl implements AuctionRegistrationServic
                 .user(user)
                 .type(TransactionType.REGISTRATION)
                 .paymentMethod(PaymentMethod.BANKING)
+                .transactionCode(transactionCode)
+                .bankCode(bankCode)
                 .build();
 
         // Save the transaction to the database

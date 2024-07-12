@@ -2,14 +2,13 @@ package vn.webapp.backend.auction.controller;
 
 import jakarta.mail.MessagingException;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import vn.webapp.backend.auction.dto.AuctionRegistrationDTO;
+import vn.webapp.backend.auction.dto.AuctionRegistrationResponse;
 import vn.webapp.backend.auction.dto.AuctionRequest;
 import vn.webapp.backend.auction.enums.AuctionState;
 import vn.webapp.backend.auction.model.Auction;
@@ -131,7 +130,7 @@ public class AuctionController {
     }
 
     @GetMapping("/get-auction-registration")
-    public ResponseEntity<Page<AuctionRegistrationDTO>> getAuctionRegistrations(
+    public ResponseEntity<Page<AuctionRegistrationResponse>> getAuctionRegistrations(
             @RequestParam(defaultValue = "startDate") String sortBy,
             @RequestParam(required = false) String auctionName,
             @RequestParam(defaultValue = "ALL") String state,

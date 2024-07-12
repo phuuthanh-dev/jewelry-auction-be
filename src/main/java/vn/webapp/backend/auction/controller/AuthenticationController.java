@@ -25,6 +25,11 @@ public class AuthenticationController {
             @RequestBody AuthenticationRequest request, HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) throws MessagingException {
 
         AuthenticationResponse authenticationResponse = authenticationService.authenticateGeneral(request, httpServletRequest, httpServletResponse);
+
+        if (authenticationResponse.getBanReason() != null) {
+            return ResponseEntity.status(403).body(authenticationResponse);
+        }
+
         return ResponseEntity.ok().body(authenticationResponse);
     }
 

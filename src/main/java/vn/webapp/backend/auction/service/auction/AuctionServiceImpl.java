@@ -7,7 +7,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-import vn.webapp.backend.auction.dto.AuctionRegistrationDTO;
+import vn.webapp.backend.auction.dto.AuctionRegistrationResponse;
 import vn.webapp.backend.auction.dto.AuctionRequest;
 import vn.webapp.backend.auction.enums.AccountState;
 import vn.webapp.backend.auction.enums.AuctionState;
@@ -162,12 +162,13 @@ public class AuctionServiceImpl implements AuctionService{
         var existingUser = userRepository.findById(userId)
                 .orElseThrow(() -> new ResourceNotFoundException(ErrorMessages.USER_NOT_FOUND));
 
+        String reason = ReasonMessages.DO_NOT_PAY_ON_TIME;
         existingTransaction.setState(TransactionState.HIDDEN);
         existingAuction.setState(AuctionState.FINISHED);
         existingJewelry.setState(JewelryState.ACTIVE);
         existingUser.setState(AccountState.DISABLE);
+        existingUser.setBanReason(reason);
 
-        String reason = ReasonMessages.DO_NOT_PAY_ON_TIME;
         emailService.sendBlockAccountEmail(
                 existingUser.getEmail(),
                 existingUser.getFullName(),
@@ -187,12 +188,12 @@ public class AuctionServiceImpl implements AuctionService{
     }
 
     @Override
-    public Page<AuctionRegistrationDTO> getAuctionRegistrations(AuctionState state, String auctionName, Pageable pageable) {
+    public Page<AuctionRegistrationResponse> getAuctionRegistrations(AuctionState state, String auctionName, Pageable pageable) {
         List<Auction> auctions = auctionRepository.findByState(state, auctionName);
-        List<AuctionRegistrationDTO> list = auctions.stream()
+        List<AuctionRegistrationResponse> list = auctions.stream()
                 .map(auction -> {
                     Integer numberOfParticipants = auctionRegistrationRepository.countValidParticipantsByAuctionId(auction.getId());
-                    return new AuctionRegistrationDTO(
+                    return new AuctionRegistrationResponse(
                             auction.getId(),
                             auction.getName(),
                             auction.getStartDate(),
@@ -201,12 +202,12 @@ public class AuctionServiceImpl implements AuctionService{
                             numberOfParticipants
                     );
                 })
-                .sorted(Comparator.comparingInt(AuctionRegistrationDTO::numberOfParticipants).reversed())
+                .sorted(Comparator.comparingInt(AuctionRegistrationResponse::numberOfParticipants).reversed())
                 .collect(Collectors.toList());
 
         int start = (int) pageable.getOffset();
         int end = Math.min((start + pageable.getPageSize()), list.size());
-        List<AuctionRegistrationDTO> pagedAuctions = list.subList(start, end);
+        List<AuctionRegistrationResponse> pagedAuctions = list.subList(start, end);
 
         return new PageImpl<>(pagedAuctions , pageable, auctions.size());
     }

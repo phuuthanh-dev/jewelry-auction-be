@@ -107,7 +107,7 @@ public class RequestApprovalServiceImpl implements RequestApprovalService {
         newRequest.setConfirm(false);
         newRequest.setState(RequestApprovalState.ACTIVE);
         newRequest.setSender(sender);
-        newRequest.setDesiredPrice(jewelry.getPrice());
+        newRequest.setDesiredPrice(jewelry.getBuyNowPrice());
         requestApprovalRepository.save(newRequest);
         return newRequest;
     }
@@ -126,7 +126,7 @@ public class RequestApprovalServiceImpl implements RequestApprovalService {
         newRequest.setConfirm(false);
         newRequest.setState(RequestApprovalState.ACTIVE);
         newRequest.setSender(sender);
-        newRequest.setDesiredPrice(oldRequest.getJewelry().getPrice());
+        newRequest.setDesiredPrice(oldRequest.getJewelry().getBuyNowPrice());
         newRequest.setValuation(request.valuation());
         newRequest.setStaff(sender);
         requestApprovalRepository.save(newRequest);
@@ -168,7 +168,7 @@ public class RequestApprovalServiceImpl implements RequestApprovalService {
     }
 
     @Override
-    public Page<RequestApproval> getRequestNeedConfirmByMember(Integer memberId, Pageable pageable) {
-        return requestApprovalRepository.findRequestNeedConfirmByMember(memberId, pageable);
+    public Page<RequestApproval> getRequestNeedConfirmByMember(Integer memberId,String jewelryName, Pageable pageable) {
+        return requestApprovalRepository.findRequestNeedConfirmByMember(memberId,jewelryName, pageable);
     }
 }

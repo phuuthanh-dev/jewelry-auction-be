@@ -89,6 +89,9 @@ public class User implements UserDetails {
     @Column(name = "CCCD_from", length = 50)
     private String cccdFrom;
 
+    @Column(name = "ban_reason")
+    private String banReason;
+
     @Column(name = "register_date")
     private Timestamp registerDate;
 

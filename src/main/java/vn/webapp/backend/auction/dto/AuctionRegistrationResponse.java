@@ -4,7 +4,7 @@ import vn.webapp.backend.auction.enums.AuctionState;
 
 import java.sql.Timestamp;
 
-public record AuctionRegistrationDTO (
+public record AuctionRegistrationResponse(
         Integer id,
         String name,
         Timestamp startDate,

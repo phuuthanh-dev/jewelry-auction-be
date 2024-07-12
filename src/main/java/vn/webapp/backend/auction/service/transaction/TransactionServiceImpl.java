@@ -94,12 +94,14 @@ public class TransactionServiceImpl implements TransactionService {
 
     @Override
     @Transactional
-    public void setTransactionAfterPaySuccess(Integer transactionId) {
-        var existingAuction = transactionRepository.findById(transactionId)
+    public void setTransactionAfterPaySuccess(Integer transactionId, String transactionCode, String bankCode) {
+        var existingTransaction = transactionRepository.findById(transactionId)
                 .orElseThrow(() -> new ResourceNotFoundException(ErrorMessages.AUCTION_NOT_FOUND));
-        existingAuction.setState(TransactionState.SUCCEED);
-        existingAuction.setPaymentMethod(PaymentMethod.BANKING);
-        existingAuction.setPaymentTime(Timestamp.valueOf(LocalDateTime.now(ZoneId.of("Asia/Ho_Chi_Minh"))));
+        existingTransaction.setState(TransactionState.SUCCEED);
+        existingTransaction.setPaymentMethod(PaymentMethod.BANKING);
+        existingTransaction.setTransactionCode(transactionCode);
+        existingTransaction.setBankCode(bankCode);
+        existingTransaction.setPaymentTime(Timestamp.valueOf(LocalDateTime.now(ZoneId.of("Asia/Ho_Chi_Minh"))));
     }
 
     @Override

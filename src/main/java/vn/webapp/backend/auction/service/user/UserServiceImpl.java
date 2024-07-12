@@ -7,7 +7,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import vn.webapp.backend.auction.dto.RegisterAccountRequest;
-import vn.webapp.backend.auction.dto.UserSpentDTO;
+import vn.webapp.backend.auction.dto.UserSpentResponse;
 import vn.webapp.backend.auction.enums.AccountState;
 import vn.webapp.backend.auction.enums.Role;
 import vn.webapp.backend.auction.exception.ResourceNotFoundException;
@@ -62,7 +62,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<User> getAllStaff() {
-            return userRepository.findAllByRole(Role.STAFF);
+        return userRepository.findAllByRole(Role.STAFF);
     }
 
     @Override
@@ -191,12 +191,20 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<UserSpentDTO> getMostSpentUser() {
+    public List<UserSpentResponse> getMostSpentUser() {
         List<User> users = userRepository.findTopUsersByTotalSpent();
-        List<UserSpentDTO> list = new ArrayList<>();
+        List<UserSpentResponse> list = new ArrayList<>();
         for (User user : users) {
             Double totalSpent = transactionRepository.getTotalPriceJewelryWonByUsernameAndAlreadyPay(user.getUsername());
-            list.add(new UserSpentDTO(user, totalSpent));
+            list.add(new UserSpentResponse(
+                    user.getId(),
+                    user.getAvatar(),
+                    user.getUsername(),
+                    user.getFullName(),
+                    user.getEmail(),
+                    user.getPhone(),
+                    totalSpent)
+            );
         }
         return list;
     }

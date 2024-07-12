@@ -46,6 +46,12 @@ public class Transaction {
     @Column(name = "transaction_type", nullable = false)
     private TransactionType type;
 
+    @Column(name = "transaction_code")
+    private String transactionCode;
+
+    @Column(name = "bank_code")
+    private String bankCode;
+
     @ManyToOne(cascade = {
             CascadeType.PERSIST, CascadeType.DETACH,
             CascadeType.MERGE, CascadeType.REFRESH

@@ -33,5 +33,5 @@ public interface TransactionService {
 
     Page<Transaction> getOverdueTransactions(String userName,Pageable pageable);
 
-    void setTransactionAfterPaySuccess(Integer transactionId);
+    void setTransactionAfterPaySuccess(Integer transactionId, String transactionCode, String bankCode);
 }

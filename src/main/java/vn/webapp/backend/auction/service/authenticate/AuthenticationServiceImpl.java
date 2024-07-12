@@ -50,10 +50,16 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     @Override
     public AuthenticationResponse authenticateGeneral(AuthenticationRequest request, HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) throws MessagingException {
         var user = userService.findUserByUsernameOrEmail(request.username());
-        checkUserStateForGeneral(user, request.username());
+        try {
+            checkUserStateForGeneral(user, request.username());
 
-        authenticateUser(request.username(), request.password());
-        return generateAuthenticationResponse(user, httpServletRequest, httpServletResponse);
+            authenticateUser(request.username(), request.password());
+            return generateAuthenticationResponse(user, httpServletRequest, httpServletResponse);
+        } catch (AccountDisabledException e) {
+            return AuthenticationResponse.builder()
+                    .banReason(user.getBanReason())
+                    .build();
+        }
     }
 
     @Override
@@ -265,7 +271,10 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         user.setPassword(passwordEncoder.encode(request.newPassword()));
         userRepository.save(user);
         var jwtToken = jwtService.generateToken(user);
-        return new AuthenticationResponse(jwtToken);
+
+        return AuthenticationResponse.builder()
+                .accessToken(jwtToken)
+                .build();
     }
 
     @Override
@@ -290,7 +299,9 @@ public class AuthenticationServiceImpl implements AuthenticationService {
             user.setPassword(passwordEncoder.encode(request.password()));
             userRepository.save(user);
             var jwtToken = jwtService.generateToken(user);
-            return new AuthenticationResponse(jwtToken);
+            return AuthenticationResponse.builder()
+                    .accessToken(jwtToken)
+                    .build();
         } else {
             throw new UnauthorizedException("Không có quyền truy cập.");
         }

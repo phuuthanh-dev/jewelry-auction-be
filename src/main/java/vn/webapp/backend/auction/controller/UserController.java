@@ -7,9 +7,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import vn.webapp.backend.auction.dto.ChangePasswordRequest;
 import vn.webapp.backend.auction.dto.RegisterAccountRequest;
-import vn.webapp.backend.auction.dto.UserSpentDTO;
+import vn.webapp.backend.auction.dto.UserSpentResponse;
 import vn.webapp.backend.auction.enums.AccountState;
 import vn.webapp.backend.auction.enums.Role;
 import vn.webapp.backend.auction.model.User;
@@ -101,7 +100,7 @@ public class UserController {
     }
 
     @GetMapping("/get-top-spent-user")
-    public ResponseEntity<List<UserSpentDTO>> getTopUser() {
+    public ResponseEntity<List<UserSpentResponse>> getTopUser() {
         return ResponseEntity.ok(userService.getMostSpentUser());
     }
 
