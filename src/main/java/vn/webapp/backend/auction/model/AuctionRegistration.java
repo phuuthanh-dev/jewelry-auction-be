@@ -30,6 +30,9 @@ public class AuctionRegistration {
     @Column(name = "auction_registration_state", nullable = false)
     private AuctionRegistrationState auctionRegistrationState;
 
+    @Column(name = "kick_reason")
+    private String kickReason;
+
     @ManyToOne(cascade = {
             CascadeType.PERSIST, CascadeType.DETACH,
             CascadeType.MERGE, CascadeType.REFRESH
