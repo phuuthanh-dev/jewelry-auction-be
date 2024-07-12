@@ -155,8 +155,10 @@ public class RequestApprovalServiceImpl implements RequestApprovalService {
     }
 
     @Override
-    public Page<RequestApproval> getRequestApprovalByUserId(Integer id, String jewelryName, Pageable pageable) {
-        return requestApprovalRepository.findRequestApprovalByUserId(id, jewelryName, pageable);
+    public Page<RequestApproval> getRequestApprovalByUserId(Integer id, String jewelryName, String category, Pageable pageable) {
+        if (category.equals("Tất cả"))
+            return requestApprovalRepository.findRequestApprovalByUserId(id, jewelryName,null, pageable);
+        return requestApprovalRepository.findRequestApprovalByUserId(id, jewelryName,category, pageable);
     }
 
     @Override

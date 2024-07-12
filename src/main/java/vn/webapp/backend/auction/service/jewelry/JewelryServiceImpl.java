@@ -145,8 +145,10 @@ public class JewelryServiceImpl implements JewelryService {
     }
 
     @Override
-    public Page<Jewelry> getJewelryByStateAndIsHolding(JewelryState state, Boolean isHolding, String jewelryName, Pageable pageable) {
-        return jewelryRepository.findJewelryByStateAndIsHolding(state,isHolding,jewelryName,pageable);
+    public Page<Jewelry> getJewelryByStateAndIsHolding(JewelryState state, Boolean isHolding,String category, String jewelryName, Pageable pageable) {
+        if (category.equals("Tất cả"))
+            return jewelryRepository.findJewelryByStateAndIsHolding(state,isHolding,null,jewelryName,pageable);
+        return jewelryRepository.findJewelryByStateAndIsHolding(state,isHolding,category,jewelryName,pageable);
     }
 
     @Override
