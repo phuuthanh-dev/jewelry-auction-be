@@ -91,12 +91,13 @@ public class JewelryController {
             @RequestParam Boolean isHolding,
             @RequestParam(required = false) String jewelryName,
             @RequestParam(defaultValue = "id") String sortBy,
+            @RequestParam(required = false) String category,
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "5") int size,
             @RequestParam(defaultValue = "asc") String sortOrder) {
         Sort.Direction direction = (sortOrder.equalsIgnoreCase("asc")) ? Sort.Direction.ASC : Sort.Direction.DESC;
         Pageable pageable = PageRequest.of(page, size, direction, sortBy);
-        return ResponseEntity.ok(jewelryService.getJewelryByStateAndIsHolding(state,isHolding,jewelryName,pageable));
+        return ResponseEntity.ok(jewelryService.getJewelryByStateAndIsHolding(state,isHolding,category,jewelryName,pageable));
     }
 
     @GetMapping("/in-handover-list")

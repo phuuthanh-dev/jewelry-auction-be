@@ -21,11 +21,19 @@ public interface RequestApprovalRepository extends JpaRepository<RequestApproval
             Pageable pageable
     );
 
-    @Query("SELECT ra FROM RequestApproval ra WHERE ra.sender.role = 'MANAGER' AND ra.isConfirm = false AND ra.jewelry.user.id = :memberId AND ra.state = 'ACTIVE' AND (:jewelryName IS NULL OR ra.jewelry.name LIKE %:jewelryName%) ")
-    Page<RequestApproval> findRequestNeedConfirmByMember(@Param("memberId") Integer memberId, @Param("jewelryName") String jewelryName, Pageable pageable);
+    @Query("SELECT ra FROM RequestApproval ra WHERE ra.sender.role = 'MANAGER'" +
+            "AND ra.isConfirm = false AND ra.jewelry.user.id = :memberId " +
+            "AND ra.state = 'ACTIVE' AND (:jewelryName IS NULL OR ra.jewelry.name LIKE %:jewelryName%) ")
+    Page<RequestApproval> findRequestNeedConfirmByMember(
+            @Param("memberId") Integer memberId,
+            @Param("jewelryName") String jewelryName,
+            Pageable pageable);
 
-    @Query("SELECT ra FROM RequestApproval ra WHERE ra.sender.id = :id AND (:jewelryName IS NULL OR ra.jewelry.name LIKE %:jewelryName%)")
-    Page<RequestApproval> findRequestApprovalByUserId(@Param("id") Integer id, @Param("jewelryName") String jewelryName,Pageable pageable);
+    @Query("SELECT ra FROM RequestApproval ra WHERE ra.sender.id = :id " +
+            "AND (:jewelryName IS NULL OR ra.jewelry.name LIKE %:jewelryName%) " +
+            "AND (:category IS NULL OR ra.jewelry.category.name = :category)" +
+            "ORDER BY ra.isConfirm ASC")
+    Page<RequestApproval> findRequestApprovalByUserId(@Param("id") Integer id, @Param("jewelryName") String jewelryName,@Param("category") String category, Pageable pageable);
 
     @Query("SELECT ra FROM RequestApproval ra WHERE ra.sender.role = 'MANAGER' " +
             "AND (:jewelryName IS NULL OR ra.jewelry.name LIKE %:jewelryName%) " +
