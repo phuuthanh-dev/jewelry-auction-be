@@ -78,8 +78,8 @@ public class AuctionHistoryController {
     }
 
     @DeleteMapping("/bids/{userId}/{auctionId}")
-    public ResponseEntity<Void> deleteBidByUserAndAuction(@PathVariable Integer userId, @PathVariable Integer auctionId) {
-        auctionHistoryService.deleteBidByUserAndAuction(userId, auctionId);
+    public ResponseEntity<Void> deleteBidByUserAndAuction(@PathVariable Integer userId, @PathVariable Integer auctionId, @RequestParam String reason) {
+        auctionHistoryService.deleteBidByUserAndAuction(userId, auctionId, reason);
         return ResponseEntity.ok().build();
     }
 }

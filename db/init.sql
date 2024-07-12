@@ -111,7 +111,9 @@ CREATE TABLE [dbo].[jewelry]
     [weight]      [float]              NOT NULL,
     [category_id] [int]                NULL,
     [user_id]     [int]                NULL,
-    [is_holding]  [bit]                NULL
+    [is_holding]  [bit]                NULL,
+    [received_date] [datetime2](6)     NULL,
+    [delivery_date] [datetime2](6)     NULL
 )
 
     INSERT INTO [dbo].[jewelry]
@@ -236,8 +238,9 @@ CREATE TABLE [dbo].[auction_registration]
     [registration_fee] [float] NOT NULL,
     [auction_id] [int] NULL,
     [transaction_id] [int] NULL,
-    [user_id] [int] NULL
-    )
+    [user_id] [int] NULL,
+    [kick_reason] [nvarchar](255) NULL
+)
 
     INSERT INTO [dbo].[auction_registration] ([auction_registration_state], [registration_date], [registration_fee], [auction_id], [transaction_id], [user_id])
     VALUES

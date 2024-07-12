@@ -44,10 +44,10 @@ public class Jewelry {
     @Column(name = "is_holding")
     private Boolean isHolding;
 
-    @Column(name = "received_date", nullable = true)
+    @Column(name = "received_date")
     private Timestamp receivedDate;
 
-    @Column(name = "delivery_date", nullable = true)
+    @Column(name = "delivery_date")
     private Timestamp deliveryDate;
 
     @Column(name = "state", nullable = false)
