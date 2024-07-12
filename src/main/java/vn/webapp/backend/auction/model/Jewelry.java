@@ -7,6 +7,7 @@ import jakarta.validation.constraints.NotBlank;
 import lombok.*;
 import vn.webapp.backend.auction.enums.JewelryState;
 
+import java.sql.Timestamp;
 import java.util.List;
 
 @Entity
@@ -42,6 +43,12 @@ public class Jewelry {
 
     @Column(name = "is_holding")
     private Boolean isHolding;
+
+    @Column(name = "received_date", nullable = true)
+    private Timestamp receivedDate;
+
+    @Column(name = "delivery_date", nullable = true)
+    private Timestamp deliveryDate;
 
     @Column(name = "state", nullable = false)
     @Enumerated(EnumType.STRING)
