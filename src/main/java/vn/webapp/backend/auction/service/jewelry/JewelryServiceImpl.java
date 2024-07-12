@@ -18,6 +18,8 @@ import vn.webapp.backend.auction.repository.JewelryRepository;
 import vn.webapp.backend.auction.repository.UserRepository;
 import vn.webapp.backend.auction.service.email.EmailService;
 
+import java.sql.Timestamp;
+import java.time.Instant;
 import java.util.List;
 import java.util.Optional;
 
@@ -98,7 +100,10 @@ public class JewelryServiceImpl implements JewelryService {
         var exitingUser = existingJewelry.getUser();
         existingJewelry.setIsHolding(state);
         if(state) {
+            existingJewelry.setReceivedDate(Timestamp.from(Instant.now()));
             emailService.sendConfirmHoldingEmail(exitingUser.getEmail(), exitingUser.getFullName(), existingJewelry.getName());
+        }else {
+            existingJewelry.setDeliveryDate(Timestamp.from(Instant.now()));
         }
         return  existingJewelry;
     }
