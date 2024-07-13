@@ -25,13 +25,13 @@ public interface AuctionRepository extends JpaRepository<Auction, Integer> {
     List<Auction> findByState(@Param("auctionState") AuctionState auctionState);
 
     //    @Query("SELECT a FROM Auction a WHERE a.state = :auctionState AND (:auctionName IS NULL OR a.name LIKE %:auctionName%)")
-    @Query("SELECT a FROM Auction a WHERE ((:auctionState IS NULL AND a.state <> 'DELETED') OR (a.state = :auctionState)) AND (:auctionName IS NULL OR a.name LIKE %:auctionName%)")
+    @Query("SELECT a FROM Auction a WHERE ((:auctionState IS NULL AND a.state <> 'DELETED') OR (a.state = :auctionState)) AND (:auctionName IS NULL OR a.name LIKE %:auctionName%) ORDER BY a.state DESC")
     List<Auction> findByState(@Param("auctionState") AuctionState auctionState, @Param("auctionName") String auctionName);
 
     @Query("SELECT a FROM Auction a WHERE " +
             "(:auctionState IS NULL OR a.state = :auctionState) " +
             "AND (:categoryId = 0 OR a.jewelry.category.id = :categoryId) " +
-            "AND (:auctionName IS NULL OR a.name LIKE %:auctionName%)")
+            "AND (:auctionName IS NULL OR a.name LIKE %:auctionName%) ORDER BY a.state DESC")
     Page<Auction> findByStateAndCategoryNotDeletedOrEmptyState(
             @Param("auctionState") AuctionState auctionState,
             @Param("auctionName") String auctionName,
@@ -44,8 +44,8 @@ public interface AuctionRepository extends JpaRepository<Auction, Integer> {
 
     Page<Auction> findByStateIn(List<AuctionState> states, Pageable pageable);
 
-    @Query("SELECT a FROM Auction a WHERE a.jewelry.id = :jewelry_id AND a.state != 'DELETE'")
-    List<Auction> findAuctionByJewelryId(@Param("jewelry_id") Integer jewelry_id);
+    @Query("SELECT a FROM Auction a WHERE a.jewelry.id = :jewelryId AND a.state != 'DELETE'")
+    List<Auction> findAuctionByJewelryId(@Param("jewelryId") Integer jewelryId);
 
     @Query("SELECT COUNT(a) FROM Auction a")
     Integer countAllAuctions();
