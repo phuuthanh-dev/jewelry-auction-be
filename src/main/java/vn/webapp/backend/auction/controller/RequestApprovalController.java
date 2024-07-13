@@ -95,12 +95,13 @@ public class RequestApprovalController {
             @PathVariable Integer id,
             @RequestParam(required = false) String jewelryName,
             @RequestParam(defaultValue = "id") String sortBy,
+            @RequestParam(required = false) String category,
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "5") int size,
             @RequestParam(defaultValue = "desc") String sortOrder) {
         Sort.Direction direction = (sortOrder.equalsIgnoreCase("asc")) ? Sort.Direction.ASC : Sort.Direction.DESC;
         Pageable pageable = PageRequest.of(page, size, direction, sortBy);
-        return ResponseEntity.ok(requestApprovalService.getRequestApprovalByUserId(id, jewelryName, pageable));
+        return ResponseEntity.ok(requestApprovalService.getRequestApprovalByUserId(id, jewelryName,category, pageable));
     }
 
     @GetMapping("/request-passed")
