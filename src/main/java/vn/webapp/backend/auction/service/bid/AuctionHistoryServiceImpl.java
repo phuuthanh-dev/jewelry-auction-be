@@ -96,7 +96,7 @@ public class AuctionHistoryServiceImpl implements AuctionHistoryService {
     }
 
     @Override
-    public void deleteBidByUserAndAuction(Integer userId, Integer auctionId) {
+    public void deleteBidByUserAndAuction(Integer userId, Integer auctionId, String reason) {
         var auction = auctionRepository.findById(auctionId)
                 .orElseThrow(() -> new ResourceNotFoundException(ErrorMessages.AUCTION_NOT_FOUND));
         var auctionRegistration = auctionRegistrationRepository.findByAuctionIdAndUserIdValid(userId, auctionId)
@@ -104,6 +104,8 @@ public class AuctionHistoryServiceImpl implements AuctionHistoryService {
 
         // KICK KHỎI PHIÊN ĐẤU GIÁ
         auctionRegistration.setAuctionRegistrationState(AuctionRegistrationState.KICKED_OUT);
+        auctionRegistration.setKickReason(reason);
+        auctionRegistrationRepository.save(auctionRegistration);
 
         // ẨN NHỮNG LẦN ĐẤU GIÁ CỦA USER ĐÓ ĐI
         List<AuctionHistory> userBids = auctionHistoryRepository.findByAuctionHistoryByAuctionAndUserActive(auctionId, userId);

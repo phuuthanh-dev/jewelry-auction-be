@@ -31,7 +31,7 @@ import java.util.stream.Collectors;
 @Transactional
 @Service
 @RequiredArgsConstructor
-public class AuctionServiceImpl implements AuctionService{
+public class AuctionServiceImpl implements AuctionService {
 
     private final AuctionRepository auctionRepository;
     private final UserRepository userRepository;
@@ -78,12 +78,16 @@ public class AuctionServiceImpl implements AuctionService{
 
     @Override
     public Page<Auction> getByStaffID(Integer id, String auctionName, Pageable pageable) {
-        return auctionRepository.findByStaffID(id,auctionName, pageable);
+        return auctionRepository.findByStaffID(id, auctionName, pageable);
     }
 
     @Override
     public Auction getCurrentAuctionByJewelryId(Integer id) {
-        return auctionRepository.findAuctionByJewelryId(id).get(0);
+        List<Auction> auctionList = auctionRepository.findAuctionByJewelryId(id);
+        if (auctionList.isEmpty()) {
+            return null;
+        }
+        return auctionList.get(0);
     }
 
     @Override
@@ -126,7 +130,7 @@ public class AuctionServiceImpl implements AuctionService{
 
     @Override
     public Page<Auction> getAllAuctions(AuctionState state, Pageable pageable, String auctionName, Integer categoryId) {
-        return auctionRepository.findByStateAndCategoryNotDeletedOrEmptyState(state,auctionName, pageable, categoryId);
+        return auctionRepository.findByStateAndCategoryNotDeletedOrEmptyState(state, auctionName, pageable, categoryId);
     }
 
     @Override
@@ -202,14 +206,13 @@ public class AuctionServiceImpl implements AuctionService{
                             numberOfParticipants
                     );
                 })
-                .sorted(Comparator.comparingInt(AuctionRegistrationResponse::numberOfParticipants).reversed())
                 .collect(Collectors.toList());
 
         int start = (int) pageable.getOffset();
         int end = Math.min((start + pageable.getPageSize()), list.size());
         List<AuctionRegistrationResponse> pagedAuctions = list.subList(start, end);
 
-        return new PageImpl<>(pagedAuctions , pageable, auctions.size());
+        return new PageImpl<>(pagedAuctions, pageable, auctions.size());
     }
 
     @Override

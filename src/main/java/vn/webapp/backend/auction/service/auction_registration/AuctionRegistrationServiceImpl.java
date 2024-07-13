@@ -73,7 +73,7 @@ public class AuctionRegistrationServiceImpl implements AuctionRegistrationServic
     @Override
     public List<AuctionRegistration> findByAuctionIdAndValid(Integer auctionId) {
         var auction = auctionRepository.findById(auctionId).orElseThrow(() -> new ResourceNotFoundException(ErrorMessages.AUCTION_NOT_FOUND));
-        return auctionRegistrationRepository.findByAuctionIdAndValid(auction.getId(), AuctionRegistrationState.VALID);
+        return auctionRegistrationRepository.findByAuctionIdAndValid(auction.getId());
     }
 
     @Override
