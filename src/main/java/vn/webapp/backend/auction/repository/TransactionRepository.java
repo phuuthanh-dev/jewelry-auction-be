@@ -27,8 +27,15 @@ public interface TransactionRepository extends JpaRepository<Transaction, Intege
             @Param("state") TransactionState state,
             Pageable pageable
     );
-    @Query("SELECT t FROM Transaction t WHERE t.paymentMethod IS NOT NULL AND t.type = :typename AND (:jewelryName IS NULL OR t.auction.jewelry.name LIKE %:jewelryName%) AND t.auction.jewelry.state = 'AUCTION' AND t.auction.jewelry.isHolding= true")
-    Page<Transaction> findTransactionHandover(@Param("typename") TransactionType typename , @Param("jewelryName") String jewelryName, Pageable pageable);
+    @Query("SELECT t FROM Transaction t WHERE t.paymentMethod IS NOT NULL AND t.type = :typename "+
+            "AND (:jewelryName IS NULL OR t.auction.jewelry.name LIKE %:jewelryName%) "+
+            "AND t.auction.jewelry.state = 'AUCTION' AND t.auction.jewelry.isHolding= true "+
+            "AND (:category IS NULL OR t.auction.jewelry.category.name = :category)")
+    Page<Transaction> findTransactionHandover(
+            @Param("typename") TransactionType typename ,
+            @Param("jewelryName") String jewelryName,
+            @Param("category") String category,
+            Pageable pageable);
 
     @Query("SELECT COUNT(t) FROM Transaction t WHERE t.type = 'REGISTRATION' AND t.user.username = :username")
     Integer getCountTransactionsRegistrationByUsername(@Param("username") String username);
