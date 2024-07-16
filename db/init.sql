@@ -113,7 +113,8 @@ CREATE TABLE [dbo].[jewelry]
     [user_id]     [int]                NULL,
     [is_holding]  [bit]                NULL,
     [received_date] [datetime2](6)     NULL,
-    [delivery_date] [datetime2](6)     NULL
+    [delivery_date] [datetime2](6)     NULL,
+    [create_date] [datetime2](6)     NULL
 )
 
     INSERT INTO [dbo].[jewelry]
