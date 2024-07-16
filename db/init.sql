@@ -96,7 +96,9 @@ CREATE TABLE [dbo].[user]
             'https://scontent.fsgn2-7.fna.fbcdn.net/v/t39.30808-6/438275285_1101091104487039_4035794765477072253_n.jpg?_nc_cat=108&ccb=1-7&_nc_sid=5f2048&_nc_ohc=7MHTOamLKXgQ7kNvgGdad4i&_nc_ht=scontent.fsgn2-7.fna&oh=00_AYDZ0L0Y3_1M_tK5YBX-b1PhjuTPFeLod8Jz1UhW3t_Gkg&oe=6665416E',
             N'Lâm Đồng', 'phuuthanh2003@gmail.com', N'Phùng', N'Thành',
             '$2a$12$j/1n5Pjv4JgzG76ZG0hyH.MD6ftohJNbjuZjRHQFt31Ta/jViwKQ2', '0912345670', N'Hà Nội', N'Hoang', 'ACTIVE',
-            'phuuthanh2003', 1985, 'ADMIN', 7, '1030293193991', 'PHUNG HUU THANH', '2024-05-01 17:30:00', '01', '123456', 'CA NINH', '');
+            'phuuthanh2003', 1985, 'ADMIN', 7, '1030293193991', 'PHUNG HUU THANH', '2024-05-01 17:30:00', 'https://firebasestorage.googleapis.com/v0/b/auction-image-aecbe.appspot.com/o/images-cccd%2F49a92919-a92a-4d32-9f70-db2f641ccb51?alt=media&token=f50f52dc-8954-4a18-845e-16e855b076bb'
+           , 'https://firebasestorage.googleapis.com/v0/b/auction-image-aecbe.appspot.com/o/images-cccd%2F79f370d3-d4ea-4690-903e-88a99ade8d38?alt=media&token=b728a278-36fd-4e96-bd64-f34a8b03e5a1',
+            'CA MAU', '');
 
 
 CREATE TABLE [dbo].[jewelry]
