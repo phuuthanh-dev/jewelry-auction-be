@@ -152,6 +152,13 @@ public class JewelryServiceImpl implements JewelryService {
     }
 
     @Override
+    public Page<Jewelry> getJewelryReturnedViolator(String category, String jewelryName, Pageable pageable) {
+        if (category.equals("Tất cả"))
+            return jewelryRepository.findJewelryReturnedViolator(null,jewelryName,pageable);
+        return jewelryRepository.findJewelryReturnedViolator(category,jewelryName,pageable);
+    }
+
+    @Override
     public Page<Jewelry> getJewelriesInHandOver(Pageable pageable) {
         return jewelryRepository.findJewelryInHandOver(pageable);
     }
