@@ -79,8 +79,9 @@ public class JewelryServiceImpl implements JewelryService {
         jewelry.setWeight(request.weight());
         jewelry.setCategory(category);
         jewelry.setBrand(request.brand());
-        jewelry.setIsHolding(false);
+//        jewelry.setIsHolding(false);
         jewelry.setName(request.name());
+        jewelry.setCreateDate(Timestamp.from(Instant.now()));
         jewelry.setState(JewelryState.APPROVING);
 
         jewelryRepository.save(jewelry);

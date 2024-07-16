@@ -48,6 +48,31 @@ public interface JewelryRepository extends JpaRepository<Jewelry, Integer> {
     @Query("SELECT j FROM Jewelry j ORDER BY j.id DESC")
     List<Jewelry> findLatestJewelry();
 
+    @Query("SELECT COUNT(j) FROM Jewelry j WHERE j.isHolding IS NULL AND " +
+            "j.state = 'APPROVING' AND j.receivedDate IS NULL AND j.deliveryDate IS NULL " +
+            "AND MONTH(j.createDate) = :month AND YEAR(j.createDate) = :year")
+    Integer countAllJewelriesNeedPricing(@Param("month") Integer month, @Param("year") Integer year);
+
+    @Query("SELECT COUNT(j) FROM Jewelry j WHERE j.isHolding = false AND " +
+            "j.state = 'ACTIVE' AND j.receivedDate IS NULL AND j.deliveryDate IS NULL " +
+            "AND MONTH(j.createDate) = :month AND YEAR(j.createDate) = :year")
+    Integer countAllJewelriesPriced(@Param("month") Integer month, @Param("year") Integer year);
+
+    @Query("SELECT COUNT(j) FROM Jewelry j WHERE j.isHolding = true AND " +
+            "j.state = 'ACTIVE' AND j.receivedDate IS NOT NULL AND j.deliveryDate IS NULL " +
+            "AND MONTH(j.createDate) = :month AND YEAR(j.createDate) = :year")
+    Integer countAllJewelriesNotHasAuction(@Param("month") Integer month, @Param("year") Integer year);
+
+    @Query("SELECT COUNT(j) FROM Jewelry j WHERE j.isHolding = true AND " +
+            "j.state = 'AUCTION' AND j.receivedDate IS NOT NULL AND j.deliveryDate IS NULL " +
+            "AND MONTH(j.createDate) = :month AND YEAR(j.createDate) = :year")
+    Integer countAllJewelriesHasAuction(@Param("month") Integer month, @Param("year") Integer year);
+
+    @Query("SELECT COUNT(j) FROM Jewelry j WHERE j.isHolding = false AND " +
+            "j.state = 'AUCTION' AND j.receivedDate IS NOT NULL AND j.deliveryDate IS NOT NULL " +
+            "AND MONTH(j.createDate) = :month AND YEAR(j.createDate) = :year")
+    Integer countAllJewelriesHandOver(@Param("month") Integer month, @Param("year") Integer year);
+
     @Query("SELECT COUNT(j) FROM Jewelry j WHERE j.state = :state")
     Integer countAllJewelriesByState(@Param("state") JewelryState state);
 

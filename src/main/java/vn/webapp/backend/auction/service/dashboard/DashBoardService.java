@@ -25,15 +25,18 @@ public class DashBoardService {
 
     public DashBoardResponse getInformation(Integer yearGetRegisterAccount, Integer yearGetAuction, Integer yearGetRevenue,
                                             Integer yearGetAuctionFailedAndSuccess, Integer monthGetAuctionFailedAndSuccess,
+                                            Integer yearGetJewelry, Integer monthGetJewelry,
                                             Integer yearGetUserJoinAuction) {
         LocalDateTime startOfDay = LocalDateTime.now().withHour(0).withMinute(0).withSecond(0).withNano(0);
         LocalDateTime startOfNextDay = startOfDay.plusDays(1);
 
         // Total counts
         Integer totalUser = userRepository.getTotalUser();
-        Integer totalActiveJewelry = jewelryRepository.countAllJewelriesByState(JewelryState.ACTIVE);
-        Integer totalApprovingJewelry = jewelryRepository.countAllJewelriesByState(JewelryState.APPROVING);
-        Integer totalAuctionJewelry = jewelryRepository.countAllJewelriesByState(JewelryState.AUCTION);
+        Integer totalJewelryPricing = jewelryRepository.countAllJewelriesNeedPricing(monthGetJewelry, yearGetJewelry);
+        Integer totalJewelryPriced = jewelryRepository.countAllJewelriesPriced(monthGetJewelry, yearGetJewelry);
+        Integer totalJewelryNotHasAuction = jewelryRepository.countAllJewelriesNotHasAuction(monthGetJewelry, yearGetJewelry);
+        Integer totalJewelryHasAuction = jewelryRepository.countAllJewelriesHasAuction(monthGetJewelry, yearGetJewelry);
+        Integer totalJewelryHandover = jewelryRepository.countAllJewelriesHandOver(monthGetJewelry, yearGetJewelry);
         Integer auctionFailed = auctionRepository.countAllAuctionsFailed(monthGetAuctionFailedAndSuccess, yearGetAuctionFailedAndSuccess);
         Integer auctionSuccess = auctionRepository.countAllAuctionsSuccessful(monthGetAuctionFailedAndSuccess, yearGetAuctionFailedAndSuccess);
         Integer totalUsersVerified = userRepository.getTotalUserByState(AccountState.VERIFIED);
@@ -87,9 +90,11 @@ public class DashBoardService {
         return DashBoardResponse.builder()
                 .totalUser(totalUser)
                 .totalRevenueToday(totalRevenueToday)
-                .totalJewelryActive(totalActiveJewelry)
-                .totalJewelryWaitApproving(totalApprovingJewelry)
-                .totalAuctionJewelry(totalAuctionJewelry)
+                .totalJewelryPricing(totalJewelryPricing)
+                .totalJewelryPriced(totalJewelryPriced)
+                .totalJewelryNotHasAuction(totalJewelryNotHasAuction)
+                .totalJewelryHasAuction(totalJewelryHasAuction)
+                .totalJewelryHandover(totalJewelryHandover)
                 .totalUsersVerified(totalUsersVerified)
                 .totalUsersActive(totalUsersActive)
                 .totalUsersInActive(totalUsersInActive)
