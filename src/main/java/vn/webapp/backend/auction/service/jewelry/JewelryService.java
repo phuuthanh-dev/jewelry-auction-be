@@ -28,6 +28,8 @@ public interface JewelryService {
 
     Page<Jewelry> getJewelryByStateAndIsHolding(JewelryState state, Boolean isHolding,String category, String jewelryName, Pageable pageable);
 
+    Page<Jewelry> getJewelryReturnedViolator(String category, String jewelryName, Pageable pageable);
+
     Page<Jewelry> getJewelriesInHandOver(Pageable pageable);
 
     Page<Jewelry> getJewelriesByUsername(String username, Pageable pageable);

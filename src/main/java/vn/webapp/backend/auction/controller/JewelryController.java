@@ -100,6 +100,19 @@ public class JewelryController {
         return ResponseEntity.ok(jewelryService.getJewelryByStateAndIsHolding(state,isHolding,category,jewelryName,pageable));
     }
 
+    @GetMapping("/return-violator")
+    public ResponseEntity<Page<Jewelry>> getJewelryReturnedViolator(
+            @RequestParam(required = false) String jewelryName,
+            @RequestParam(defaultValue = "id") String sortBy,
+            @RequestParam(required = false) String category,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "5") int size,
+            @RequestParam(defaultValue = "asc") String sortOrder) {
+        Sort.Direction direction = (sortOrder.equalsIgnoreCase("asc")) ? Sort.Direction.ASC : Sort.Direction.DESC;
+        Pageable pageable = PageRequest.of(page, size, direction, sortBy);
+        return ResponseEntity.ok(jewelryService.getJewelryReturnedViolator(category,jewelryName,pageable));
+    }
+
     @GetMapping("/in-handover-list")
     public ResponseEntity<Page<Jewelry>> getJewelryInHandOver(
             @RequestParam(defaultValue = "id") String sortBy,
