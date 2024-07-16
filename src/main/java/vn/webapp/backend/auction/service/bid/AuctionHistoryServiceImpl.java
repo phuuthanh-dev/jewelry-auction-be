@@ -17,6 +17,8 @@ import vn.webapp.backend.auction.repository.AuctionRepository;
 import vn.webapp.backend.auction.repository.UserRepository;
 
 import java.security.SecureRandom;
+import java.sql.Timestamp;
+import java.time.Instant;
 import java.util.List;
 
 @Service
@@ -89,10 +91,19 @@ public class AuctionHistoryServiceImpl implements AuctionHistoryService {
 
         if (auction.getLastPrice() == null || request.priceGiven().compareTo(auction.getLastPrice()) > 0) {
             auction.setLastPrice(request.priceGiven());
-            auctionRepository.save(auction);
         } else {
             throw new IllegalArgumentException("Giá đấu không hợp lệ.");
         }
+
+        var currentTime = Timestamp.from(Instant.now());
+        var endDate = auction.getEndDate();
+        long minutesDifference = (endDate.getTime() - currentTime.getTime()) / (1000 * 60);
+
+        // Thoi gian con be hon 15p
+        if (auction.getLastPrice() >= auction.getJewelry().getBuyNowPrice() && minutesDifference > 15) {
+            auction.setEndDate(new Timestamp(currentTime.getTime() + 15 * 60 * 1000));
+        }
+        auctionRepository.save(auction);
     }
 
     @Override
