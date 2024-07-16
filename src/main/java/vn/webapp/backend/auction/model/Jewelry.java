@@ -50,6 +50,9 @@ public class Jewelry {
     @Column(name = "delivery_date")
     private Timestamp deliveryDate;
 
+    @Column(name = "create_date")
+    private Timestamp createDate;
+
     @Column(name = "state", nullable = false)
     @Enumerated(EnumType.STRING)
     private JewelryState state;

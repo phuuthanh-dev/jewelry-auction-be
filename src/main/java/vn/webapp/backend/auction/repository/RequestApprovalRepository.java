@@ -35,8 +35,10 @@ public interface RequestApprovalRepository extends JpaRepository<RequestApproval
             "ORDER BY ra.isConfirm ASC")
     Page<RequestApproval> findRequestApprovalByUserId(@Param("id") Integer id, @Param("jewelryName") String jewelryName,@Param("category") String category, Pageable pageable);
 
-    @Query("SELECT ra FROM RequestApproval ra WHERE ra.sender.role = 'MANAGER' " +
-            "AND (:jewelryName IS NULL OR ra.jewelry.name LIKE %:jewelryName%) " +
+    @Query("SELECT ra FROM RequestApproval ra " +
+            "WHERE " +
+            "ra.sender.role = 'MANAGER' AND " +
+            "(:jewelryName IS NULL OR ra.jewelry.name LIKE %:jewelryName%) " +
             "AND (:category IS NULL OR ra.jewelry.category.name = :category) " +
             "AND ra.isConfirm = true AND ra.state = 'ACTIVE' " +
             "AND ra.jewelry.state = 'ACTIVE' AND ra.jewelry.isHolding = true")
