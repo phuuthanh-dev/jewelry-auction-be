@@ -70,6 +70,14 @@ public interface TransactionRepository extends JpaRepository<Transaction, Intege
             "AND t.paymentTime < :startOfNextDay")
     Double getTotalRevenueToday(@Param("startOfDay") LocalDateTime startOfDay, @Param("startOfNextDay") LocalDateTime startOfNextDay);
 
+    @Query("SELECT COALESCE(SUM(t.auction.participationFee), 0) " +
+            "FROM Transaction t " +
+            "WHERE t.type = 'REGISTRATION' " +
+            "AND t.state = 'SUCCEED' " +
+            "AND t.paymentTime >= :startOfDay " +
+            "AND t.paymentTime < :startOfNextDay")
+    Double getTotalRegistrationFeeRevenueToday(@Param("startOfDay") LocalDateTime startOfDay, @Param("startOfNextDay") LocalDateTime startOfNextDay);
+
     @Query("SELECT t FROM Transaction t " +
             "WHERE t.type = 'PAYMENT_TO_WINNER' " +
             "AND t.state != 'SUCCEED' " +
