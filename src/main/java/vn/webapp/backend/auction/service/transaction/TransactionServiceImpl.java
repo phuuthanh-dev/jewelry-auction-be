@@ -17,9 +17,7 @@ import vn.webapp.backend.auction.repository.*;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor
@@ -70,6 +68,22 @@ public class TransactionServiceImpl implements TransactionService {
         }
         return transactionsList;
     }
+
+//    @Override
+//    public Page<Transaction> getTransactionByTypeAndState(TransactionType type, String userName, TransactionState state, Pageable pageable) {
+//        List<TransactionState> states;
+//        if (state.equalsIgnoreCase("Tất cả")) {
+//            states = Arrays.asList(TransactionState.PENDING, TransactionState.SUCCEED, TransactionState.FAILED);
+//        } else {
+//            states = Collections.singletonList(resolveTransactionState(state));
+//        }
+//
+//        Page<Transaction> transactionsList = transactionRepository.findTransactionByTypeAndStates(type, userName, states, pageable);
+//        if (transactionsList.isEmpty()) {
+//            throw new ResourceNotFoundException("Type '" + type + "' does not have any transaction items.");
+//        }
+//        return transactionsList;
+//    }
 
     @Override
     public Page<Transaction> getTransactionHandover(TransactionType typename, String jewelryName, String category, Pageable pageable) {

@@ -77,15 +77,15 @@ public class EmailService {
     }
 
     @Async
-    public void sendBlockAccountEmail(String to, String fullName, String userName, String reason) throws MessagingException {
+    public void sendBanParticipatingAccountEmail(String to, String fullName, String userName, String reason) throws MessagingException {
         MimeMessage message = javaMailSender.createMimeMessage();
         MimeMessageHelper helper = new MimeMessageHelper(message, true);
 
-        String html = emailContent.setHtmlBlockAccountContent(fullName,userName,reason);
+        String html = emailContent.setHtmlBanParticipatingAccountContent(fullName,userName,reason);
 
         helper.setFrom(emailUsername);
         helper.setTo(to);
-        helper.setSubject("Tài khoản DGS của bạn sẽ bị khóa!.");
+        helper.setSubject("Tài khoản DGS của bạn sẽ bị tạm khóa, không thể tham gia đấu giá!.");
         helper.setText(html, true);
 
         javaMailSender.send(message);
