@@ -37,7 +37,7 @@ public class JewelryController {
         if (username != null) {
             jewelries = jewelryService.getJewelriesByUsername(username, pageable);
         } else {
-            jewelries = jewelryService.getAllJeweries(pageable);
+            jewelries = jewelryService.getAllJewelries(pageable);
         }
 
         return ResponseEntity.ok(jewelries);

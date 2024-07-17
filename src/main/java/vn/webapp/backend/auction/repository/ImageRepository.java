@@ -12,6 +12,7 @@ import java.util.List;
 
 public interface ImageRepository extends JpaRepository<Image, Integer> {
     List<Image> findImageByJewelryId(Integer jewelryId);
+
     @Query("SELECT i FROM Image i WHERE i.icon = true and i.jewelry.id = :jewelryId")
     Image findImageByIconAndJewelryId(@Param("jewelryId") Integer jewelryId);
 

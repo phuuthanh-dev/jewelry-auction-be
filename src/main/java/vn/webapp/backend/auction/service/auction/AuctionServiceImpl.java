@@ -58,11 +58,6 @@ public class AuctionServiceImpl implements AuctionService {
     }
 
     @Override
-    public List<Auction> findTop3AuctionsByPriceAndState(List<AuctionState> states) {
-        return auctionRepository.findTop3ByStateInOrderByFirstPriceDesc(states);
-    }
-
-    @Override
     public List<Auction> findAuctionSortByBetweenStartDayAndEndDay(String startDay, String endDay) {
         LocalDate localDate1 = LocalDate.parse(startDay);
         LocalDate localDate2 = LocalDate.parse(endDay);
