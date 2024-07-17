@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import lombok.*;
+import vn.webapp.backend.auction.enums.JewelryMaterial;
 import vn.webapp.backend.auction.enums.JewelryState;
 
 import java.sql.Timestamp;
@@ -32,8 +33,8 @@ public class Jewelry {
     @Column(name = "description", nullable = false)
     private String description;
 
-    @Column(name = "material", nullable = false)
-    private String material;
+    @Enumerated(EnumType.STRING)
+    private JewelryMaterial material;
 
     @Column(name = "brand", nullable = false)
     private String brand;

@@ -79,20 +79,6 @@ public class AuctionServiceTest extends AbstractTestNGSpringContextTests{
     }
 
     @Test
-    public void testFindTop3AuctionsByPriceAndStateReturnsWell() {
-        // Expected
-        List<AuctionState> states = Arrays.asList(AuctionState.ONGOING, AuctionState.WAITING);
-        // Act
-        List<Auction> auctions = auctionService.findTop3AuctionsByPriceAndState(states);
-        // Assert
-        assertNotNull(auctions);
-        assertTrue(auctions.size() <= 3);
-        for (Auction auction : auctions) {
-            assertTrue(states.contains(auction.getState()));
-        }
-    }
-
-    @Test
     public void testFindAuctionSortByBetweenStartdayAndEnddayReturnsWell() {
         // Expected
         String startDay = "2023-01-01";

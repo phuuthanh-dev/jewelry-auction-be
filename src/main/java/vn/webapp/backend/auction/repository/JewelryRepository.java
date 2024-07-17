@@ -12,6 +12,7 @@ import java.util.List;
 import java.util.Optional;
 
 public interface JewelryRepository extends JpaRepository<Jewelry, Integer> {
+
     @Query("SELECT j FROM Jewelry j WHERE j.user.username = :username")
     List<Jewelry> findJewelryByUsername(@Param("username") String username);
 
@@ -72,9 +73,6 @@ public interface JewelryRepository extends JpaRepository<Jewelry, Integer> {
             "j.state = 'AUCTION' AND j.receivedDate IS NOT NULL AND j.deliveryDate IS NOT NULL " +
             "AND MONTH(j.createDate) = :month AND YEAR(j.createDate) = :year")
     Integer countAllJewelriesHandOver(@Param("month") Integer month, @Param("year") Integer year);
-
-    @Query("SELECT COUNT(j) FROM Jewelry j WHERE j.state = :state")
-    Integer countAllJewelriesByState(@Param("state") JewelryState state);
 
     @Query("SELECT j FROM Jewelry j WHERE j.user.id = :userId AND (:jewelryName IS NULL OR j.name LIKE %:jewelryName%) AND (j.state = 'ACTIVE' OR j.state = 'AUCTION')")
     Page<Jewelry> findJewelryActiveByUserId(@Param("userId") Integer userId,@Param("jewelryName") String jewelryName, Pageable pageable);

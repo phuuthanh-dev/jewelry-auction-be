@@ -6,5 +6,5 @@ import vn.webapp.backend.auction.model.JewelryCategory;
 import java.util.Optional;
 
 public interface JewelryCategoryRepository extends JpaRepository<JewelryCategory, Integer> {
-    public Optional<JewelryCategory> findByName(String name);
+    Optional<JewelryCategory> findByName(String name);
 }

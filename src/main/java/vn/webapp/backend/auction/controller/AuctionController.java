@@ -65,12 +65,6 @@ public class AuctionController {
         return ResponseEntity.ok(auctionService.getAuctionById(id));
     }
 
-    @GetMapping("/get-top-3-price")
-    public ResponseEntity<List<Auction>> getTop3Auction(@RequestParam List<AuctionState> state) {
-        List<Auction> top3Auctions = auctionService.findTop3AuctionsByPriceAndState(state);
-        return ResponseEntity.ok(top3Auctions);
-    }
-
     @GetMapping("/get-by-name/{key}")
     public ResponseEntity<List<Auction>> getAuctionByName(@PathVariable String key) {
         return ResponseEntity.ok(auctionService.findAuctionByName(key));
