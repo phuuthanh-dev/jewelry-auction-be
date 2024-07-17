@@ -22,7 +22,7 @@ public interface JewelryService {
 
     List<Jewelry> getJeweriesByNameContain(String key);
 
-    Page<Jewelry> getAllJeweries(Pageable pageable);
+    Page<Jewelry> getAllJewelries(Pageable pageable);
 
     Page<Jewelry> getJewelriesInWaitList(Pageable pageable);
 

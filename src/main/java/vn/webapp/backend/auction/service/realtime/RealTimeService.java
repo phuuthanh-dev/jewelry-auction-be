@@ -23,7 +23,7 @@ public class RealTimeService {
     private final UserRepository userRepository;
     private final AuctionRegistrationRepository auctionRegistrationRepository;
 
-    public BidResponse getLastPriceTogether(Integer id, Long bonusTime, String username) {
+    public BidResponse bidRealtime(Integer id, Long bonusTime, String username) {
         Auction auction = auctionRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException(ErrorMessages.AUCTION_NOT_FOUND));
         User user = userRepository.findByUsername(username)
@@ -34,10 +34,11 @@ public class RealTimeService {
         auction.setEndDate(newEndDate);
         auctionRepository.save(auction);
 
-        return new BidResponse(auction.getLastPrice(), auction.getJewelry().getBuyNowPrice(), auction.getId(), auction.getEndDate(), bonusTime, user.getUsername());
+        return new BidResponse(auction.getLastPrice(), auction.getJewelry().getBuyNowPrice(), auction.getId(),
+                auction.getEndDate(), bonusTime, user.getUsername());
     }
 
-    public KickOutResponse staffKickOutMember(Integer id, String username) {
+    public KickOutResponse staffKickOutMemberRealtime(Integer id, String username) {
         Auction auction = auctionRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException(ErrorMessages.AUCTION_NOT_FOUND));
         User user = userRepository.findByUsername(username)

@@ -3,9 +3,9 @@ package vn.webapp.backend.auction.service.dashboard;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import vn.webapp.backend.auction.dto.DashBoardRequest;
 import vn.webapp.backend.auction.dto.DashBoardResponse;
 import vn.webapp.backend.auction.enums.AccountState;
-import vn.webapp.backend.auction.enums.JewelryState;
 import vn.webapp.backend.auction.enums.Role;
 import vn.webapp.backend.auction.repository.*;
 
@@ -23,22 +23,19 @@ public class DashBoardService {
     private final AuctionRegistrationRepository auctionRegistrationRepository;
     private final TransactionRepository transactionRepository;
 
-    public DashBoardResponse getInformation(Integer yearGetRegisterAccount, Integer yearGetAuction, Integer yearGetRevenue,
-                                            Integer yearGetAuctionFailedAndSuccess, Integer monthGetAuctionFailedAndSuccess,
-                                            Integer yearGetJewelry, Integer monthGetJewelry,
-                                            Integer yearGetUserJoinAuction) {
+    public DashBoardResponse getInformation(DashBoardRequest dashBoardRequest) {
         LocalDateTime startOfDay = LocalDateTime.now().withHour(0).withMinute(0).withSecond(0).withNano(0);
         LocalDateTime startOfNextDay = startOfDay.plusDays(1);
 
         // Total counts
         Integer totalUser = userRepository.getTotalUser();
-        Integer totalJewelryPricing = jewelryRepository.countAllJewelriesNeedPricing(monthGetJewelry, yearGetJewelry);
-        Integer totalJewelryPriced = jewelryRepository.countAllJewelriesPriced(monthGetJewelry, yearGetJewelry);
-        Integer totalJewelryNotHasAuction = jewelryRepository.countAllJewelriesNotHasAuction(monthGetJewelry, yearGetJewelry);
-        Integer totalJewelryHasAuction = jewelryRepository.countAllJewelriesHasAuction(monthGetJewelry, yearGetJewelry);
-        Integer totalJewelryHandover = jewelryRepository.countAllJewelriesHandOver(monthGetJewelry, yearGetJewelry);
-        Integer auctionFailed = auctionRepository.countAllAuctionsFailed(monthGetAuctionFailedAndSuccess, yearGetAuctionFailedAndSuccess);
-        Integer auctionSuccess = auctionRepository.countAllAuctionsSuccessful(monthGetAuctionFailedAndSuccess, yearGetAuctionFailedAndSuccess);
+        Integer totalJewelryPricing = jewelryRepository.countAllJewelriesNeedPricing(dashBoardRequest.monthGetJewelry(), dashBoardRequest.yearGetJewelry());
+        Integer totalJewelryPriced = jewelryRepository.countAllJewelriesPriced(dashBoardRequest.monthGetJewelry(), dashBoardRequest.yearGetJewelry());
+        Integer totalJewelryNotHasAuction = jewelryRepository.countAllJewelriesNotHasAuction(dashBoardRequest.monthGetJewelry(), dashBoardRequest.yearGetJewelry());
+        Integer totalJewelryHasAuction = jewelryRepository.countAllJewelriesHasAuction(dashBoardRequest.monthGetJewelry(), dashBoardRequest.yearGetJewelry());
+        Integer totalJewelryHandover = jewelryRepository.countAllJewelriesHandOver(dashBoardRequest.monthGetJewelry(), dashBoardRequest.yearGetJewelry());
+        Integer auctionFailed = auctionRepository.countAllAuctionsFailed(dashBoardRequest.monthGetAuctionFailedAndSuccess(), dashBoardRequest.yearGetAuctionFailedAndSuccess());
+        Integer auctionSuccess = auctionRepository.countAllAuctionsSuccessful(dashBoardRequest.monthGetAuctionFailedAndSuccess(), dashBoardRequest.yearGetAuctionFailedAndSuccess());
         Integer totalUsersVerified = userRepository.getTotalUserByState(AccountState.VERIFIED);
         Integer totalUsersActive = userRepository.getTotalUserByState(AccountState.ACTIVE);
         Integer totalUsersInActive = userRepository.getTotalUserByState(AccountState.INACTIVE);
@@ -49,6 +46,7 @@ public class DashBoardService {
 
         // Total revenues
         Double totalRevenueToday = transactionRepository.getTotalRevenueToday(startOfDay, startOfNextDay);
+        Double totalRegistrationFeeRevenueToday = transactionRepository.getTotalRegistrationFeeRevenueToday(startOfDay, startOfNextDay);
 
         // Arrays for monthly data
         Integer[] totalUsersRegisterByMonth = new Integer[12];
@@ -58,19 +56,19 @@ public class DashBoardService {
 
         // Calculate data for each month of the year
         for (int month = 1; month <= 12; month++) {
-            totalUsersRegisterByMonth[month - 1] = userRepository.getTotalUserByMonthAndYear(month, yearGetRegisterAccount);
-            totalAuctionByMonth[month - 1] = auctionRepository.countAuctionsByMonthAndYear(month, yearGetAuction);
+            totalUsersRegisterByMonth[month - 1] = userRepository.getTotalUserByMonthAndYear(month, dashBoardRequest.yearGetRegisterAccount());
+            totalAuctionByMonth[month - 1] = auctionRepository.countAuctionsByMonthAndYear(month, dashBoardRequest.yearGetAuction());
 
-            Double totalRevenue = transactionRepository.getTotalRevenueByMonthAndYear(month, yearGetRevenue);
+            Double totalRevenue = transactionRepository.getTotalRevenueByMonthAndYear(month, dashBoardRequest.yearGetRevenue());
             totalRevenue = (totalRevenue != null) ? totalRevenue : 0.0;
 
-            Double totalRegistrationFeeRevenueByMonthAndYear = transactionRepository.getTotalRegistrationFeeRevenueByMonthAndYear(month, yearGetRevenue);
+            Double totalRegistrationFeeRevenueByMonthAndYear = transactionRepository.getTotalRegistrationFeeRevenueByMonthAndYear(month, dashBoardRequest.yearGetRevenue());
             totalRegistrationFeeRevenueByMonthAndYear = (totalRegistrationFeeRevenueByMonthAndYear != null) ? totalRegistrationFeeRevenueByMonthAndYear : 0.0;
 
             totalRevenueByMonth[month - 1] = totalRevenue + totalRegistrationFeeRevenueByMonthAndYear;
 
 
-            Long participation = auctionRegistrationRepository.countDistinctUsersRegistered(month, yearGetUserJoinAuction);
+            Long participation = auctionRegistrationRepository.countDistinctUsersRegistered(month, dashBoardRequest.yearGetUserJoinAuction());
             totalParticipationByMonth[month - 1] = participation.doubleValue();
         }
 
@@ -89,7 +87,7 @@ public class DashBoardService {
 
         return DashBoardResponse.builder()
                 .totalUser(totalUser)
-                .totalRevenueToday(totalRevenueToday)
+                .totalRevenueToday(totalRevenueToday + totalRegistrationFeeRevenueToday)
                 .totalJewelryPricing(totalJewelryPricing)
                 .totalJewelryPriced(totalJewelryPriced)
                 .totalJewelryNotHasAuction(totalJewelryNotHasAuction)

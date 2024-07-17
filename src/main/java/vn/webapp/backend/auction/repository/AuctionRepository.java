@@ -19,12 +19,9 @@ public interface AuctionRepository extends JpaRepository<Auction, Integer> {
     @Query("SELECT a FROM Auction a WHERE :auctionName = '' OR a.name LIKE %:auctionName%")
     List<Auction> findAuctionByNameContaining(@Param("auctionName") String auctionName);
 
-    List<Auction> findTop3ByStateInOrderByFirstPriceDesc(List<AuctionState> states);
-
     @Query("SELECT a FROM Auction a WHERE (:auctionState IS NULL AND a.state <> 'DELETED') OR a.state = :auctionState")
     List<Auction> findByState(@Param("auctionState") AuctionState auctionState);
 
-    //    @Query("SELECT a FROM Auction a WHERE a.state = :auctionState AND (:auctionName IS NULL OR a.name LIKE %:auctionName%)")
     @Query("SELECT a FROM Auction a WHERE ((:auctionState IS NULL AND a.state <> 'DELETED') OR (a.state = :auctionState)) AND (:auctionName IS NULL OR a.name LIKE %:auctionName%) ORDER BY a.state DESC")
     List<Auction> findByState(@Param("auctionState") AuctionState auctionState, @Param("auctionName") String auctionName);
 
@@ -46,12 +43,6 @@ public interface AuctionRepository extends JpaRepository<Auction, Integer> {
 
     @Query("SELECT a FROM Auction a WHERE a.jewelry.id = :jewelryId AND a.state != 'DELETE'")
     List<Auction> findAuctionByJewelryId(@Param("jewelryId") Integer jewelryId);
-
-    @Query("SELECT COUNT(a) FROM Auction a")
-    Integer countAllAuctions();
-
-    @Query("SELECT COUNT(a) FROM Auction a WHERE a.state = 'FINISHED'")
-    Integer countAllAuctionsFinished();
 
     @Query("SELECT COUNT(a) FROM Auction a WHERE a.state = 'FINISHED' AND a.lastPrice IS NULL " +
             "AND a.id NOT IN (SELECT ah.auction.id FROM AuctionHistory ah)  AND YEAR(a.endDate) = :year AND MONTH(a.endDate) = :month")

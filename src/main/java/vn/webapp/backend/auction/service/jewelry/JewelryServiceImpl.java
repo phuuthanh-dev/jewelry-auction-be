@@ -136,7 +136,7 @@ public class JewelryServiceImpl implements JewelryService {
     }
 
     @Override
-    public Page<Jewelry> getAllJeweries(Pageable pageable) {
+    public Page<Jewelry> getAllJewelries(Pageable pageable) {
         return jewelryRepository.findByState(JewelryState.ACTIVE, pageable);
     }
 

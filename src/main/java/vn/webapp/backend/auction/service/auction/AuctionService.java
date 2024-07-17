@@ -27,8 +27,6 @@ public interface AuctionService {
 
     List<Auction> getAuctionByState(AuctionState state);
 
-    List<Auction> findTop3AuctionsByPriceAndState(List<AuctionState> states);
-
     List<Auction> findAuctionSortByBetweenStartDayAndEndDay(String startDay, String endDay);
 
     Page<Auction> getByStaffID(Integer id, String auctionName, Pageable pageable);
