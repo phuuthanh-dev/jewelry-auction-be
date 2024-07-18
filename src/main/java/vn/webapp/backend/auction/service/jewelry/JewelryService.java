@@ -24,6 +24,8 @@ public interface JewelryService {
 
     Page<Jewelry> getAllJewelries(Pageable pageable);
 
+    Page<Jewelry> getJewelriesManager(JewelryState state, String jewelryName, String category, Pageable pageable);
+
     Page<Jewelry> getJewelriesInWaitList(Pageable pageable);
 
     Page<Jewelry> getJewelryByStateAndIsHolding(JewelryState state, Boolean isHolding,String category, String jewelryName, Pageable pageable);

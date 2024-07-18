@@ -38,6 +38,15 @@ public interface JewelryRepository extends JpaRepository<Jewelry, Integer> {
             @Param("jewelryName") String jewelryName,
             Pageable pageable);
 
+    @Query("SELECT j FROM Jewelry j WHERE j.state = :state "+
+            "AND (:jewelryName IS NULL OR j.name LIKE %:jewelryName%) "+
+            " AND (:category IS NULL OR j.category.name = :category)")
+    Page<Jewelry> findJewelriesManager(
+            @Param("state") JewelryState state,
+            @Param("jewelryName") String jewelryName,
+            @Param("category") String category,
+            Pageable pageable);
+
     @Query("SELECT j FROM Jewelry j WHERE j.state = 'ACTIVE' AND j.isHolding = true " +
             "AND j.user.state ='DISABLE'" +
             "AND (:jewelryName IS NULL OR j.name LIKE %:jewelryName%) " +

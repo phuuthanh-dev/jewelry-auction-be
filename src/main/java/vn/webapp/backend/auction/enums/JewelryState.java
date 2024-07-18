@@ -4,7 +4,9 @@ public enum JewelryState {
     ACTIVE("Đã duyệt"),
     APPROVING("Đang chờ duyệt"),
     HIDDEN("Đã bị ẩn"),
-    AUCTION("Đang đấu giá");
+    AUCTION("Có phiên đấu"),
+    HANDED_OVER("Đã bàn giao"),
+    RETURNED("Đã hoàn trả");
 
     private String displayName;
 

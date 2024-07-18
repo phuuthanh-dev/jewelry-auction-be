@@ -141,6 +141,13 @@ public class JewelryServiceImpl implements JewelryService {
     }
 
     @Override
+    public Page<Jewelry> getJewelriesManager(JewelryState state, String jewelryName, String category, Pageable pageable) {
+        if (category.equals("Tất cả"))
+            return jewelryRepository.findJewelriesManager(state,jewelryName,null,pageable);
+        return jewelryRepository.findJewelriesManager(state, jewelryName, category, pageable);
+    }
+
+    @Override
     public Page<Jewelry> getJewelriesInWaitList(Pageable pageable) {
         return jewelryRepository.findJewelryInWaitlist(pageable);
     }
