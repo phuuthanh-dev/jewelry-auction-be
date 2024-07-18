@@ -43,6 +43,22 @@ public class JewelryController {
         return ResponseEntity.ok(jewelries);
     }
 
+    @GetMapping("/manager-list")
+    public ResponseEntity<Page<Jewelry>> getAllJewelriesManager(
+            @RequestParam(defaultValue = "id") String sortBy,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "5") int size,
+            @RequestParam(required = false) String jewelryName,
+            @RequestParam(required = false) String category,
+            @RequestParam JewelryState state,
+            @RequestParam(defaultValue = "asc") String sortOrder) {
+        Sort.Direction direction = (sortOrder.equalsIgnoreCase("asc")) ? Sort.Direction.ASC : Sort.Direction.DESC;
+        Pageable pageable = PageRequest.of(page, size, direction, sortBy);
+        Page<Jewelry> jewelries;
+        jewelries = jewelryService.getJewelriesManager(state,jewelryName, category, pageable);
+        return ResponseEntity.ok(jewelries);
+    }
+
     @GetMapping("/get-all")
     public ResponseEntity<List<Jewelry>> getAll() {
         return ResponseEntity.ok(jewelryService.getAll());

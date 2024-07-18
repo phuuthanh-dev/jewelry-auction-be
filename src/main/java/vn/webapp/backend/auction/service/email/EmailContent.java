@@ -398,7 +398,7 @@ public class EmailContent {
         return content;
     }
 
-    public String setHtmlBlockAccountContent(String fullName, String userName, String reason
+    public String setHtmlBanParticipatingAccountContent(String fullName, String userName, String reason
     ) {
         String imageUrl = "https://raw.githubusercontent.com/phuuthanh2003/AuctionWebApp_BE/main/logo.png";
         String content = "<!DOCTYPE html>\n" +
@@ -507,7 +507,7 @@ public class EmailContent {
                 "                    width=\"600\" height=\"10\">\n" +
                 "                    <h1\n" +
                 "                      style=\"font-family: Helvetica, Arial, sans-serif;font-size: 18px;margin: 0;line-height: 1.5em;color: #ffffff !important;\">\n" +
-                "                      Thông báo khóa tài khoản người dùng.</h1>\n" +
+                "                      Thông báo tài khoản sẽ không thể tham gia đấu giá.</h1>\n" +
                 "                  </td>\n" +
                 "                </tr>\n" +
                 "                <tr>\n" +
@@ -520,7 +520,7 @@ public class EmailContent {
                 "                    </table>\n" +
                 "                    <br class=\"spacer\" style=\"line-height: 20px;\" />\n" +
                 "        <h3>Xin chào, " + fullName + "</h3>\n" +
-                "        <h4>Rất tiếc phải thông báo Tài khoản  " + userName +   " đã bị khóa.</h4>\n" +
+                "        <h4>Rất tiếc phải thông báo Tài khoản  " + userName +   " sẽ không thể tiếp tục tham gia đấu giá.</h4>\n" +
                 "        <h4><strong>Lý do: </strong> "+ reason +"</h4>\n" +
                 "                    <br class=\"spacer\" style=\"line-height: 20px;\" />\n" +
                 "                    <br class=\"spacer\" style=\"line-height: 20px;\" />\n" +
