@@ -42,6 +42,6 @@ public interface JewelryService {
 
     Jewelry getLatestJewelry();
 
-    Jewelry setHolding(Integer id, boolean state) throws MessagingException;
+    Jewelry setStateWithHolding(Integer id,boolean isHolding, JewelryState state) throws MessagingException;
 
 }

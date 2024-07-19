@@ -151,11 +151,12 @@ public class JewelryController {
     }
 
 
-    @PutMapping("/set-holding/{id}")
-    public ResponseEntity<Jewelry> setHolding(@PathVariable Integer id,  @RequestParam boolean state) throws MessagingException {
-        jewelryService.setHolding(id,state);
+    @PutMapping("/set-state-holding/{id}")
+    public ResponseEntity<Jewelry> setStateWithHolding(@PathVariable Integer id,  @RequestParam boolean isHolding, @RequestParam JewelryState state ) throws MessagingException {
+        jewelryService.setStateWithHolding(id,isHolding,state);
         return ResponseEntity.ok().build();
     }
+
 
     @GetMapping("/user-jewelry/{userId}")
     public ResponseEntity<Page<Jewelry>> getJewelriesActiveByUserId(
