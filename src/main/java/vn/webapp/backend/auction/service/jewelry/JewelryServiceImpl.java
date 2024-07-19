@@ -6,7 +6,10 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import vn.webapp.backend.auction.dto.JewelryCreateRequest;
+import vn.webapp.backend.auction.dto.JewelryUpdateRequest;
 import vn.webapp.backend.auction.dto.SendJewelryFromUserRequest;
+import vn.webapp.backend.auction.enums.JewelryMaterial;
 import vn.webapp.backend.auction.enums.JewelryState;
 import vn.webapp.backend.auction.exception.ResourceNotFoundException;
 import vn.webapp.backend.auction.model.ErrorMessages;
@@ -17,6 +20,7 @@ import vn.webapp.backend.auction.repository.JewelryCategoryRepository;
 import vn.webapp.backend.auction.repository.JewelryRepository;
 import vn.webapp.backend.auction.repository.UserRepository;
 import vn.webapp.backend.auction.service.email.EmailService;
+import vn.webapp.backend.auction.service.jwt.JwtService;
 
 import java.sql.Timestamp;
 import java.time.Instant;
@@ -32,6 +36,7 @@ public class JewelryServiceImpl implements JewelryService {
     private final UserRepository userRepository;
     private final JewelryCategoryRepository jewelryCategoryRepository;
     private final EmailService emailService;
+    private final JwtService jwtService;
 
     @Override
     public List<Jewelry> getAll() {
@@ -128,12 +133,12 @@ public class JewelryServiceImpl implements JewelryService {
     }
 
     @Override
-    public List<Jewelry> getJeweriesByCategoryId(Integer id) {
+    public List<Jewelry> getJewelriesByCategoryId(Integer id) {
         return jewelryRepository.findJewelryByCategoryId(id);
     }
 
     @Override
-    public List<Jewelry> getJeweriesByNameContain(String key) {
+    public List<Jewelry> getJewelriesByNameContain(String key) {
         return jewelryRepository.getJewelriesByNameContaining(key);
     }
 
@@ -155,6 +160,14 @@ public class JewelryServiceImpl implements JewelryService {
     }
 
     @Override
+    public Page<Jewelry> getJewelryPassed(String jewelryName, String category, Pageable pageable) {
+        if (category.equals("Tất cả")) {
+            return jewelryRepository.getPassedJewelry(jewelryName, null, pageable);
+        }
+        return jewelryRepository.getPassedJewelry(jewelryName, category, pageable);
+    }
+
+    @Override
     public Page<Jewelry> getJewelryByStateAndIsHolding(JewelryState state, Boolean isHolding,String category, String jewelryName, Pageable pageable) {
         if (category.equals("Tất cả"))
             return jewelryRepository.findJewelryByStateAndIsHolding(state,isHolding,null,jewelryName,pageable);
@@ -171,5 +184,53 @@ public class JewelryServiceImpl implements JewelryService {
     @Override
     public Page<Jewelry> getJewelriesInHandOver(Pageable pageable) {
         return jewelryRepository.findJewelryInHandOver(pageable);
+    }
+
+    @Override
+    public Jewelry updateJewelry(JewelryUpdateRequest jewelry) {
+        var existingJewelry = jewelryRepository.findById(jewelry.id())
+                .orElseThrow(() -> new ResourceNotFoundException(ErrorMessages.JEWELRY_NOT_FOUND));
+
+        var category = jewelryCategoryRepository.findByName(jewelry.category())
+                .orElseThrow(() -> new ResourceNotFoundException(ErrorMessages.CATEGORY_NOT_FOUND));
+
+        existingJewelry.setName(jewelry.name());
+        existingJewelry.setBuyNowPrice(jewelry.buyNowPrice());
+        existingJewelry.setCategory(category);
+        existingJewelry.setDescription(jewelry.description());
+        existingJewelry.setMaterial(jewelry.material());
+        existingJewelry.setBrand(jewelry.brand());
+        existingJewelry.setWeight(jewelry.weight());
+        existingJewelry.setCreateDate(jewelry.createDate());
+
+        return existingJewelry;
+    }
+
+    @Override
+    public Jewelry createJewelry(JewelryCreateRequest request) {
+        var username = jwtService.extractUsername(request.token());
+        var user = userRepository.findByUsername(username)
+                .orElseThrow(() -> new ResourceNotFoundException(ErrorMessages.USER_NOT_FOUND));
+
+        JewelryCategory category = jewelryCategoryRepository.findByName(request.category())
+                .orElseThrow(() -> new ResourceNotFoundException(ErrorMessages.CATEGORY_NOT_FOUND));
+
+        Jewelry jewelry = Jewelry.builder()
+                .name(request.name())
+                .user(user)
+                .brand(request.brand())
+                .material(JewelryMaterial.valueOf(request.material()))
+                .description(request.description())
+                .buyNowPrice(request.buyNowPrice())
+                .weight(request.weight())
+                .state(JewelryState.ACTIVE)
+                .createDate(Timestamp.from(Instant.now()))
+                .receivedDate(Timestamp.from(Instant.now()))
+                .isHolding(true)
+                .brand(request.brand())
+                .category(category)
+                .build();
+        jewelryRepository.save(jewelry);
+        return jewelry;
     }
 }
