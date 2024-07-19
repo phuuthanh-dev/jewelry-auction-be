@@ -95,12 +95,14 @@ public class JewelryServiceImpl implements JewelryService {
     }
 
     @Override
-    public Jewelry setHolding(Integer id,boolean state) throws MessagingException {
+    public Jewelry setStateWithHolding(Integer id,boolean isHolding, JewelryState state) throws MessagingException {
         var existingJewelry = jewelryRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException(ErrorMessages.JEWELRY_NOT_FOUND));
         var exitingUser = existingJewelry.getUser();
-        existingJewelry.setIsHolding(state);
-        if(state) {
+        System.out.println("Holding: " + isHolding );
+        existingJewelry.setState(state);
+        existingJewelry.setIsHolding(isHolding);
+        if(isHolding) {
             existingJewelry.setReceivedDate(Timestamp.from(Instant.now()));
             emailService.sendConfirmHoldingEmail(exitingUser.getEmail(), exitingUser.getFullName(), existingJewelry.getName());
         }else {
