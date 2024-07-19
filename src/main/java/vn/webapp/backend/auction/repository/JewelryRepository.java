@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import vn.webapp.backend.auction.enums.JewelryState;
 import vn.webapp.backend.auction.model.Jewelry;
+import vn.webapp.backend.auction.model.RequestApproval;
 
 import java.util.List;
 import java.util.Optional;
@@ -36,6 +37,15 @@ public interface JewelryRepository extends JpaRepository<Jewelry, Integer> {
             @Param("isHolding") Boolean isHolding,
             @Param("category") String category,
             @Param("jewelryName") String jewelryName,
+            Pageable pageable);
+
+    @Query("SELECT j FROM Jewelry j WHERE j.state = :state "+
+            "AND (:jewelryName IS NULL OR j.name LIKE %:jewelryName%) "+
+            " AND (:category IS NULL OR j.category.name = :category)")
+    Page<Jewelry> findJewelriesManager(
+            @Param("state") JewelryState state,
+            @Param("jewelryName") String jewelryName,
+            @Param("category") String category,
             Pageable pageable);
 
     @Query("SELECT j FROM Jewelry j WHERE j.state = 'ACTIVE' AND j.isHolding = true " +
@@ -70,9 +80,20 @@ public interface JewelryRepository extends JpaRepository<Jewelry, Integer> {
     Integer countAllJewelriesHasAuction(@Param("month") Integer month, @Param("year") Integer year);
 
     @Query("SELECT COUNT(j) FROM Jewelry j WHERE j.isHolding = false AND " +
-            "j.state = 'AUCTION' AND j.receivedDate IS NOT NULL AND j.deliveryDate IS NOT NULL " +
+            "j.state = 'HANDED_OVER' AND j.receivedDate IS NOT NULL AND j.deliveryDate IS NOT NULL " +
             "AND MONTH(j.createDate) = :month AND YEAR(j.createDate) = :year")
     Integer countAllJewelriesHandOver(@Param("month") Integer month, @Param("year") Integer year);
+
+    @Query("SELECT j FROM Jewelry j " +
+            "WHERE " +
+            "(:jewelryName IS NULL OR j.name LIKE %:jewelryName%) " +
+            "AND (:category IS NULL OR j.category.name = :category) " +
+            "AND j.state = 'ACTIVE' AND j.isHolding = true AND j.user.state != 'DISABLE'")
+    Page<Jewelry> getPassedJewelry(
+            @Param("jewelryName") String jewelryName,
+            @Param("category") String category,
+            Pageable pageable
+    );
 
     @Query("SELECT j FROM Jewelry j WHERE j.user.id = :userId AND (:jewelryName IS NULL OR j.name LIKE %:jewelryName%) AND (j.state = 'ACTIVE' OR j.state = 'AUCTION')")
     Page<Jewelry> findJewelryActiveByUserId(@Param("userId") Integer userId,@Param("jewelryName") String jewelryName, Pageable pageable);

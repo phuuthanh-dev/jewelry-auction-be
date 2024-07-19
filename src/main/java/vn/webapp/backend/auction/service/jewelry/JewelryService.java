@@ -3,6 +3,8 @@ package vn.webapp.backend.auction.service.jewelry;
 import jakarta.mail.MessagingException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import vn.webapp.backend.auction.dto.JewelryCreateRequest;
+import vn.webapp.backend.auction.dto.JewelryUpdateRequest;
 import vn.webapp.backend.auction.dto.SendJewelryFromUserRequest;
 import vn.webapp.backend.auction.enums.JewelryState;
 import vn.webapp.backend.auction.model.Jewelry;
@@ -18,15 +20,19 @@ public interface JewelryService {
 
     void deleteJewelry(Integer id);
 
-    List<Jewelry> getJeweriesByCategoryId(Integer id);
+    List<Jewelry> getJewelriesByCategoryId(Integer id);
 
-    List<Jewelry> getJeweriesByNameContain(String key);
+    Page<Jewelry> getJewelryPassed(String jewelryName, String category, Pageable pageable);
+
+    List<Jewelry> getJewelriesByNameContain(String key);
 
     Page<Jewelry> getAllJewelries(Pageable pageable);
 
+    Page<Jewelry> getJewelriesManager(JewelryState state, String jewelryName, String category, Pageable pageable);
+
     Page<Jewelry> getJewelriesInWaitList(Pageable pageable);
 
-    Page<Jewelry> getJewelryByStateAndIsHolding(JewelryState state, Boolean isHolding,String category, String jewelryName, Pageable pageable);
+    Page<Jewelry> getJewelryByStateAndIsHolding(JewelryState state, Boolean isHolding, String category, String jewelryName, Pageable pageable);
 
     Page<Jewelry> getJewelryReturnedViolator(String category, String jewelryName, Pageable pageable);
 
@@ -40,6 +46,10 @@ public interface JewelryService {
 
     Jewelry getLatestJewelry();
 
-    Jewelry setHolding(Integer id, boolean state) throws MessagingException;
+    Jewelry updateJewelry(JewelryUpdateRequest jewelry);
+
+    Jewelry createJewelry(JewelryCreateRequest jewelry);
+
+    Jewelry setStateWithHolding(Integer id, boolean isHolding, JewelryState state) throws MessagingException;
 
 }

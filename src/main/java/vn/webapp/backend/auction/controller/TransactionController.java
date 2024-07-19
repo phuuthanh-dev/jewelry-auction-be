@@ -15,7 +15,9 @@ import vn.webapp.backend.auction.model.Transaction;
 import vn.webapp.backend.auction.model.User;
 import vn.webapp.backend.auction.service.transaction.TransactionService;
 
+import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @CrossOrigin(origins = {"http://localhost:3000", "http://localhost:3001"})
@@ -63,10 +65,13 @@ public class TransactionController {
             @RequestParam(defaultValue = "SUCCEED") String state,
             @RequestParam(defaultValue = "desc") String sortOrder) {
         TransactionState transactionState = resolveTransactionState(state);
-        Sort.Direction direction = (sortOrder.equalsIgnoreCase("desc")) ? Sort.Direction.DESC : Sort.Direction.ASC;
-        Pageable pageable = PageRequest.of(page, size, direction, sortBy);
-        return ResponseEntity.ok(transactionService.getTransactionByTypeAndState(type, userName, transactionState, pageable));
+        Sort.Direction direction = sortOrder.equalsIgnoreCase("desc") ? Sort.Direction.DESC : Sort.Direction.ASC;
+        Pageable pageable = PageRequest.of(page, size, Sort.by(direction, sortBy));
+        Page<Transaction> transactions = transactionService.getTransactionByTypeAndState(type, userName, transactionState, pageable);
+        return ResponseEntity.ok(transactions);
     }
+
+
 
     @GetMapping("/get-handover")
     public ResponseEntity<Page<Transaction>> getTransactionHandOver(

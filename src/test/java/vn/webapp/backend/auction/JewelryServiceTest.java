@@ -54,7 +54,7 @@ public class JewelryServiceTest extends AbstractTestNGSpringContextTests {
         // Expected
         Integer id = 1;
         // Act
-        List<Jewelry> jewelries = jewelryService.getJeweriesByCategoryId(id);
+        List<Jewelry> jewelries = jewelryService.getJewelriesByCategoryId(id);
         // Assert
         assertNotNull(jewelries);
         assertFalse(jewelries.isEmpty());
@@ -69,7 +69,7 @@ public class JewelryServiceTest extends AbstractTestNGSpringContextTests {
         // Expected
         String key = "Nhẫn";
         // Act
-        List<Jewelry> jewelries = jewelryService.getJeweriesByNameContain(key);
+        List<Jewelry> jewelries = jewelryService.getJewelriesByNameContain(key);
         // Assert
         assertNotNull(jewelries);
         assertFalse(jewelries.isEmpty());

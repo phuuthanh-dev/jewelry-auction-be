@@ -3,6 +3,7 @@ package vn.webapp.backend.auction.model;
 
 public class ErrorMessages {
     public static final String USER_NOT_FOUND = "Không tìm thấy người dùng.";
+    public static final String CATEGORY_NOT_FOUND = "Danh mục không tồn tại.";
     public static final String USER_NOT_VERIFIED = "Người dùng chưa xác thực.";
     public static final String USER_ALREADY_EXIST = "Người dùng đã tồn tại.";
     public static final String REQUEST_APPROVAL_NOT_FOUND = "Không tìm thấy yêu cầu.";

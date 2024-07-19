@@ -162,13 +162,13 @@ public class AuctionServiceImpl implements AuctionService {
                 .orElseThrow(() -> new ResourceNotFoundException(ErrorMessages.USER_NOT_FOUND));
 
         String reason = ReasonMessages.DO_NOT_PAY_ON_TIME;
-        existingTransaction.setState(TransactionState.HIDDEN);
+        existingTransaction.setState(TransactionState.FAILED);
         existingAuction.setState(AuctionState.FINISHED);
         existingJewelry.setState(JewelryState.ACTIVE);
-        existingUser.setState(AccountState.DISABLE);
+        existingUser.setState(AccountState.BAN_PARTICIPATING);
         existingUser.setBanReason(reason);
 
-        emailService.sendBlockAccountEmail(
+        emailService.sendBanParticipatingAccountEmail(
                 existingUser.getEmail(),
                 existingUser.getFullName(),
                 existingUser.getUsername(),

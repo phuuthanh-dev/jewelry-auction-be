@@ -27,7 +27,7 @@ public final class Endpoints {
             "/api/v1/user/change-password", "/api/v1/auction/update-end-date/**",
             "/api/v1/auction/set-state/**", "/api/v1/user","/api/v1/request-approval/set-state/**",
             "/api/v1/request-approval/confirm/**", "/api/v1/request-approval/cancel-request",
-            "/api/v1/transaction/set-method/**", "/api/v1/jewelry/set-holding/**"
+            "/api/v1/transaction/set-method/**", "/api/v1/jewelry/set-state-holding/**"
     };
 
     public static final String[] STAFF_GET_ENDPOINTS = {
@@ -35,7 +35,7 @@ public final class Endpoints {
     };
 
     public static final String[] MANAGER_GET_ENDPOINTS = {
-            "/api/v1/transaction/get-handover"
+            "/api/v1/transaction/get-handover", "/api/v1/jewelry/manager-list"
     };
 
     public static final String[] MANAGER_PUT_ENDPOINTS = {
