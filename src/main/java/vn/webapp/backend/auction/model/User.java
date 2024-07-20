@@ -96,7 +96,7 @@ public class User implements UserDetails {
     private Timestamp registerDate;
 
     @Enumerated(EnumType.STRING)
-    @Column(name ="state" , nullable = false, length = 10)
+    @Column(name ="state" , nullable = false, length = 20)
     private AccountState state;
 
     @ManyToOne

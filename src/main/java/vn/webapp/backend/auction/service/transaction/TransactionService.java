@@ -25,6 +25,8 @@ public interface TransactionService {
 
     User createTransactionForWinner(Integer auctionId);
 
+    User createTransactionForSeller(Integer auctionId);
+
     Page<Transaction> getTransactionByTypeAndState (TransactionType typename, String userName,TransactionState state, Pageable pageable);
 
     Page<Transaction> getTransactionHandover (TransactionType typename, String jewelryName, String category, Pageable pageable);

@@ -105,6 +105,11 @@ public class TransactionController {
         return ResponseEntity.ok(transactionService.createTransactionForWinner(auctionId));
     }
 
+    @PostMapping("/create-transaction-for-seller/{auctionId}")
+    public ResponseEntity<User> createTransactionForSeller(@PathVariable Integer auctionId) {
+        return ResponseEntity.ok(transactionService.createTransactionForSeller(auctionId));
+    }
+
     @PutMapping("/set-state/{id}")
     public ResponseEntity<Transaction> setState(@PathVariable Integer id, @RequestParam String state) {
         transactionService.setTransactionState(id, state);
