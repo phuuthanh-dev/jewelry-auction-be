@@ -44,6 +44,11 @@ public interface UserRepository extends JpaRepository<User, Integer>  {
             "AND ah.time = (SELECT MAX(ah2.time) FROM AuctionHistory ah2 WHERE ah2.auction.id = :auctionId AND ah2.state='ACTIVE')")
     Optional<User> findLatestUserInAuctionHistoryByAuctionId(@Param("auctionId") Integer auctionId);
 
+    @Query("SELECT a.user " +
+            "FROM Auction a " +
+            "WHERE a.id = :auctionId ")
+    Optional<User> findOwnerByAuctionId(@Param("auctionId") Integer auctionId);
+
     @Query("SELECT u FROM User u JOIN AuctionRegistration ar ON u.id = ar.user.id WHERE ar.auction.id = :auctionId AND u.id <> :winnerId AND ar.auctionRegistrationState = 'VALID'")
     List<User> findUsersInAuctionHistoryByAuctionIdExceptWinner(@Param("auctionId") Integer auctionId, @Param("winnerId") Integer winnerId);
 
