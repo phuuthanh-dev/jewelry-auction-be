@@ -13,8 +13,8 @@ import java.util.List;
 
 public interface AuctionRepository extends JpaRepository<Auction, Integer> {
 
-    @Query("SELECT a FROM Auction a WHERE a.startDate >= :startday AND a.endDate <= :endday")
-    List<Auction> findAuctionSortByBetweenStartdayAndEndday(@Param("startday") Timestamp startday, @Param("endday") Timestamp endday);
+    @Query("SELECT a FROM Auction a WHERE a.startDate >= :startday AND a.startDate <= :endday AND a.state <> 'DELETED'")
+    Page<Auction> findAuctionSortByBetweenStartDayAndEndDay(@Param("startday") Timestamp startday, @Param("endday") Timestamp endday, Pageable pageable);
 
     @Query("SELECT a FROM Auction a WHERE :auctionName = '' OR a.name LIKE %:auctionName%")
     List<Auction> findAuctionByNameContaining(@Param("auctionName") String auctionName);
