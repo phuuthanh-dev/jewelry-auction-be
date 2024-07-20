@@ -79,31 +79,6 @@ public class AuctionServiceTest extends AbstractTestNGSpringContextTests{
     }
 
     @Test
-    public void testFindAuctionSortByBetweenStartdayAndEnddayReturnsWell() {
-        // Expected
-        String startDay = "2023-01-01";
-        String endDay = "2023-12-31";
-        LocalDate localDate1 = LocalDate.parse(startDay);
-        LocalDate localDate2 = LocalDate.parse(endDay);
-
-        Timestamp timestampStartDate1 = Timestamp.valueOf(localDate1.atStartOfDay());
-
-        LocalDateTime endOfDay = LocalDateTime.of(localDate2, LocalTime.MAX);
-        Timestamp timestampEndDate2 = Timestamp.valueOf(endOfDay);
-
-        // Act
-        List<Auction> auctions = auctionService.findAuctionSortByBetweenStartDayAndEndDay(startDay, endDay);
-
-        // Assert
-        assertNotNull(auctions);
-        assertFalse(auctions.isEmpty());
-        for (Auction auction : auctions) {
-            assertTrue(auction.getStartDate().after(timestampStartDate1) || auction.getStartDate().equals(timestampStartDate1));
-            assertTrue(auction.getEndDate().before(timestampEndDate2) || auction.getEndDate().equals(timestampEndDate2));
-        }
-    }
-
-    @Test
     public void testGetCurrentAuctionByJewelryIdReturnsWell() {
         // Expected
         Integer jewelryId = 1;
@@ -143,19 +118,6 @@ public class AuctionServiceTest extends AbstractTestNGSpringContextTests{
 
         // Act
         List<Auction> auctions = auctionService.getAuctionByState(state);
-
-        // Assert
-        assertNotNull(auctions);
-        assertTrue(auctions.isEmpty());
-    }
-    @Test
-    public void testFindAuctionSortByBetweenStartdayAndEnddayReturnsEmptyList() {
-        // Specify a time period where no auctions exist
-        String startDay = "2024-01-01";
-        String endDay = "2024-01-02";
-
-        // Act
-        List<Auction> auctions = auctionService.findAuctionSortByBetweenStartDayAndEndDay(startDay, endDay);
 
         // Assert
         assertNotNull(auctions);

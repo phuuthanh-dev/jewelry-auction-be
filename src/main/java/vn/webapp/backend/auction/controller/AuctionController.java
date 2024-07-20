@@ -48,11 +48,17 @@ public class AuctionController {
         return ResponseEntity.ok(auctionService.getAllAuctions(auctionState, pageable, auctionName, categoryId));
     }
 
-    @GetMapping("/get-by-day/{startDate}/{endDate}")
-    public ResponseEntity<List<Auction>> getAllAuctionsSortedAndPaged(
-            @PathVariable String startDate,
-            @PathVariable String endDate) {
-        return ResponseEntity.ok(auctionService.findAuctionSortByBetweenStartDayAndEndDay(startDate, endDate));
+    @GetMapping("/get-by-day")
+    public ResponseEntity<Page<Auction>> getAllAuctionsSortedAndPaged(
+            @RequestParam(defaultValue = "state") String sortBy,
+            @RequestParam String startDate,
+            @RequestParam String endDate,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "5") int size,
+            @RequestParam(defaultValue = "desc") String sortOrder) {
+        Sort.Direction direction = (sortOrder.equalsIgnoreCase("asc")) ? Sort.Direction.ASC : Sort.Direction.DESC;
+        Pageable pageable = PageRequest.of(page, size, direction, sortBy);
+        return ResponseEntity.ok(auctionService.findAuctionSortByBetweenStartDayAndEndDay(startDate, endDate, pageable));
     }
 
     @GetMapping("/get-all")
@@ -63,11 +69,6 @@ public class AuctionController {
     @GetMapping("/id/{id}")
     public ResponseEntity<Auction> getAuctionById(@PathVariable Integer id) {
         return ResponseEntity.ok(auctionService.getAuctionById(id));
-    }
-
-    @GetMapping("/get-by-name/{key}")
-    public ResponseEntity<List<Auction>> getAuctionByName(@PathVariable String key) {
-        return ResponseEntity.ok(auctionService.findAuctionByName(key));
     }
 
     @DeleteMapping("/{id}")
@@ -89,11 +90,11 @@ public class AuctionController {
 
     @GetMapping("/get-by-states")
     public ResponseEntity<Page<Auction>> getAllAuctionsSortedAndPaged(
-            @RequestParam(defaultValue = "id") String sortBy,
+            @RequestParam(defaultValue = "state") String sortBy,
             @RequestParam(defaultValue = "") List<AuctionState> states,
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "5") int size,
-            @RequestParam(defaultValue = "asc") String sortOrder) {
+            @RequestParam(defaultValue = "desc") String sortOrder) {
         Sort.Direction direction = (sortOrder.equalsIgnoreCase("asc")) ? Sort.Direction.ASC : Sort.Direction.DESC;
         Pageable pageable = PageRequest.of(page, size, direction, sortBy);
         return ResponseEntity.ok(auctionService.getAuctionsByStates(states, pageable));
