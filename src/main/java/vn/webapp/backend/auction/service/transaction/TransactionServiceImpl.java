@@ -15,6 +15,7 @@ import vn.webapp.backend.auction.model.*;
 import vn.webapp.backend.auction.repository.*;
 
 import java.sql.Timestamp;
+import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.*;
@@ -98,6 +99,7 @@ public class TransactionServiceImpl implements TransactionService {
         var existingTransaction = transactionRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException(ErrorMessages.AUCTION_NOT_FOUND));
         existingTransaction.setState(TransactionState.valueOf(state));
+        existingTransaction.setPaymentTime(Timestamp.from(Instant.now()));
     }
 
     @Override
@@ -165,6 +167,29 @@ public class TransactionServiceImpl implements TransactionService {
         return userWin;
     }
 
+    @Override
+    public User createTransactionForSeller(Integer auctionId) {
+        var auction = auctionRepository.findById(auctionId)
+                .orElseThrow(() -> new ResourceNotFoundException(ErrorMessages.AUCTION_NOT_FOUND));
+
+        var userSeller = userRepository.findOwnerByAuctionId(auction.getId())
+                .orElseThrow(() -> new ResourceNotFoundException(ErrorMessages.USER_OWNER_NOT_FOUND));
+
+        if (!hasTransactionForAuctionAndUser(auctionId, userSeller.getId())) {
+            Transaction sellerTransaction = Transaction.builder()
+                    .user(userSeller)
+                    .auction(auction)
+                    .state(TransactionState.PENDING)
+                    .totalPrice(auction.getLastPrice() * 0.92)
+                    .feesIncurred(0.0)
+                    .createDate(Timestamp.from(Instant.now()))
+                    .type(TransactionType.PAYMENT_TO_SELLER)
+                    .build();
+
+            transactionRepository.save(sellerTransaction);
+        }
+        return userSeller;
+    }
     public boolean hasTransactionForAuctionAndUser(Integer auctionId, Integer userId) {
         Optional<Transaction> transactionOpt = transactionRepository.findTransactionByAuctionIdAndUserId(auctionId, userId);
         return transactionOpt.isPresent();

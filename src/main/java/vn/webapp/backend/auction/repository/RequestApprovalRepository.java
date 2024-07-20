@@ -13,6 +13,7 @@ public interface RequestApprovalRepository extends JpaRepository<RequestApproval
     @Query("SELECT ra FROM RequestApproval ra WHERE ra.sender.role = :role " +
             "AND (:jewelryName IS NULL OR ra.jewelry.name LIKE %:jewelryName%) " +
             "AND (:category IS NULL OR ra.jewelry.category.name = :category) " +
+            "AND ra.jewelry.state = 'APPROVING' " +
             "AND ra.isConfirm = false AND ra.state = 'ACTIVE'")
     Page<RequestApproval> findRequestApprovalBySenderRole(
             @Param("role") Role role,
