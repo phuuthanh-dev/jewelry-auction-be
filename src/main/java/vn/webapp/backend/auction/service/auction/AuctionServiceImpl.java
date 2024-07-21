@@ -58,7 +58,7 @@ public class AuctionServiceImpl implements AuctionService {
     }
 
     @Override
-    public List<Auction> findAuctionSortByBetweenStartDayAndEndDay(String startDay, String endDay) {
+    public Page<Auction> findAuctionSortByBetweenStartDayAndEndDay(String startDay, String endDay, Pageable pageable) {
         LocalDate localDate1 = LocalDate.parse(startDay);
         LocalDate localDate2 = LocalDate.parse(endDay);
 
@@ -68,7 +68,7 @@ public class AuctionServiceImpl implements AuctionService {
         Timestamp timestampEndDate2 = Timestamp.valueOf(endOfDay);
 
 
-        return auctionRepository.findAuctionSortByBetweenStartdayAndEndday(timestampStartDate1, timestampEndDate2);
+        return auctionRepository.findAuctionSortByBetweenStartDayAndEndDay(timestampStartDate1, timestampEndDate2, pageable);
     }
 
     @Override

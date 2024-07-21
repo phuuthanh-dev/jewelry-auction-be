@@ -13,8 +13,6 @@ import vn.webapp.backend.auction.dto.JewelryUpdateRequest;
 import vn.webapp.backend.auction.dto.SendJewelryFromUserRequest;
 import vn.webapp.backend.auction.enums.JewelryState;
 import vn.webapp.backend.auction.model.Jewelry;
-import vn.webapp.backend.auction.model.RequestApproval;
-import vn.webapp.backend.auction.model.User;
 import vn.webapp.backend.auction.service.jewelry.JewelryService;
 
 import java.util.List;
