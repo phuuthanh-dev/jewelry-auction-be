@@ -57,21 +57,19 @@ public class TransactionController {
 
     @GetMapping("/get-by-type-state")
     public ResponseEntity<Page<Transaction>> getTransactionByTypeAndState(
-            @RequestParam(defaultValue = "createDate") String sortBy,
+            @RequestParam(defaultValue = "state") String sortBy,
             @RequestParam(defaultValue = "PAYMENT_TO_WINNER") TransactionType type,
             @RequestParam(required = false) String userName,
             @RequestParam(defaultValue = "5") int size,
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "SUCCEED") String state,
-            @RequestParam(defaultValue = "desc") String sortOrder) {
+            @RequestParam(defaultValue = "asc") String sortOrder) {
         TransactionState transactionState = resolveTransactionState(state);
         Sort.Direction direction = sortOrder.equalsIgnoreCase("desc") ? Sort.Direction.DESC : Sort.Direction.ASC;
         Pageable pageable = PageRequest.of(page, size, Sort.by(direction, sortBy));
         Page<Transaction> transactions = transactionService.getTransactionByTypeAndState(type, userName, transactionState, pageable);
         return ResponseEntity.ok(transactions);
     }
-
-
 
     @GetMapping("/get-handover")
     public ResponseEntity<Page<Transaction>> getTransactionHandOver(
