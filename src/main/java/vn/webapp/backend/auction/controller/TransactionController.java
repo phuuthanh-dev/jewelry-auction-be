@@ -114,6 +114,16 @@ public class TransactionController {
         return ResponseEntity.ok().build();
     }
 
+    @PutMapping("/set-state-with-code/{id}")
+    public ResponseEntity<Transaction> setStateTransactionWithCode(
+            @PathVariable Integer id,
+            @RequestParam String state,
+            @RequestParam String transactionCode,
+            @RequestParam String bankCode) {
+        transactionService.setTransactionStateWithCode(id, state, transactionCode, bankCode);
+        return ResponseEntity.ok().build();
+    }
+
     @PutMapping("/set-method/{id}")
     public ResponseEntity<Transaction> setMethod(@PathVariable Integer id, @RequestParam String method) {
         transactionService.setTransactionMethod(id, method);

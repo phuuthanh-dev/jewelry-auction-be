@@ -6,6 +6,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import vn.webapp.backend.auction.dto.DisableUserRequest;
 import vn.webapp.backend.auction.dto.RegisterAccountRequest;
 import vn.webapp.backend.auction.dto.UserSpentResponse;
 import vn.webapp.backend.auction.enums.AccountState;
@@ -75,6 +76,14 @@ public class UserServiceImpl implements UserService {
         var existingUser = userRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException(ErrorMessages.USER_NOT_FOUND));
         existingUser.setState(state);
+    }
+
+    @Override
+    public void setDisableAccount(Integer id, DisableUserRequest request) {
+        var existingUser = userRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException(ErrorMessages.USER_NOT_FOUND));
+        existingUser.setState(AccountState.DISABLE);
+        existingUser.setBanReason(request.reason());
     }
 
     @Override
