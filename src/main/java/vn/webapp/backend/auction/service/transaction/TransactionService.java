@@ -19,6 +19,9 @@ public interface TransactionService {
 
     void setTransactionState(Integer id, String state);
 
+    void setTransactionStateWithCode(Integer id, String state, String transactionCode, String bankCode);
+
+
     void setTransactionMethod(Integer id, String method);
 
     Page<Transaction> getTransactionsByUsername (String username, String assetName, Pageable pageable);

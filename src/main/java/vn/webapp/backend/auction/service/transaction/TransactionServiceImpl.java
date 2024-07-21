@@ -104,6 +104,17 @@ public class TransactionServiceImpl implements TransactionService {
 
     @Override
     @Transactional
+    public void setTransactionStateWithCode(Integer id, String state, String transactionCode, String bankCode) {
+        var existingTransaction = transactionRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException(ErrorMessages.AUCTION_NOT_FOUND));
+        existingTransaction.setState(TransactionState.valueOf(state));
+        existingTransaction.setPaymentTime(Timestamp.from(Instant.now()));
+        existingTransaction.setTransactionCode(transactionCode);
+        existingTransaction.setBankCode(bankCode);
+    }
+
+    @Override
+    @Transactional
     public void setTransactionMethod(Integer id, String method) {
         var existingTransaction = transactionRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException(ErrorMessages.AUCTION_NOT_FOUND));
@@ -184,8 +195,8 @@ public class TransactionServiceImpl implements TransactionService {
                     .feesIncurred(0.0)
                     .createDate(Timestamp.from(Instant.now()))
                     .type(TransactionType.PAYMENT_TO_SELLER)
+                    .paymentMethod(PaymentMethod.BANKING)
                     .build();
-
             transactionRepository.save(sellerTransaction);
         }
         return userSeller;
