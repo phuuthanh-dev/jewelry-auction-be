@@ -70,22 +70,6 @@ public class TransactionServiceImpl implements TransactionService {
         return transactionsList;
     }
 
-//    @Override
-//    public Page<Transaction> getTransactionByTypeAndState(TransactionType type, String userName, TransactionState state, Pageable pageable) {
-//        List<TransactionState> states;
-//        if (state.equalsIgnoreCase("Tất cả")) {
-//            states = Arrays.asList(TransactionState.PENDING, TransactionState.SUCCEED, TransactionState.FAILED);
-//        } else {
-//            states = Collections.singletonList(resolveTransactionState(state));
-//        }
-//
-//        Page<Transaction> transactionsList = transactionRepository.findTransactionByTypeAndStates(type, userName, states, pageable);
-//        if (transactionsList.isEmpty()) {
-//            throw new ResourceNotFoundException("Type '" + type + "' does not have any transaction items.");
-//        }
-//        return transactionsList;
-//    }
-
     @Override
     public Page<Transaction> getTransactionHandover(TransactionType typename, String jewelryName, String category, Pageable pageable) {
         if (category.equals("Tất cả"))
@@ -151,6 +135,7 @@ public class TransactionServiceImpl implements TransactionService {
                         .user(user)
                         .auction(auction)
                         .state(TransactionState.PENDING)
+                        .paymentMethod(PaymentMethod.BANKING)
                         .totalPrice(auction.getDeposit())
                         .feesIncurred(0.0)
                         .createDate(auction.getEndDate())

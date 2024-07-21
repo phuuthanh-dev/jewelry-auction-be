@@ -45,6 +45,6 @@ public class RealTimeService {
                 .orElseThrow(() -> new IllegalArgumentException(ErrorMessages.USER_NOT_FOUND));
         AuctionRegistration auctionRegistration = auctionRegistrationRepository.findByAuctionIdAndUserIdInValid(user.getId(), auction.getId())
                 .orElseThrow(() -> new IllegalArgumentException(ErrorMessages.AUCTION_REGISTRATION_NOT_FOUND));
-        return new KickOutResponse(auctionRegistration.getUser().getId(), auction.getLastPrice(), auctionRegistration.getKickReason());
+        return new KickOutResponse(auctionRegistration.getUser().getId(), auction.getLastPrice(), auctionRegistration.getKickReason(), auction.getEndDate());
     }
 }

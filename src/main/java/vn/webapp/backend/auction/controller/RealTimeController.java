@@ -13,7 +13,6 @@ import vn.webapp.backend.auction.dto.KickOutMessage;
 import vn.webapp.backend.auction.dto.KickOutResponse;
 import vn.webapp.backend.auction.service.realtime.RealTimeService;
 
-import java.util.Map;
 import java.util.logging.Logger;
 
 @RestController
