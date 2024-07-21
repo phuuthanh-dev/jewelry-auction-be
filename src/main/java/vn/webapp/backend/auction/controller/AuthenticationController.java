@@ -26,7 +26,7 @@ public class AuthenticationController {
 
         AuthenticationResponse authenticationResponse = authenticationService.authenticateGeneral(request, httpServletRequest, httpServletResponse);
 
-        if (authenticationResponse.getBanReason() != null) {
+        if (authenticationResponse.getAccessToken() == null) {
             return ResponseEntity.status(403).body(authenticationResponse);
         }
 

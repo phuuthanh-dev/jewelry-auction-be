@@ -69,6 +69,7 @@ public class RequestApprovalServiceImpl implements RequestApprovalService {
             request.setStaff(responder);
         } else if (responder.getRole().equals(Role.MEMBER)) {
             request.getJewelry().setState(JewelryState.ACTIVE);
+            request.getJewelry().setIsHolding(false);
         }
 
         request.setConfirm(true);

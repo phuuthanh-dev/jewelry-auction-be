@@ -53,6 +53,9 @@ public class Auction {
     @Column(name = "end_date", nullable = false)
     private Timestamp endDate;
 
+    @Column(name = "end_date_stored")
+    private Timestamp endDateStored;
+
     @Transient
     private long countdownDuration;
 

@@ -7,6 +7,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import vn.webapp.backend.auction.dto.DisableUserRequest;
 import vn.webapp.backend.auction.dto.RegisterAccountRequest;
 import vn.webapp.backend.auction.dto.UserSpentResponse;
 import vn.webapp.backend.auction.enums.AccountState;
@@ -72,6 +73,11 @@ public class UserController {
         return ResponseEntity.ok().build();
     }
 
+    @PutMapping("/set-disable/{id}")
+    public ResponseEntity<User> setDisable(@PathVariable Integer id, @RequestBody DisableUserRequest disableUserRequest) {
+        userService.setDisableAccount(id, disableUserRequest);
+        return ResponseEntity.ok().build();
+    }
     @PostMapping("/staff/register")
     public ResponseEntity<User> addStaff(
             @RequestBody RegisterAccountRequest user) {
