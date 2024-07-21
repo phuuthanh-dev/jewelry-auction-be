@@ -145,7 +145,8 @@ CREATE TABLE [dbo].[auction]
     [state]             [varchar](255)       NULL,
     [jewelry_id]        [int]                NULL,
     [staff_id]          [int]                NULL,
-    [create_date]       [datetime2](6)       NULL
+    [create_date]       [datetime2](6)       NULL,
+    [end_date_stored]   [datetime2](6)       NULL
 )
 
     INSERT INTO [dbo].[auction]
