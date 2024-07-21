@@ -129,7 +129,7 @@ public class AuctionHistoryServiceImpl implements AuctionHistoryService {
         List<AuctionHistory> lastActiveBids = auctionHistoryRepository.findLastActiveBidByAuctionId(auctionId);
         if (!lastActiveBids.isEmpty()) {
             AuctionHistory lastActiveBid = lastActiveBids.get(0);
-            if (lastActiveBid.getPriceGiven() < auction.getJewelry().getBuyNowPrice()) {
+            if (lastActiveBid.getPriceGiven() < auction.getJewelry().getBuyNowPrice() && auction.getEndDateStored() != null) {
                 auction.setEndDate(auction.getEndDateStored());
             }
             auction.setLastPrice(lastActiveBid.getPriceGiven());
