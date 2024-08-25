@@ -7,7 +7,7 @@ ENV MYSQL_DATABASE=DB_AUCTION
 ENV MYSQL_COLLATION=utf8mb4_general_ci
 
 # Copy the SQL script into the container
-COPY init2.sql /docker-entrypoint-initdb.d/init2.sql
+COPY init.sql /docker-entrypoint-initdb.d/init.sql
 
 # Expose MySQL port
 EXPOSE 3306
