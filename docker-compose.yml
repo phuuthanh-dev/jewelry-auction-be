@@ -2,20 +2,13 @@ version: '3.0'
 
 services:
   auction-database:
-    image: ghcr.io/phuuthanh2003/auction-database:latest
+    image: ghcr.io/phuuthanh-dev/auction-database:latest
     ports:
-      - "1433:1433"
-    environment:
-      SA_PASSWORD: "Thanhth@nh1"
-      ACCEPT_EULA: "Y"
+      - "3306:3306"
 
   auction-api:
-    image: ghcr.io/phuuthanh2003/auction-api:latest
+    image: ghcr.io/phuuthanh-dev/auction-api:latest
     ports:
       - "8080:8080"
     depends_on:
       - auction-database
-    environment:
-      SPRING_DATASOURCE_URL: jdbc:sqlserver://auction-database:1433;encrypt=true;trustServerCertificate=true;databaseName=DB_AUCTION;
-      SPRING_DATASOURCE_USERNAME: sa
-      SPRING_DATASOURCE_PASSWORD: Thanhth@nh1
