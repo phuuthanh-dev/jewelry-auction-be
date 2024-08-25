@@ -1,5 +1,5 @@
 # Use the official MySQL image
-FROM mysql:latest
+FROM mysql:8.2.0
 
 # Set environment variables for MySQL
 ENV MYSQL_ALLOW_EMPTY_PASSWORD yes
