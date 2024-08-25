@@ -1,14 +1,13 @@
-# Dùng official SQL Server 2019 image của Microsoft
-FROM mcr.microsoft.com/mssql/server:2019-latest
+# Use the official MySQL image
+FROM mysql:latest
 
-# Copy the SQL script vào container
-COPY init.sql /usr/src/app/init.sql
+# Set environment variables for MySQL
+ENV MYSQL_ALLOW_EMPTY_PASSWORD yes
+ENV MYSQL_DATABASE=DB_AUCTION
+ENV MYSQL_COLLATION=utf8mb4_general_ci
 
-# Chạy lệnh trong file sql
-RUN /opt/mssql/bin/sqlservr & sleep 30 \
-    && /opt/mssql-tools/bin/sqlcmd -S localhost -U sa -P Thanhth@nh1 -i /usr/src/app/init.sql \
-    && pkill sqlservr
+# Copy the SQL script into the container
+COPY init2.sql /docker-entrypoint-initdb.d/init2.sql
 
-EXPOSE 1433
-# Khởi động sql server
-CMD ["/opt/mssql/bin/sqlservr"]
+# Expose MySQL port
+EXPOSE 3306

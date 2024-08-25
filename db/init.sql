@@ -269,3 +269,5 @@ CREATE TABLE [dbo].[request_approval](
     INSERT INTO [dbo].[request_approval] ([desired_price], [is_confirm], [note], [request_time], [response_time], [state], [valuation], [jewelry_id], [user_id_respond], [user_id_send], [staff_id])
     VALUES
 (1000000, 1, 'Nhẫn kim cương', '2024-05-01 17:30:00', '2024-05-01 17:30:00', 'ACTIVE', 1000000, 1, 1, 2, 1);
+
+
