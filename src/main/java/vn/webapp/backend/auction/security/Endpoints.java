@@ -11,7 +11,7 @@ public final class Endpoints {
             "/api/v1/auction-history/get-by-auction/**", "/api/v1/auction-history/get-by-username/**",
             "/api/v1/auction-history/get-by-date/**", "/api/v1/image/**", "/api/v1/user/by-email/**",
             "/api/v1/user/by-username/**", "/api/v1/bank/**", "/api/v1/payment/**",
-            "/api/v1/auction-registration/**", "/api/v1/transaction/**",  "api/v1/bank",
+            "/api/v1/auction-registration/**", "/api/v1/transaction/**",  "/api/v1/bank",
             "/api/v1/auction-history/get-when-auction-finished/**",
             "/api/v1/user/get-winner-auction/**", "/api/v1/request-approval/**",
             "/api/v1/transaction/get-by-type-state", "/api/v1/auction-history/get-by-auction-and-user/**"

@@ -53,19 +53,27 @@ public class SecurityConfiguration {
                                 .requestMatchers(HttpMethod.POST, Endpoints.PUBLIC_POST_ENDPOINTS).permitAll()
                                 .requestMatchers(HttpMethod.PUT, Endpoints.PUBLIC_PUT_ENDPOINTS).permitAll()
 
-                                .requestMatchers(HttpMethod.GET, Endpoints.STAFF_GET_ENDPOINTS).hasAuthority(Role.STAFF.name())
+                                // ADMIN
+                                .requestMatchers(HttpMethod.GET, Endpoints.ADMIN_GET_ENDPOINTS).hasAuthority(Role.ADMIN.name())
+                                .requestMatchers(HttpMethod.POST, Endpoints.ADMIN_POST_ENDPOINTS).hasAuthority(Role.ADMIN.name())
+                                .requestMatchers(HttpMethod.PUT, Endpoints.ADMIN_PUT_ENDPOINTS).hasAuthority(Role.ADMIN.name())
 
+                                // MANAGER
                                 .requestMatchers(HttpMethod.GET, Endpoints.MANAGER_GET_ENDPOINTS).hasAuthority(Role.MANAGER.name())
                                 .requestMatchers(HttpMethod.POST, Endpoints.MANAGER_POST_ENDPOINTS).hasAuthority(Role.MANAGER.name())
                                 .requestMatchers(HttpMethod.PUT, Endpoints.MANAGER_PUT_ENDPOINTS).hasAuthority(Role.MANAGER.name())
                                 .requestMatchers(HttpMethod.DELETE, Endpoints.MANAGER_DELETE_ENDPOINTS).hasAuthority(Role.MANAGER.name())
 
+                                // MANAGER + ADMIN
                                 .requestMatchers(HttpMethod.GET, Endpoints.MANAGER_ADMIN_GET_ENDPOINTS).hasAnyAuthority(Role.MANAGER.name(),Role.ADMIN.name())
 
-                                .requestMatchers(HttpMethod.GET, Endpoints.ADMIN_GET_ENDPOINTS).hasAuthority(Role.ADMIN.name())
-                                .requestMatchers(HttpMethod.POST, Endpoints.ADMIN_POST_ENDPOINTS).hasAuthority(Role.ADMIN.name())
-                                .requestMatchers(HttpMethod.PUT, Endpoints.ADMIN_PUT_ENDPOINTS).hasAuthority(Role.ADMIN.name())
-
+                                // STAFF
+                                .requestMatchers(HttpMethod.GET, Endpoints.STAFF_GET_ENDPOINTS)
+                                .hasAnyAuthority(
+                                        Role.STAFF.name(),
+                                        Role.MANAGER.name(),
+                                        Role.ADMIN.name()
+                                )
                                 .anyRequest().authenticated()
                 )
                 .csrf(csrf -> csrf.disable())
