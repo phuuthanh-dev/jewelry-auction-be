@@ -201,7 +201,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<UserSpentResponse> getMostSpentUser() {
-        List<User> users = userRepository.findTopUsersByTotalSpent();
+        List<User> users = userRepository.findTopUsersByTotalSpent(org.springframework.data.domain.PageRequest.of(0, 5));
         List<UserSpentResponse> list = new ArrayList<>();
         for (User user : users) {
             Double totalSpent = transactionRepository.getTotalPriceJewelryWonByUsernameAndAlreadyPay(user.getUsername());

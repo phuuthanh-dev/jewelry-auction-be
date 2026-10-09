@@ -67,17 +67,9 @@ public interface UserRepository extends JpaRepository<User, Integer>  {
     @Query("SELECT ar.user FROM AuctionRegistration ar WHERE ar.auction.id = :auctionId AND ar.auctionRegistrationState = 'VALID'")
     List<User> findByAuctionIdAndUserIdValid(@Param("auctionId") Integer auctionId);
 
-    @Query(nativeQuery = true,
-            value = "SELECT TOP 5 u.* " +
-                    "FROM [Transaction] t " +
-                    "JOIN [User] u ON t.user_id = u.id " +
-                    "WHERE t.transaction_type = 'PAYMENT_TO_WINNER' " +
-                    "      AND t.transaction_state = 'SUCCEED' " +
-                    "GROUP BY u.id, u.cccd, u.address, u.avatar, u.bank_account_name, " +
-                    "         u.bank_account_number, u.bank_id, u.city, u.district, " +
-                    "         u.email, u.first_name, u.last_name, u.phone, u.password, " +
-                    "         u.role, u.state, u.register_date, u.username, u.ward, u.year_of_birth, " +
-                    "         u.cccd_first, u.cccd_last, u.cccd_from, u.ban_reason " +
-                    "ORDER BY SUM(t.total_price) DESC")
-    List<User> findTopUsersByTotalSpent();
+    @Query("SELECT t.user FROM Transaction t " +
+            "WHERE t.type = vn.webapp.backend.auction.enums.TransactionType.PAYMENT_TO_WINNER " +
+            "AND t.state = vn.webapp.backend.auction.enums.TransactionState.SUCCEED " +
+            "GROUP BY t.user ORDER BY SUM(t.totalPrice) DESC")
+    List<User> findTopUsersByTotalSpent(Pageable pageable);
 }
